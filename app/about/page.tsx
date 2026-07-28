@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { about } from "@/content/about";
 import { Section, Prose, BulletList } from "@/components/Primitives";
+import { NoticeLine } from "@/components/Disclaimer";
 
 export const metadata: Metadata = { title: "About" };
 
@@ -14,6 +15,11 @@ export default function AboutPage() {
               {p}
             </p>
           ))}
+
+          <NoticeLine>
+            This website is intended as knowledge sharing rather than consulting advice, and does not
+            represent the position of any employer, past or present.
+          </NoticeLine>
         </div>
       </Section>
 

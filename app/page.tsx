@@ -15,7 +15,7 @@ export default function HomePage() {
         <div className="shell relative py-20 md:py-28">
           <p className="eyebrow mb-6 animate-rise-in">{site.role}</p>
           <h1 className="max-w-4xl animate-rise-in font-display text-display-lg text-ink" style={{ animationDelay: "80ms" }}>
-            Designing enterprise AI systems that solve real business problems.
+            I optimise business processes before I optimise prompts.
           </h1>
           <p
             className="mt-7 max-w-xl animate-rise-in text-[1.0625rem] leading-relaxed text-ink-soft"
@@ -26,7 +26,7 @@ export default function HomePage() {
 
           <div className="mt-9 flex animate-rise-in flex-wrap gap-3" style={{ animationDelay: "220ms" }}>
             <Link href="/portfolio" className="btn btn-primary">
-              View the portfolio
+              Read the case notes
             </Link>
             <Link href="/contact" className="btn btn-ghost">
               Start a conversation
@@ -37,12 +37,12 @@ export default function HomePage() {
       </section>
 
       {/* What / who / why at a glance ------------------------------------ */}
-      <Section first eyebrow="What I do" title="Enterprise problems, translated into AI architecture — not the other way round.">
+      <Section first eyebrow="How these notes are written" title="Enterprise problems, translated into AI architecture — not the other way round.">
         <div className="grid gap-8 md:grid-cols-3">
           {[
             {
               t: "Make-vs-buy, honestly answered",
-              d: "Every case study opens by asking whether AI is the right tool at all — and states plainly when conventional automation would do more of the job.",
+              d: "Every note opens by asking whether AI is the right tool at all — and says plainly when conventional automation would do more of the job.",
             },
             {
               t: "Discovery before diagrams",
@@ -63,9 +63,9 @@ export default function HomePage() {
 
       {/* Featured projects ------------------------------------------------ */}
       <Section
-        eyebrow="AI Architecture Portfolio"
-        title="Featured case studies"
-        lede={`${caseStudies.length} of ${totalPlannedCaseStudies} planned case studies are live. Each one follows the same 19-section architecture framework, end to end.`}
+        eyebrow="Case notes"
+        title="Recent analyses"
+        lede={`${caseStudies.length} of ${totalPlannedCaseStudies} planned notes are written. Each follows the same structure — context, discovery, analysis, architecture, trade-offs, risks — so the reasoning can be compared across problems.`}
       >
         <div className="grid gap-6 md:grid-cols-3">
           {featured.map((p, i) => (
@@ -74,7 +74,7 @@ export default function HomePage() {
         </div>
         <div className="mt-8">
           <Link href="/portfolio" className="btn btn-ghost">
-            See all case studies
+            See all case notes
           </Link>
         </div>
       </Section>

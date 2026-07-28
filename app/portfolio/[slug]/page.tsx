@@ -7,6 +7,7 @@ import { DiagramView } from "@/components/diagrams/DiagramView";
 import { DiscoverySection } from "@/components/DiscoverySection";
 import { RoadmapTimeline } from "@/components/RoadmapTimeline";
 import { KpiTable, RiskTable, TechSelectionTable, StakeholderTable } from "@/components/DataTables";
+import { CaseNoteDisclaimer } from "@/components/Disclaimer";
 import { cx, STATUS_TONE } from "@/lib/format";
 
 export function generateStaticParams() {
@@ -31,7 +32,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       <header className="grid-field border-b border-line">
         <div className="shell py-14 md:py-20">
           <Link href="/portfolio" className="font-mono text-micro uppercase tracking-[0.1em] text-ink-muted hover:text-ink">
-            ← All case studies
+            ← All case notes
           </Link>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -55,21 +56,8 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
           <TagList tags={project.tags} className="mt-6" />
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            {project.githubUrl ? (
-              <a href={project.githubUrl} className="btn btn-primary">
-                View repository
-              </a>
-            ) : (
-              <span className="btn btn-ghost cursor-default opacity-60">Repository — coming with the build</span>
-            )}
-            {project.liveDemoUrl ? (
-              <a href={project.liveDemoUrl} className="btn btn-ghost">
-                Live demo
-              </a>
-            ) : (
-              <span className="btn btn-ghost cursor-default opacity-60">{project.demoNote ?? "Demo pending"}</span>
-            )}
+          <div className="mt-10 max-w-reading">
+            <CaseNoteDisclaimer compact />
           </div>
 
           {project.techGroups && (
@@ -380,23 +368,31 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         </Section>
       )}
 
-      {/* 17 + 18. GitHub / Live demo — already surfaced in header; add a closing CTA row */}
-      {(project.githubUrl || project.liveDemoUrl) && (
-        <Section eyebrow="17 · Repository & Demo" title="See it running">
-          <div className="flex flex-wrap gap-3">
-            {project.githubUrl && (
-              <a href={project.githubUrl} className="btn btn-primary">
-                View repository
-              </a>
-            )}
-            {project.liveDemoUrl && (
-              <a href={project.liveDemoUrl} className="btn btn-ghost">
-                Live demo
-              </a>
-            )}
-          </div>
-        </Section>
-      )}
+      {/* 17. Discussion — the closing move of every note is an invitation to disagree */}
+      <Section eyebrow="17 · Discussion" title="Where would you have decided differently?">
+        <Prose text="This is one reading of the problem, not the only defensible one. Several decisions above rest on assumptions that discovery would need to confirm, and at least one of them is probably wrong. If your experience points somewhere else, I would rather hear it than not." />
+        <div className="mt-7 flex flex-wrap items-center gap-6">
+          <Link href="/contact" className="btn btn-ghost">
+            Send a correction
+          </Link>
+          {project.githubUrl && (
+            <a
+              href={project.githubUrl}
+              className="font-mono text-micro uppercase tracking-[0.1em] text-ink-muted underline underline-offset-4 hover:text-ink"
+            >
+              Code accompanying this note
+            </a>
+          )}
+          {project.liveDemoUrl && (
+            <a
+              href={project.liveDemoUrl}
+              className="font-mono text-micro uppercase tracking-[0.1em] text-ink-muted underline underline-offset-4 hover:text-ink"
+            >
+              Working prototype
+            </a>
+          )}
+        </div>
+      </Section>
 
       {/* 18. Lessons Learned ------------------------------------------------------------------- */}
       {project.lessonsLearned && (

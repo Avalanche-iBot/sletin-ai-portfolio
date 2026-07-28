@@ -36,7 +36,7 @@ export function ProjectCard({ project, index }: { project: CaseStudy; index?: nu
       <div className="mt-5 flex items-center justify-between gap-3 border-t border-line pt-4">
         <ComplexityMeter level={project.architectureComplexity} />
         <span className="font-mono text-micro uppercase tracking-[0.08em] text-accent-deep opacity-0 transition-opacity group-hover:opacity-100">
-          View case study →
+          Read the note →
         </span>
       </div>
 

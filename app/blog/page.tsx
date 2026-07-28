@@ -11,7 +11,7 @@ export default function BlogIndexPage() {
       first
       eyebrow="Blog"
       title="Notes on enterprise AI architecture"
-      lede="Short, practical write-ups on architecture decisions, discovery technique, and lessons from the case studies. Posts are drafted as they're written — the list below is the honest publishing queue."
+      lede="Short, practical write-ups on architecture decisions, discovery technique, and lessons from the case notes. Posts are drafted as they're written — the list below is the honest publishing queue."
     >
       <div className="grid gap-6 md:grid-cols-2">
         {posts.map((p) => (

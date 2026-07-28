@@ -22,7 +22,7 @@ const caseStudy: CaseStudy = {
   "complexityLabel": "High — regulated data, hybrid routing, 6 system integrations",
   "duration": "Reference programme: 6 months to production",
   "role": "Solution Architect (case study author)",
-  "githubUrl": "https://github.com/",
+  "githubUrl": "",
   "liveDemoUrl": "",
   "demoNote": "No public demo — this case study documents the architecture, not a product",
   "shortSummary": "A regulated, GDPR-compliant patient communication platform for a fast-growing Italian dental group. The architectural core is a hybrid router: deterministic automation handles the 70% of requests that are genuinely deterministic, and a RAG-grounded LLM handles only free-text clinical-adjacent questions — with a hard rule that it never gives medical advice and escalates on low confidence.",

@@ -7,8 +7,7 @@ export const about: About = {
   "lede": "I am Aleksandr Sletin — an engineer and project manager based in Italy, working in industrial operations inside large international organisations. Over the last two years I have deliberately re-pointed my thinking at one question: how an enterprise AI system can be designed so that a real company can afford, trust, audit and operate it.",
   "paragraphs": [
     "My path has zig-zagged, and that turns out to be the point. Petroleum engineering gave me the domain. Project management gave me the delivery discipline and the vocabulary of the business. An AI startup gave me my first real exposure to what breaks in AI projects — which is almost never the model.",
-    "What I am not, yet, is a ten-year platform engineer. I am explicit about that on this site. What I am is someone who can sit a CFO, a CIO and a front-line operator in the same room, come out with a defensible architecture, and then build enough of it to find out where the reasoning was wrong.",
-    "This website is intended as a knowledge-sharing portfolio rather than consulting advice or a representation of any employer."
+    "What I am not, yet, is a ten-year platform engineer. I am explicit about that on this site. What I am is someone who can sit a CFO, a CIO and a front-line operator in the same room, come out with a defensible architecture, and then build enough of it to find out where the reasoning was wrong."
   ],
   "timeline": [
     {

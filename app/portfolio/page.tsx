@@ -2,19 +2,22 @@ import type { Metadata } from "next";
 import { caseStudies, plannedCaseStudies, totalPlannedCaseStudies } from "@/content/projects";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Section } from "@/components/Primitives";
+import { CaseNoteDisclaimer } from "@/components/Disclaimer";
 
-export const metadata: Metadata = { title: "AI Architecture Portfolio" };
+export const metadata: Metadata = { title: "Case Notes" };
 
 export default function PortfolioPage() {
   return (
     <>
       <Section
         first
-        eyebrow="AI Architecture Portfolio"
-        title="Enterprise AI case studies, built the way a solutions architect would present them"
-        lede={`Each case study runs the full lifecycle — business context, discovery, architecture, security, cost, risk, KPIs and roadmap. ${caseStudies.length} of ${totalPlannedCaseStudies} planned case studies are published; the rest are listed below as they're built.`}
+        eyebrow="Case notes"
+        title="Operational problems, taken apart in the open"
+        lede={`Each note runs the same path — business context, discovery, analysis, architecture, security, cost, risk, KPIs, roadmap — and ends with what I would question if I came back to it. ${caseStudies.length} of ${totalPlannedCaseStudies} planned notes are written; the rest are listed below.`}
       >
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <CaseNoteDisclaimer />
+
+        <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {caseStudies.map((p, i) => (
             <ProjectCard key={p.slug} project={p} index={i} />
           ))}
@@ -22,7 +25,7 @@ export default function PortfolioPage() {
       </Section>
 
       {plannedCaseStudies.length > 0 && (
-        <Section eyebrow="In the pipeline" title="Coming next">
+        <Section eyebrow="In the pipeline" title="Not yet written">
           <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {plannedCaseStudies.map((p) => (
               <li

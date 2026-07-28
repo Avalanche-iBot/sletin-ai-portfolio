@@ -4,9 +4,9 @@ import type { Site, WhyMe, Service, Engagement } from "./types";
 export const site: Site = {
   "name": "Aleksandr Sletin",
   "brandShort": "A. Sletin",
-  "role": "AI Architecture Portfolio",
-  "tagline": "Designing Enterprise AI Systems That Solve Real Business Problems",
-  "positioning": "Engineering and project-delivery background in energy and industrial operations. PMP certified. Now designing enterprise AI architectures — where the hard part is not the model, but the questions you ask before you choose one.",
+  "role": "Independent AI Architecture Notebook",
+  "tagline": "Notes on how enterprise AI problems get analysed before they get built",
+  "positioning": "An open notebook on enterprise AI architecture. Each case note takes an operational problem apart — the questions worth asking, the constraints that actually bind, the trade-offs behind each decision — and leaves the reasoning visible so it can be argued with.",
   "location": "Milan, Italy",
   "email": "alexander.slyotin@gmail.com",
   "phone": "+39 371 469 0274",
@@ -16,14 +16,14 @@ export const site: Site = {
 };
 
 export const whyMe: WhyMe = {
-  "eyebrow": "Why this background is unusual",
-  "title": "Most AI architecture candidates have never sat in the room where the budget is decided.",
-  "body": "I did not come to AI from a computer-science degree. I came from industrial operations, cost reports and steering committees — which means I have spent years translating between people who own a technical system and people who own its budget. That translation layer is exactly where enterprise AI projects succeed or quietly die.",
+  "eyebrow": "Where this thinking comes from",
+  "title": "Enterprise AI rarely fails on the model. It fails in the gap between the people who own a system and the people who own its budget.",
+  "body": "I did not arrive at AI from a computer-science degree. I arrived from industrial operations, cost reports and steering committees. That route shapes what I notice first in a problem — and it is the reason these notes spend more time on constraints and stakeholders than on model selection.",
   "pillars": [
     {
       "num": "01",
-      "title": "Industrial domain depth",
-      "body": "Petroleum engineering MSc, field engineering experience, and several years of operational work inside large international industrial organisations. I understand P&IDs, inspection reports and asset data — and why an engineer will not trust a system that cannot show its source.",
+      "title": "Operations, seen from inside",
+      "body": "Petroleum engineering MSc, field engineering, and several years of operational work inside large international industrial organisations. Enough exposure to P&IDs, inspection reports and asset data to know why an engineer will not trust a system that cannot show its source.",
       "tags": [
         "Oil & Gas",
         "Industrial ops",
@@ -32,8 +32,8 @@ export const whyMe: WhyMe = {
     },
     {
       "num": "02",
-      "title": "Delivery discipline",
-      "body": "PMP certified. Five AI projects managed end-to-end at an AI company, plus a full ERP rollout. Scope, budget, stakeholders, phased rollout — the unglamorous part that decides whether an architecture ever reaches production.",
+      "title": "Delivery constraints as design inputs",
+      "body": "PMP certified. Five AI projects managed end-to-end at an AI company, plus a full ERP rollout. Scope, budget and phased rollout are not administrative afterthoughts — they are constraints that change what the architecture is allowed to be.",
       "tags": [
         "PMP",
         "Agile / Scrum",
@@ -42,8 +42,8 @@ export const whyMe: WhyMe = {
     },
     {
       "num": "03",
-      "title": "Architecture-first thinking",
-      "body": "Every case study here starts with Discovery, not with a model choice. Make-vs-buy, hybrid deterministic + LLM routing, RAG boundaries, cost per request, GDPR posture. The architecture is the deliverable — code is the consequence.",
+      "title": "Questions before diagrams",
+      "body": "Every note here opens with discovery, not with a model choice. Make-vs-buy, deterministic logic before LLM routing, retrieval boundaries, cost per request, data-protection posture. Where a rule would do the job, the note says so.",
       "tags": [
         "Solution design",
         "Azure",
@@ -133,7 +133,7 @@ export const engagements: Engagement[] = [
 export const nav = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/portfolio", label: "Portfolio" },
+  { href: "/portfolio", label: "Case Notes" },
   { href: "/learning", label: "Learning Journey" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
