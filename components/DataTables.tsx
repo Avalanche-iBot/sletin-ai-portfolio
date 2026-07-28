@@ -10,9 +10,9 @@ import type { CaseStudy } from "@/content/types";
  * on every row, and lets the reader take in one dimension of measurement at a
  * time.
  */
-export function KpiTable({ rows }: { rows: NonNullable<CaseStudy["kpis"]> }) {
-  const groups: { name: string; items: typeof rows }[] = [];
-  for (const r of rows) {
+export function KpiTable({ kpis }: { kpis: NonNullable<CaseStudy["kpis"]> }) {
+  const groups: { name: string; items: typeof kpis }[] = [];
+  for (const r of kpis) {
     const last = groups[groups.length - 1];
     if (last && last.name === r.category) last.items.push(r);
     else groups.push({ name: r.category, items: [r] });
