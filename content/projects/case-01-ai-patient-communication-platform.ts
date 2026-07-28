@@ -195,7 +195,7 @@ const caseStudy: CaseStudy = {
     {
       "role": "CFO",
       "interest": "ROI in under two years; OPEX ceiling of €80k/year.",
-      "concern": "Unbounded LLM token spend that grows with patient volume.",
+      "concern": "Unbounded token spend that grows with patient volume.",
       "influence": "Budget gate"
     },
     {
@@ -684,24 +684,19 @@ const caseStudy: CaseStudy = {
         "caption": "The single most important diagram in this case. Roughly 70% of traffic terminates before it reaches a language model.",
         "steps": [
           {
-            "t": "Inbound message",
-            "sub": "WhatsApp / web / app"
+            "t": "Inbound message (WhatsApp / web / app)"
           },
           {
-            "t": "Identity resolution",
-            "sub": "CRM lookup + verification"
+            "t": "Identity resolution (CRM lookup + verification)"
           },
           {
-            "t": "Guardrails",
-            "sub": "injection & safety screen"
+            "t": "Guardrails (injection & safety screen)"
           },
           {
-            "t": "Intent classification",
-            "sub": "GPT-4o mini · cheap"
+            "t": "Intent classification (GPT-4o mini · cheap)"
           },
           {
-            "t": "Router decision",
-            "sub": "3 outcomes"
+            "t": "Router decision (3 outcomes)"
           }
         ],
         "branches": [
@@ -730,61 +725,21 @@ const caseStudy: CaseStudy = {
         "lanes": [
           {
             "steps": [
-              {
-                "n": "1",
-                "t": "SharePoint change feed",
-                "d": "Detect new and modified documents; a named Knowledge Owner approves clinical content before it becomes eligible."
-              },
-              {
-                "n": "2",
-                "t": "Extract & OCR",
-                "d": "Azure Document Intelligence for scanned material; layout-aware extraction preserves tables and headings."
-              },
-              {
-                "n": "3",
-                "t": "Chunk",
-                "d": "Semantic chunking with heading-path metadata, locale tag and approval status. Chunks inherit document-level access labels."
-              },
-              {
-                "n": "4",
-                "t": "Embed",
-                "d": "text-embedding-3-large in batch on Service Bus queues. Cost per document is amortised, never on the user path."
-              },
-              {
-                "n": "5",
-                "t": "Index",
-                "d": "Azure AI Search — hybrid keyword + vector with semantic reranking. Versioned index allows atomic swap and rollback."
-              }
+              "1. SharePoint change feed: Detect new and modified documents; a named Knowledge Owner approves clinical content before it becomes eligible.",
+              "2. Extract & OCR: Azure Document Intelligence for scanned material; layout-aware extraction preserves tables and headings.",
+              "3. Chunk: Semantic chunking with heading-path metadata, locale tag and approval status. Chunks inherit document-level access labels.",
+              "4. Embed: text-embedding-3-large in batch on Service Bus queues. Cost per document is amortised, never on the user path.",
+              "5. Index: Azure AI Search — hybrid keyword + vector with semantic reranking. Versioned index allows atomic swap and rollback."
             ],
             "label": "Ingestion — asynchronous, nightly workers"
           },
           {
             "steps": [
-              {
-                "n": "6",
-                "t": "Query rewrite",
-                "d": "Conversation-aware rewrite plus locale filter, executed by the cheap model."
-              },
-              {
-                "n": "7",
-                "t": "Hybrid retrieve",
-                "d": "Top-k with metadata filters: approved content only, correct language, patient's access scope."
-              },
-              {
-                "n": "8",
-                "t": "Rerank & trim",
-                "d": "Semantic rerank, then trim to a strict token budget. Only the passages needed — never the whole document."
-              },
-              {
-                "n": "9",
-                "t": "Grounded generation",
-                "d": "GPT-4.1 with a system prompt that forbids answering outside the retrieved context and requires citation."
-              },
-              {
-                "n": "10",
-                "t": "Verify & gate",
-                "d": "Citation check, confidence score, forbidden-topic check. Fail any of the three and the conversation escalates."
-              }
+              "6. Query rewrite: Conversation-aware rewrite plus locale filter, executed by the cheap model.",
+              "7. Hybrid retrieve: Top-k with metadata filters: approved content only, correct language, patient's access scope.",
+              "8. Rerank & trim: Semantic rerank, then trim to a strict token budget. Only the passages needed — never the whole document.",
+              "9. Grounded generation: GPT-4.1 with a system prompt that forbids answering outside the retrieved context and requires citation.",
+              "10. Verify & gate: Citation check, confidence score, forbidden-topic check. Fail any of the three and the conversation escalates."
             ],
             "label": "Retrieval — synchronous, on the user path"
           }
@@ -847,35 +802,36 @@ const caseStudy: CaseStudy = {
       }
     ]
   },
-  "risks": {
-    "intro": "Every high-impact AI architecture carries systemic risks. In healthcare, these risks carry legal and ethical weights that require structural mitigation rather than operational patches.",
-    "items": [
-      {
-        "r": "Clinical hallucination",
-        "impact": "High",
-        "likelihood": "Low",
-        "mitigation": "Strict RAG grounding, zero free generation on medical topics, mandatory citations, and automated pre-output verification."
-      },
-      {
-        "r": "Unbounded token cost",
-        "impact": "Medium",
-        "likelihood": "Medium",
-        "mitigation": "Hybrid routing routing ~70% of traffic to cache/deterministic skills; strict prompt budgeting and model tiering (GPT-4o mini for classification)."
-      },
-      {
-        "r": "Data leakage under GDPR",
-        "impact": "High",
-        "likelihood": "Low",
-        "mitigation": "Azure OpenAI EU data residency, strict payload masking, no training on customer data, and end-to-end audit logging."
-      },
-      {
-        "r": "Administrator resistance",
-        "impact": "Medium",
-        "likelihood": "Medium",
-        "mitigation": "Positioning AI as a routine message filter rather than a replacement; involving front-desk staff directly in workflow design."
-      }
-    ]
-  },
+  "risks": [
+    {
+      "n": "1",
+      "risk": "Clinical hallucination",
+      "severity": "High",
+      "consequence": "Providing incorrect medical or post-operative guidance to patients.",
+      "mitigation": "Strict RAG grounding, zero free generation on medical topics, mandatory citations, and automated pre-output verification."
+    },
+    {
+      "n": "2",
+      "risk": "Unbounded token cost",
+      "severity": "Medium",
+      "consequence": "Excessive API consumption driving up operational expenses beyond budget limits.",
+      "mitigation": "Hybrid routing routing ~70% of traffic to cache/deterministic skills; strict prompt budgeting and model tiering (GPT-4o mini for classification)."
+    },
+    {
+      "n": "3",
+      "risk": "Data leakage under GDPR",
+      "severity": "High",
+      "consequence": "Potential exposure of sensitive personal health data outside of compliance boundaries.",
+      "mitigation": "Azure OpenAI EU data residency, strict payload masking, no training on customer data, and end-to-end audit logging."
+    },
+    {
+      "n": "4",
+      "risk": "Administrator resistance",
+      "severity": "Medium",
+      "consequence": "Low user adoption or pushback from front-desk personnel fearing job displacement.",
+      "mitigation": "Positioning AI as a routine message filter rather than a replacement; involving front-desk staff directly in workflow design."
+    }
+  ],
   "cost": {
     "model": "Hybrid CAPEX / OPEX structure aligned with enterprise procurement.",
     "capex": "€215,000 total implementation cost (integration, architecture, pilot build, security hardening).",
@@ -883,7 +839,6 @@ const caseStudy: CaseStudy = {
     "roi": "Estimated payback period of 14 months based on avoided administrative headcount expansion across newly opened clinics."
   },
   "kpi": {
-    "intro": "Success is tracked across technical performance, operational efficiency, and clinical safety metrics.",
     "metrics": [
       {
         "name": "First Response Time",
