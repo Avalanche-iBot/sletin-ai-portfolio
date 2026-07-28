@@ -303,4 +303,3 @@ export const learning: Learning = {
     }
   ]
 };
-```[cite: 2]
