@@ -8,7 +8,7 @@ const caseStudy: CaseStudy = {
   "subtitle": "Making 14,000 supplier contracts answerable, under the legal reality that an unsourced answer is worse than no answer.",
   "industry": "Legal · Procurement",
   "domain": "Contract lifecycle · Obligation management",
-  "status": "In design",
+  "status": "In analysis",
   "architectureComplexity": 4,
   "shortSummary": "Clause-level extraction and obligation tracking across a multilingual contract estate. The centre of gravity is provenance: every extracted term points back to a document, revision, page and paragraph.",
   "tags": [
@@ -21,7 +21,7 @@ const caseStudy: CaseStudy = {
   "featured": true,
   "client": "Industrial group procurement function",
   "clientNote": "€1.2bn annual spend",
-  "statusNote": "Discovery and analysis complete. Clause-extraction evaluation set under construction.",
+  "statusNote": "Discovery and analysis complete. A clause-extraction evaluation set is being assembled to test the assumptions.",
   "complexityLabel": "High — legal accuracy bar, clause-level provenance, multilingual corpus",
   "duration": "Reference programme: 7 months",
   "impact": "Target: obligation review 3 days → 2 hours · 100% of extracted terms citation-linked",

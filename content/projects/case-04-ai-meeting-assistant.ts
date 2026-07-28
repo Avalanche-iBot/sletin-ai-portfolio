@@ -8,7 +8,7 @@ const caseStudy: CaseStudy = {
   "subtitle": "Turning meeting talk into tracked commitments — the part every transcription tool leaves on the floor.",
   "industry": "Professional services",
   "domain": "Internal productivity · Project governance",
-  "status": "Discovery",
+  "status": "In analysis",
   "architectureComplexity": 3,
   "shortSummary": "Transcription is a commodity. The architectural problem is extracting commitments — who agreed to what, by when — accurately enough to push them into the project tracker without creating false obligations.",
   "tags": [

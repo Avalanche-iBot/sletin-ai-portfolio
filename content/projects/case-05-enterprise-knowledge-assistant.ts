@@ -8,7 +8,7 @@ const caseStudy: CaseStudy = {
   "subtitle": "A retrieval assistant for industrial operations, where an unsourced answer about a well or a pipeline is not an answer at all.",
   "industry": "Energy · Industrial operations",
   "domain": "Technical knowledge · Operations support",
-  "status": "In design",
+  "status": "Open question",
   "architectureComplexity": 5,
   "shortSummary": "The case study closest to my own working domain. Engineers will not use a system that cannot show the document, revision and page — so permissioned, revision-aware retrieval is the architecture, and generation is the thin layer on top.",
   "tags": [
@@ -21,7 +21,7 @@ const caseStudy: CaseStudy = {
   "featured": true,
   "client": "Energy operator — technical function",
   "clientNote": "Upstream operations",
-  "statusNote": "Discovery complete, drawn from direct domain experience. Retrieval evaluation harness in build.",
+  "statusNote": "Discovery complete, drawn from direct domain experience. Retrieval quality remains the open question.",
   "complexityLabel": "Very high — heterogeneous corpus, permissioned retrieval, safety-critical accuracy bar",
   "duration": "Reference programme: 8 months",
   "impact": "Target: technical lookup 45 min → 3 min · 100% of answers revision-linked · zero cross-asset permission leaks",

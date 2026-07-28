@@ -8,7 +8,7 @@ const caseStudy: CaseStudy = {
   "subtitle": "Cutting first-response time on a 40,000-ticket-a-year B2B support desk without breaking the SLA guarantees an enterprise contract depends on.",
   "industry": "B2B SaaS",
   "domain": "Customer operations · Support desk",
-  "status": "In design",
+  "status": "In analysis",
   "architectureComplexity": 3,
   "shortSummary": "A support platform that answers what it can prove and routes everything else. The architectural question is not whether a model can answer tickets, but how contractual SLAs stay auditable once a model is in the loop.",
   "tags": [
