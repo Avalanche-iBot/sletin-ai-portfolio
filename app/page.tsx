@@ -33,18 +33,6 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div
-            className="mt-16 grid animate-rise-in grid-cols-2 gap-px overflow-hidden border border-line bg-line sm:grid-cols-4"
-            style={{ animationDelay: "300ms" }}
-          >
-            {site.heroStats.map((s) => (
-              <div key={s.label} className="bg-canvas px-5 py-6">
-                <p className="font-display text-2xl text-ink">{s.value}</p>
-                <p className="mt-1 text-[0.8125rem] font-medium text-ink-soft">{s.label}</p>
-                <p className="mt-0.5 font-mono text-micro uppercase tracking-[0.08em] text-ink-muted">{s.note}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -137,10 +125,10 @@ export default function HomePage() {
       </Section>
 
       {/* CTA ---------------------------------------------------------------- */}
-      <Section eyebrow="Get in touch" title="Open to remote-first roles and select consulting engagements.">
+      <Section eyebrow="Get in touch" title="Corrections, alternative approaches and disagreement are all welcome.">
         <div className="flex flex-wrap gap-3">
           <Link href="/contact" className="btn btn-primary">
-            Contact me
+            Get in touch
           </Link>
           <a href={site.linkedin} className="btn btn-ghost">
             Connect on LinkedIn
