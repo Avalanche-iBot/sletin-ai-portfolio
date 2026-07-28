@@ -3,9 +3,7 @@ import type { CaseStudy } from "../types";
 
 /**
  * Flagship case study.
- * Source: Enterprise_AI_Case_Studies.xlsx — sheet CASE01 (Healthcare, Italy).
- * The seven Excel columns (Discovery, Analysis, Architecture, Risks, Cost,
- * KPI, Roadmap) map onto the schema sections of the same name.
+ * Source: Enterprise_AI_Case_Studies.xlsx
  */
 const caseStudy: CaseStudy = {
   "slug": "ai-patient-communication-platform",
@@ -529,150 +527,71 @@ const caseStudy: CaseStudy = {
           {
             "label": "Channels",
             "nodes": [
-              {
-                "t": "WhatsApp Business API"
-              },
-              {
-                "t": "Website chat"
-              },
-              {
-                "t": "Mobile app"
-              },
-              {
-                "t": "Voice",
-                "sub": "phase 2",
-                "muted": true
-              },
-              {
-                "t": "Teams",
-                "sub": "staff"
-              }
+              { "t": "WhatsApp Business API" },
+              { "t": "Website chat" },
+              { "t": "Mobile app" },
+              { "t": "Voice", "sub": "phase 2", "muted": true },
+              { "t": "Teams", "sub": "staff" }
             ]
           },
           {
             "label": "Edge",
             "nodes": [
-              {
-                "t": "Azure API Management",
-                "sub": "rate limit · WAF"
-              },
-              {
-                "t": "Entra ID",
-                "sub": "OAuth 2.0 / OIDC"
-              }
+              { "t": "Azure API Management", "sub": "rate limit · WAF" },
+              { "t": "Entra ID", "sub": "OAuth 2.0 / OIDC" }
             ]
           },
           {
             "label": "Orchestration",
             "nodes": [
-              {
-                "t": "FastAPI service",
-                "accent": true
-              },
-              {
-                "t": "Guardrails + Content Safety",
-                "accent": true
-              },
-              {
-                "t": "Intent classifier",
-                "accent": true
-              },
-              {
-                "t": "Hybrid router",
-                "accent": true
-              },
-              {
-                "t": "Escalation controller",
-                "accent": true
-              }
+              { "t": "FastAPI service", "accent": true },
+              { "t": "Guardrails + Content Safety", "accent": true },
+              { "t": "Intent classifier", "accent": true },
+              { "t": "Hybrid router", "accent": true },
+              { "t": "Escalation controller", "accent": true }
             ]
           },
           {
             "label": "AI services",
             "nodes": [
-              {
-                "t": "Azure OpenAI GPT-4.1",
-                "sub": "complex"
-              },
-              {
-                "t": "GPT-4o mini",
-                "sub": "simple / classify"
-              },
-              {
-                "t": "Azure AI Search",
-                "sub": "hybrid + semantic"
-              },
-              {
-                "t": "Embeddings",
-                "sub": "text-embedding-3-large"
-              }
+              { "t": "Azure OpenAI GPT-4.1", "sub": "complex" },
+              { "t": "GPT-4o mini", "sub": "simple / classify" },
+              { "t": "Azure AI Search", "sub": "hybrid + semantic" },
+              { "t": "Embeddings", "sub": "text-embedding-3-large" }
             ]
           },
           {
             "label": "Async",
             "nodes": [
-              {
-                "t": "Azure Service Bus"
-              },
-              {
-                "t": "Celery workers",
-                "sub": "OCR · embed · sync"
-              }
+              { "t": "Azure Service Bus" },
+              { "t": "Celery workers", "sub": "OCR · embed · sync" }
             ]
           },
           {
             "label": "Data",
             "nodes": [
-              {
-                "t": "PostgreSQL",
-                "sub": "conversations · audit"
-              },
-              {
-                "t": "Redis",
-                "sub": "cache · sessions"
-              },
-              {
-                "t": "SharePoint",
-                "sub": "source documents"
-              },
-              {
-                "t": "Blob Storage",
-                "sub": "processed artefacts"
-              }
+              { "t": "PostgreSQL", "sub": "conversations · audit" },
+              { "t": "Redis", "sub": "cache · sessions" },
+              { "t": "SharePoint", "sub": "source documents" },
+              { "t": "Blob Storage", "sub": "processed artefacts" }
             ]
           },
           {
             "label": "Systems of record",
             "nodes": [
-              {
-                "t": "Dynamics 365 CRM"
-              },
-              {
-                "t": "Appointment system"
-              },
-              {
-                "t": "Outlook"
-              },
-              {
-                "t": "Power BI"
-              }
+              { "t": "Dynamics 365 CRM" },
+              { "t": "Appointment system" },
+              { "t": "Outlook" },
+              { "t": "Power BI" }
             ]
           },
           {
             "label": "Observability",
             "nodes": [
-              {
-                "t": "Azure Monitor"
-              },
-              {
-                "t": "Application Insights"
-              },
-              {
-                "t": "Cost & token dashboard"
-              },
-              {
-                "t": "Key Vault"
-              }
+              { "t": "Azure Monitor" },
+              { "t": "Application Insights" },
+              { "t": "Cost & token dashboard" },
+              { "t": "Key Vault" }
             ]
           }
         ]
@@ -683,21 +602,11 @@ const caseStudy: CaseStudy = {
         "title": "Request flow — hybrid routing",
         "caption": "The single most important diagram in this case. Roughly 70% of traffic terminates before it reaches a language model.",
         "steps": [
-          {
-            "t": "Inbound message (WhatsApp / web / app)"
-          },
-          {
-            "t": "Identity resolution (CRM lookup + verification)"
-          },
-          {
-            "t": "Guardrails (injection & safety screen)"
-          },
-          {
-            "t": "Intent classification (GPT-4o mini · cheap)"
-          },
-          {
-            "t": "Router decision (3 outcomes)"
-          }
+          { "t": "Inbound message (WhatsApp / web / app)" },
+          { "t": "Identity resolution (CRM lookup + verification)" },
+          { "t": "Guardrails (injection & safety screen)" },
+          { "t": "Intent classification (GPT-4o mini)" },
+          { "t": "Router decision (3 outcomes)" }
         ],
         "branches": [
           {
@@ -832,12 +741,6 @@ const caseStudy: CaseStudy = {
       "mitigation": "Positioning AI as a routine message filter rather than a replacement; involving front-desk staff directly in workflow design."
     }
   ],
-  "cost": {
-    "model": "Hybrid CAPEX / OPEX structure aligned with enterprise procurement.",
-    "capex": "€215,000 total implementation cost (integration, architecture, pilot build, security hardening).",
-    "opex": "€65,000 annual run cost (Azure consumption, API keys, maintenance, support licenses).",
-    "roi": "Estimated payback period of 14 months based on avoided administrative headcount expansion across newly opened clinics."
-  },
   "kpi": {
     "metrics": [
       {
@@ -862,25 +765,48 @@ const caseStudy: CaseStudy = {
       }
     ]
   },
-  "roadmap": {
-    "phases": [
-      {
-        "phase": "Phase 1: Discovery & Architecture",
-        "duration": "Months 1–2",
-        "details": "Stakeholder interviews, data mapping, security baseline, and target architecture validation."
-      },
-      {
-        "phase": "Phase 2: MVP Build & Integration",
-        "duration": "Months 3–4",
-        "details": "FastAPI orchestration layer, Dynamics 365 connectors, RAG pipeline setup, and pilot clinic deployment."
-      },
-      {
-        "phase": "Phase 3: Rollout & Optimisation",
-        "duration": "Months 5–6",
-        "details": "Scale across all 38 Italian clinics, fine-tune routing thresholds, and activate advanced analytics dashboard."
-      }
-    ]
-  }
+  "roadmap": [
+    {
+      "phase": "Phase 1",
+      "name": "Discovery & Architecture",
+      "duration": "Months 1–2",
+      "goal": "Stakeholder interviews, data mapping, security baseline, and target architecture validation.",
+      "activities": [
+        "Stakeholder interviews",
+        "Data mapping",
+        "Security baseline"
+      ],
+      "deliverables": [
+        "Architecture validation"
+      ]
+    },
+    {
+      "phase": "Phase 2",
+      "name": "MVP Build & Integration",
+      "duration": "Months 3–4",
+      "goal": "FastAPI orchestration layer, Dynamics 365 connectors, RAG pipeline setup, and pilot clinic deployment.",
+      "activities": [
+        "FastAPI build",
+        "Connectors setup"
+      ],
+      "deliverables": [
+        "Pilot deployment"
+      ]
+    },
+    {
+      "phase": "Phase 3",
+      "name": "Rollout & Optimisation",
+      "duration": "Months 5–6",
+      "goal": "Scale across all 38 Italian clinics, fine-tune routing thresholds, and activate advanced analytics dashboard.",
+      "activities": [
+        "Scale clinics",
+        "Tune routing"
+      ],
+      "deliverables": [
+        "Analytics dashboard"
+      ]
+    }
+  ]
 };
 
 export default caseStudy;
