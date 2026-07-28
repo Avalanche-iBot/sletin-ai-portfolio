@@ -6,14 +6,24 @@ import { useEffect, useState } from "react";
 import { nav, site } from "@/content/site";
 import { cx } from "@/lib/format";
 
+/**
+ * Brand mark — underlined serif monogram.
+ * No container shape: the letterforms carry the identity, a single amber rule
+ * sits underneath as the only graphic element. Scales cleanly to 16px.
+ */
 function BrandMark() {
   return (
-    <span className="group inline-flex items-center gap-2.5">
-      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden className="shrink-0">
-        <rect x="0.75" y="0.75" width="20.5" height="20.5" fill="none" stroke="rgb(var(--ink))" strokeWidth="1" />
-        <path d="M4 17 L9 5 L12 5 L17 17 M6.3 12 H14.7" fill="none" stroke="rgb(var(--accent))" strokeWidth="1.4" />
-      </svg>
-      <span className="font-mono text-spec uppercase tracking-[0.14em] text-ink">{site.brandShort}</span>
+    <span className="inline-flex items-baseline gap-2.5">
+      <span className="relative font-display text-[1.35rem] leading-none tracking-[-0.01em] text-ink">
+        AS
+        <span
+          aria-hidden
+          className="absolute -bottom-1 left-0 h-[1.5px] w-full bg-accent"
+        />
+      </span>
+      <span className="font-mono text-spec uppercase tracking-[0.14em] text-ink-muted">
+        {site.brandShort}
+      </span>
     </span>
   );
 }
