@@ -221,7 +221,7 @@ export type About = {
   title: string;
   lede: string;
   paragraphs: string[];
-  timeline: { period: string; role: string; org: string; body: string; tags: string[] }[];
+  timeline: { period: string; role: string; org: string; body: string; tags: string[]; current?: boolean }[];
   credentials: { label: string; org: string; note: string }[];
   strengths: Point[];
   philosophy: NumberedPoint[];
