@@ -20,6 +20,17 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   return { title: project.title, description: project.shortSummary };
 }
 
+/**
+ * Section numbers are counted at render time rather than written into each
+ * eyebrow. Sections only appear when their content exists, so hard-coded
+ * numbers left visible gaps (08 followed by 13) in any note that was not
+ * complete. A counter cannot drift.
+ */
+function sectionNumberer() {
+  let n = 0;
+  return (label: string) => `${String(++n).padStart(2, "0")} \u00b7 ${label}`;
+}
+
 export default function CaseStudyPage({ params }: { params: { slug: string } }) {
   const project = getCaseStudy(params.slug);
   if (!project) notFound();
