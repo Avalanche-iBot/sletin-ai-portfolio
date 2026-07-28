@@ -701,58 +701,24 @@ const caseStudy: CaseStudy = {
           },
           {
             "t": "Router decision",
-            "sub": "3 outcomes",
-            "decision": true
+            "sub": "3 outcomes"
           }
         ],
         "branches": [
           {
-            "label": "A · Deterministic (~55%)",
-            "tone": "green",
-            "steps": [
-              {
-                "t": "Redis / FAQ cache hit"
-              },
-              {
-                "t": "Templated answer"
-              },
-              {
-                "t": "0 tokens · €0.00"
-              }
-            ]
+            "at": "Router decision",
+            "when": "A · Deterministic (~55%)",
+            "then": "Redis / FAQ cache hit → Templated answer → 0 tokens · €0.00"
           },
           {
-            "label": "B · Transactional skill (~15%)",
-            "tone": "blue",
-            "steps": [
-              {
-                "t": "CRM / booking API call"
-              },
-              {
-                "t": "Confirmed action"
-              },
-              {
-                "t": "Minimal tokens"
-              }
-            ]
+            "at": "Router decision",
+            "when": "B · Transactional skill (~15%)",
+            "then": "CRM / booking API call → Confirmed action → Minimal tokens"
           },
           {
-            "label": "C · Natural language (~30%)",
-            "tone": "amber",
-            "steps": [
-              {
-                "t": "RAG retrieval"
-              },
-              {
-                "t": "Grounded answer + citations"
-              },
-              {
-                "t": "Confidence gate"
-              },
-              {
-                "t": "Answer or escalate"
-              }
-            ]
+            "at": "Router decision",
+            "when": "C · Natural language (~30%)",
+            "then": "RAG retrieval → Grounded answer + citations → Confidence gate → Answer or escalate"
           }
         ]
       },
@@ -763,7 +729,6 @@ const caseStudy: CaseStudy = {
         "caption": "300,000 clinical PDFs in SharePoint. Ingestion is fully asynchronous; retrieval is synchronous and must return in under 400 ms.",
         "lanes": [
           {
-            "lane": "Ingestion — asynchronous, nightly workers",
             "steps": [
               {
                 "n": "1",
@@ -790,10 +755,10 @@ const caseStudy: CaseStudy = {
                 "t": "Index",
                 "d": "Azure AI Search — hybrid keyword + vector with semantic reranking. Versioned index allows atomic swap and rollback."
               }
-            ]
+            ],
+            "label": "Ingestion — asynchronous, nightly workers"
           },
           {
-            "lane": "Retrieval — synchronous, on the user path",
             "steps": [
               {
                 "n": "6",
@@ -820,7 +785,8 @@ const caseStudy: CaseStudy = {
                 "t": "Verify & gate",
                 "d": "Citation check, confidence score, forbidden-topic check. Fail any of the three and the conversation escalates."
               }
-            ]
+            ],
+            "label": "Retrieval — synchronous, on the user path"
           }
         ]
       },
