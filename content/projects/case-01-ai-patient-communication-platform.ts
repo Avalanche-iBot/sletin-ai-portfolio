@@ -12,7 +12,7 @@ const caseStudy: CaseStudy = {
   "flagship": true,
   "title": "AI Patient Communication Platform",
   "subtitle": "Scaling a 38-clinic dental group from 5,000 daily messages to 80 clinics — without hiring a single new administrator.",
-  "client": "SmileCare Group",
+  "client": "A private dental group",
   "clientNote": "38 dental clinics · Italy",
   "industry": "Healthcare",
   "domain": "Patient operations · Contact centre",
@@ -41,7 +41,7 @@ const caseStudy: CaseStudy = {
       "items": [
         "Azure OpenAI (GPT-4.1 / GPT-4o mini)",
         "Azure AI Search",
-        "text-embedding-3-large",
+        "Embedding",
         "Azure AI Content Safety"
       ]
     },
@@ -92,36 +92,33 @@ const caseStudy: CaseStudy = {
     }
   ],
   "executiveSummary": {
-    "statement": "SmileCare Group nearly doubled its patient base in twelve months and opened 22 new clinics. The administrative layer did not scale with it: 5,000 inbound messages a day across WhatsApp, phone and web, answered by overloaded receptionists, with clinicians increasingly pulled into scheduling work. The CEO asked for \"an AI that talks to patients\" — the correct architectural answer was narrower and much safer than that.\n\nDiscovery established that ~70–75% of inbound requests are literally repeated every day and fully deterministic. Those must never reach a language model. The remaining free-text questions — post-operative concerns, procedure preparation — require natural-language understanding, but under a hard constraint: the system may not diagnose, may not prescribe, and may only answer from clinician-approved knowledge. Everything else escalates to a human.\n\nThe resulting design is a hybrid orchestration layer on Azure: intent classification first, deterministic skills second, RAG-grounded LLM third, human escalation always available. Cost, GDPR posture and auditability were treated as first-class design constraints from the first diagram.",
+    "statement": "A constructed scenario, used to reason through a class of problem rather than to describe a real engagement. The figures below are assumptions I chose in order to make the constraints bind; where a number carries architectural weight, the section that uses it explains how it was derived and what changes if it is wrong.\n\nScenario: a private dental group — referred to here as the Group — operating 38 clinics, with roughly 5,000 inbound patient messages per day across WhatsApp, phone and web. Reception is saturated and clinicians are being pulled into scheduling work. Stated request from the CEO: \"an AI that talks to patients.\" Assumed constraints: no in-house ML capability, an existing Microsoft estate, a hard OPEX ceiling, GDPR with EU data residency, and a clinical boundary that cannot be crossed under any circumstances.\n\nThe architectural position I arrive at is that this is not a model problem but a routing problem. A sampling exercise in discovery suggests roughly 70\u201375% of inbound volume is repetitive and deterministically answerable — and that share, not the choice of model, is what decides whether the system is affordable at all. The design therefore places classification and deterministic skills in front of the model, and treats every path that reaches the model as something that has to justify itself.",
+    "verdict": "A routing problem, not a model problem — deterministic paths first, the model only where language is unavoidable.",
     "highlights": [
       {
-        "k": "Business driver",
+        "k": "Business outcome",
         "v": "Grow to 80 clinics without growing admin headcount"
       },
       {
-        "k": "Core constraint",
-        "v": "AI may not give medical advice — ever"
+        "k": "Hard constraint",
+        "v": "No diagnosis, no dosage, no treatment guidance — clinical questions route to a clinician"
       },
       {
-        "k": "Phase-1 budget",
-        "v": "≤ €250,000 CAPEX · ≤ €80,000 / year OPEX"
+        "k": "Cost envelope",
+        "v": "\u2264 \u20ac250,000 CAPEX \u00b7 \u2264 \u20ac80,000 / year OPEX"
       },
       {
-        "k": "Time to MVP",
-        "v": "4 months"
+        "k": "Compliance posture",
+        "v": "GDPR \u00b7 EU data residency \u00b7 full audit trail \u00b7 right to erasure"
       },
       {
-        "k": "Architectural verdict",
-        "v": "Hybrid: rules first, LLM only where language demands it"
-      },
-      {
-        "k": "Compliance",
-        "v": "GDPR · EU data residency · full audit log · right to erasure"
+        "k": "What would break it",
+        "v": "If repetitive traffic is materially below ~40%, this design stops paying for itself"
       }
     ]
   },
   "businessContext": {
-    "narrative": "SmileCare Group grew from a regional practice into a 38-clinic network in three years, opening 22 new branches in the most recent expansion wave. Growth arrived faster than process design. Every new clinic required new front-desk staff, and the CEO's own projection was a ~40% increase in administrative payroll within two years if nothing changed. Leadership concluded that further growth is not possible without digitalising patient communication.\n\nCritically, the company is a Microsoft shop with no data-science function. Any architecture that assumes an in-house ML team to maintain it is a non-starter — a constraint that shaped nearly every technology decision in this case.",
+    "narrative": "The Group grew from a regional practice into a 38-clinic network in three years, opening 22 new branches in the most recent expansion wave. Growth arrived faster than process design. Every new clinic required new front-desk staff, and the CEO's own projection was a ~40% increase in administrative payroll within two years if nothing changed. Leadership concluded that further growth is not possible without digitalising patient communication.\n\nCritically, the company is a Microsoft shop with no data-science function. Any architecture that assumes an in-house ML team to maintain it is a non-starter — a constraint that shaped nearly every technology decision in this case.\n\nOn the figure that carries the most architectural weight: discovery in this scenario included a two-week sample of inbound messages — roughly 600 across the three channels — hand-labelled into request types. Four categories (appointment change, opening hours, price of a listed procedure, document request) accounted for 70\u201375% of volume, with a long tail of free-text clinical concerns making up the remainder. The sample is small and covers a single fortnight; seasonality and campaign spikes are not represented in it.",
     "companyFacts": [
       {
         "k": "Clinics",
@@ -164,7 +161,7 @@ const caseStudy: CaseStudy = {
     ],
     "constraints": [
       "Phase-1 budget capped at €250,000.",
-      "MVP must be delivered in 4 months.",
+      "Phase 1 must be in operation within four months.",
       "Must integrate with the existing Dynamics 365 CRM — no replacement.",
       "The company will not hire a dedicated AI engineering team to operate the system.",
       "All actions must be logged and retained for audit.",
@@ -228,7 +225,7 @@ const caseStudy: CaseStudy = {
     }
   ],
   "discovery": {
-    "intro": "Discovery is the differentiator in this case. The CEO's request — \"AI that handles most patient communication\" — contained three unexamined assumptions, each of which would have produced an expensive, unsafe system. Nine stakeholder groups, ~40 questions, and the architecture essentially designed itself.",
+    "intro": "Discovery is the differentiator in this case. The CEO's request — \"AI that handles most patient communication\" — contained three unexamined assumptions, each of which would have produced an expensive, unsafe system. Nine stakeholder groups. The useful output of discovery was not a requirements list but four constraints that made most architectural options invalid.",
     "groups": [
       {
         "audience": "CEO",
@@ -257,13 +254,12 @@ const caseStudy: CaseStudy = {
           "What payback period is acceptable?",
           "Which costs must go down?",
           "Which financial KPIs matter most?",
-          "Who is accountable for AI errors?",
           "Who will operate the system long-term?"
         ],
         "answers": [
           "OPEX must not exceed €80,000 per year.",
           "ROI expected in under two years.",
-          "Cost per patient request must drop at least 40% (from ~€4.00).",
+          "Cost per patient request must drop by at least 40%.",
           "There is no budget for a dedicated AI operations team."
         ]
       },
@@ -275,7 +271,8 @@ const caseStudy: CaseStudy = {
           "Which topics are categorically forbidden?",
           "Who approves medical content?",
           "How often are clinical recommendations updated?",
-          "Which requests always require a clinician?"
+          "Which requests always require a clinician?",
+          "Which accountability model do you want for escalated cases \u2014 a clinician signs off every one, a clinician owns the knowledge base only, or a named clinical owner reviews a weekly sample? Each choice changes what the system has to log."
         ],
         "answers": [
           "AI answers administrative questions only.",
@@ -289,10 +286,10 @@ const caseStudy: CaseStudy = {
         "goal": "Map the existing infrastructure and the integration surface.",
         "questions": [
           "Which systems are already in use?",
-          "Which of them expose APIs?",
+          "Can these systems be integrated programmatically, or is the only interface a human screen?",
           "Where are the documents stored?",
           "Is Azure in use? Is Azure OpenAI available?",
-          "Is there a DevOps team? Kubernetes?",
+          "Who operates this after handover, and what is that person's day job?",
           "How is authorisation organised today?"
         ],
         "answers": [
@@ -583,7 +580,7 @@ const caseStudy: CaseStudy = {
               { "t": "Azure OpenAI GPT-4.1", "sub": "complex" },
               { "t": "GPT-4o mini", "sub": "simple / classify" },
               { "t": "Azure AI Search", "sub": "hybrid + semantic" },
-              { "t": "Embeddings", "sub": "text-embedding-3-large" }
+              { "t": "Embedding", "sub": "text to vectors" }
             ]
           },
           {
@@ -663,7 +660,7 @@ const caseStudy: CaseStudy = {
               "1. SharePoint change feed: Detect new and modified documents; a named Knowledge Owner approves clinical content before it becomes eligible.",
               "2. Extract & OCR: Azure Document Intelligence for scanned material; layout-aware extraction preserves tables and headings.",
               "3. Chunk: Semantic chunking with heading-path metadata, locale tag and approval status. Chunks inherit document-level access labels.",
-              "4. Embed: text-embedding-3-large in batch on Service Bus queues. Cost per document is amortised, never on the user path.",
+              "4. Embed: the embedding model runs in batch on Service Bus queues. Cost per document is amortised, never on the user path.",
               "5. Index: Azure AI Search — hybrid keyword + vector with semantic reranking. Versioned index allows atomic swap and rollback."
             ],
             "label": "Ingestion — asynchronous, nightly workers"
@@ -737,11 +734,62 @@ const caseStudy: CaseStudy = {
       }
     ]
   },
-  "openQuestions": [
-    "The split between deterministic and free-text traffic drives the entire economic case, and I estimated it rather than measured it. If the deterministic share is materially below the figure assumed here, the hybrid router stops paying for itself and the simpler options become more attractive.",
-    "The confidence threshold for escalation is set at a plausible-sounding number. There is no calibration data behind it, and choosing it well probably requires a labelled set of real escalations that does not exist yet.",
-    "The per-request cost ceiling assumes token behaviour I have not tested in Italian. Non-English retrieval and generation frequently cost more per unit of meaning, and I do not know by how much here.",
-    "Whether patients will use an automated channel for anything beyond scheduling is an open behavioural question. Nothing in this note is evidence about it, and it is the assumption most likely to invalidate the whole thing."
+  "tailoring": [
+    {
+      "parameter": "Share of repetitive, deterministically answerable traffic",
+      "hereValue": "70–75%, from a two-week hand-labelled sample",
+      "altValue": "Under 20%",
+      "architectureChange": "The hybrid router stops earning its complexity. Drop the deterministic skill layer to a thin cache, send almost everything down the retrieval path, and move the entire engineering budget into retrieval quality and answer evaluation.",
+      "why": "Two paths only pay for themselves when the cheap path carries most of the volume. Below roughly 20%, the routing layer costs more to build, test and operate than the tokens it saves — and it adds a failure mode (misrouting) that the single-path design does not have."
+    },
+    {
+      "parameter": "Share of repetitive, deterministically answerable traffic",
+      "hereValue": "70–75%",
+      "altValue": "Above 90%",
+      "architectureChange": "Question whether a language model belongs in phase 1 at all. A well-built FAQ search, CRM lookups and a booking skill would cover the volume. Keep the model as a phase-2 addition for the residual tail.",
+      "why": "At that ratio the model addresses under a tenth of requests while carrying the full weight of the safety review, the audit design and the cost ceiling. Shipping without it is faster, cheaper and easier to defend to a regulator."
+    },
+    {
+      "parameter": "In-house ML capability",
+      "hereValue": "None, and no budget to hire",
+      "altValue": "An existing ML or platform team",
+      "architectureChange": "Managed services stop being mandatory. A self-hosted embedding model and an operated vector store become viable, and a small fine-tuned classifier likely beats prompt-based intent classification on both cost and latency.",
+      "why": "Managed services here are not the technically optimal choice — they are the choice that survives handover to people whose job is something else. Remove that constraint and the calculus changes: per-request cost falls, operational burden rises, and someone has to be on call."
+    },
+    {
+      "parameter": "Clinical boundary",
+      "hereValue": "Absolute — no diagnosis, dosage or treatment guidance",
+      "altValue": "A clinician reviews outbound answers before they are sent",
+      "architectureChange": "The confidence gate stops being the primary safety control and becomes a prioritisation signal for a review queue. Generation can be more open, retrieval can draw on a wider corpus, and the escalation controller turns into queue management.",
+      "why": "When a human authors every outbound message, the model's failure mode changes from harm to wasted effort. Almost every constraint downstream of the boundary — corpus curation, citation enforcement, threshold calibration — relaxes at once. The cost moves from tokens to clinician time."
+    },
+    {
+      "parameter": "Data residency",
+      "hereValue": "EU residency required, GDPR, right to erasure",
+      "altValue": "No residency constraint",
+      "architectureChange": "Region pinning and the audit and erasure machinery can be simplified, and model choice opens up to whatever is cheapest or strongest rather than whatever is available in-region.",
+      "why": "Residency is usually treated as a compliance checkbox, but it is a real architectural constraint: it dictates which models exist for you, where the vector index lives, and how retention and deletion are implemented. Removing it removes work at every layer."
+    },
+    {
+      "parameter": "Existing estate",
+      "hereValue": "Microsoft — Azure, Dynamics 365, SharePoint, Entra ID",
+      "altValue": "Google Workspace, or a mixed estate with no dominant vendor",
+      "architectureChange": "Identity, document storage and CRM integration all have to be designed rather than inherited. Expect a separate identity decision, a document-ingestion connector per source, and a materially longer phase 1.",
+      "why": "A large part of what makes this design cheap is that authentication, permissions, audit and document storage already exist and are already governed. That is inheritance, not architecture — and it does not transfer."
+    },
+    {
+      "parameter": "Channel mix",
+      "hereValue": "WhatsApp, web chat, mobile — all text",
+      "altValue": "Phone calls are the dominant channel",
+      "architectureChange": "Speech-to-text moves onto the critical path, latency budgets tighten sharply, and the confidence gate has to account for transcription error as well as model uncertainty. The deterministic layer becomes harder to hit reliably.",
+      "why": "Text arrives already structured enough to classify. Voice adds an error source upstream of every decision the router makes, and a misheard word can send a clinical question down an administrative path."
+    }
+  ],
+  "assumptionsToTest": [
+    "The 70–75% figure rests on a two-week sample. Before building two paths I would want a full quarter, segmented by clinic and by channel, to rule out seasonality and campaign effects.",
+    "The escalation confidence threshold is set at a plausible value, not a calibrated one. Choosing it properly needs a labelled set of real escalations, which by definition does not exist before launch.",
+    "Per-request cost assumes token behaviour I have not measured in Italian. Non-English text is generally less token-efficient, and the size of that penalty here is unknown.",
+    "Whether patients will use an automated channel for anything beyond scheduling is a behavioural question this note cannot answer from the inside."
   ],
   "risks": [
     {

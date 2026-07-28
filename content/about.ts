@@ -14,6 +14,7 @@ export const about: About = {
   ],
 
   background: [
+    "MSc in Engineering Management",
     "Engineering and operations in the energy sector",
     "Project delivery and cost control in large international organisations",
     "AI project management in a product company",

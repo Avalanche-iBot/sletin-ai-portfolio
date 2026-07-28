@@ -131,14 +131,32 @@ export type CaseStudy = {
   /** One line of measurable outcome, shown on cards. */
   impact?: string;
   /**
-   * Questions the note deliberately leaves open. Rendered at the end, before
-   * the invitation to disagree.
+   * Sensitivity of the design to its own inputs.
+   *
+   * Replaces the earlier "open questions" list. The reader who matters most is
+   * not another architect admiring the reasoning — it is someone deciding
+   * whether any of this transfers to their own situation. So each entry names a
+   * parameter, states the value assumed here, gives a plausible alternative,
+   * and says what the architecture becomes at that value and why.
    */
-  openQuestions?: string[];
+  tailoring?: {
+    parameter: string;
+    hereValue: string;
+    altValue: string;
+    architectureChange: string;
+    why: string;
+  }[];
+  /** Kept short: the honesty about method, without it dominating the section. */
+  assumptionsToTest?: string[];
   techGroups?: TechGroup[];
 
   /* --- the 19 case-study sections --- */
-  executiveSummary?: { statement: string; highlights?: Fact[] };
+  executiveSummary?: {
+    statement: string;
+    /** The single architectural position, promoted above the fact grid. */
+    verdict?: string;
+    highlights?: Fact[];
+  };
   businessContext?: {
     narrative: string;
     companyFacts?: Fact[];

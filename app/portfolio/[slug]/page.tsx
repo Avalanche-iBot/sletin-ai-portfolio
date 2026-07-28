@@ -26,6 +26,8 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
   const { prev, next } = getAdjacentCaseStudies(project.slug);
 
+  const num = sectionNumberer();
+
   return (
     <>
       {/* Header ----------------------------------------------------------- */}
@@ -75,9 +77,14 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* 1. Executive Summary ------------------------------------------------ */}
       {project.executiveSummary && (
-        <Section first eyebrow="01 · Executive Summary" title="The situation, in brief">
+        <Section first eyebrow={num("Executive Summary")} title="The situation, in brief">
           <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
-            <Prose text={project.executiveSummary.statement} />
+            {project.executiveSummary.verdict && (
+            <p className="mb-8 border-l-2 border-accent pl-5 font-display text-xl leading-snug text-ink md:text-2xl">
+              {project.executiveSummary.verdict}
+            </p>
+          )}
+          <Prose text={project.executiveSummary.statement} />
             {project.executiveSummary.highlights && (
               <div className="frame p-6">
                 <p className="eyebrow mb-4">At a glance</p>
@@ -90,7 +97,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* 2. Business Context -------------------------------------------------- */}
       {project.businessContext && (
-        <Section eyebrow="02 · Business Context" title="Why this landed on the roadmap">
+        <Section eyebrow={num("Business Context")} title="Why this landed on the roadmap">
           <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
             <div className="space-y-8">
               <Prose text={project.businessContext.narrative} />
@@ -127,20 +134,20 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* 3. Stakeholders -------------------------------------------------------- */}
       {project.stakeholders && (
-        <Section eyebrow="03 · Stakeholders" title="Who has a stake in getting this right">
+        <Section eyebrow={num("Stakeholders")} title="Who has a stake in getting this right">
           <StakeholderTable rows={project.stakeholders} />
         </Section>
       )}
 
       {/* 4 + 5. Discovery & Business Analysis ------------------------------------ */}
       {project.discovery && (
-        <Section eyebrow="04 · Discovery Phase" title="The questions that shaped the architecture">
+        <Section eyebrow={num("Discovery Phase")} title="The questions that shaped the architecture">
           <DiscoverySection discovery={project.discovery} />
         </Section>
       )}
 
       {project.analysis && (
-        <Section eyebrow="05 · Business Analysis" title="Is AI even the right tool here?" lede="Working through this before any design, on the assumption that the answer might be no.">
+        <Section eyebrow={num("Business Analysis")} title="Is AI even the right tool here?" lede="Working through this before any design, on the assumption that the answer might be no.">
           <div className="grid gap-8 lg:grid-cols-2">
             {project.analysis.aiNeeded && (
               <div className="frame p-6">
@@ -208,7 +215,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       {/* 6. Solution Design ------------------------------------------------------- */}
       {project.solutionDesign && (
         <Section
-          eyebrow="06 · Solution Design"
+          eyebrow={num("Solution Design")}
           title="Design principles and the request path"
           lede="These are the principles I would argue for given the constraints above — positions rather than conclusions. Each carries a cost, and the next section sets out what holding them gives up."
         >
@@ -236,7 +243,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       {/* 7. Approaches considered — a note must show what it rejected --------- */}
       {project.alternatives && (
         <Section
-          eyebrow="07 · Approaches Considered"
+          eyebrow={num("Approaches Considered")}
           title="What else was on the table"
           lede="Broadly defensible directions, not straw men. Given the constraints in this note I would take one of them — but the case against it is real, and a different weighting of those constraints lands somewhere else."
         >
@@ -270,7 +277,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       {/* 8 + 9. Enterprise Architecture & Technology Selection ---------------------- */}
       {project.architecture && (
         <Section
-          eyebrow="08 · Enterprise Architecture"
+          eyebrow={num("Enterprise Architecture")}
           title="One possible system design"
           lede="A design I would take into a review, not a specification. Several component choices could reasonably go the other way; where that is true, the technology table names the alternative."
         >
@@ -303,14 +310,14 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       )}
 
       {project.technologySelection && (
-        <Section eyebrow="09 · Technology Selection" title="What I would choose, and what I would set aside">
+        <Section eyebrow={num("Technology Selection")} title="What I would choose, and what I would set aside">
           <TechSelectionTable rows={project.technologySelection} />
         </Section>
       )}
 
       {/* 9. Security ----------------------------------------------------------------- */}
       {project.security && (
-        <Section eyebrow="10 · Security" title="Security posture">
+        <Section eyebrow={num("Security")} title="Security posture">
           {project.security.posture && (
             <div className="mb-8">
               <Prose text={project.security.posture} />
@@ -322,7 +329,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* 10. Scalability --------------------------------------------------------------- */}
       {project.scalability && (
-        <Section eyebrow="11 · Scalability" title="How the system holds up under load">
+        <Section eyebrow={num("Scalability")} title="How the system holds up under load">
           {project.scalability.body && (
             <div className="mb-8">
               <Prose text={project.scalability.body} />
@@ -334,7 +341,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* 11. Cost Optimization ---------------------------------------------------------- */}
       {project.costOptimization && (
-        <Section eyebrow="12 · Cost Optimization" title="Keeping unit economics under control">
+        <Section eyebrow={num("Cost Optimization")} title="Keeping unit economics under control">
           <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
             <div>
               {project.costOptimization.body && (
@@ -356,28 +363,28 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* 12. Risks ------------------------------------------------------------------------- */}
       {project.risks && (
-        <Section eyebrow="13 · Risks" title="What could go wrong, and the mitigation for each">
+        <Section eyebrow={num("Risks")} title="What could go wrong, and the mitigation for each">
           <RiskTable risks={project.risks} />
         </Section>
       )}
 
       {/* 13. KPIs -------------------------------------------------------------------------- */}
       {project.kpis && (
-        <Section eyebrow="14 · KPIs" title="How success is measured">
+        <Section eyebrow={num("KPIs")} title="How success is measured">
           <KpiTable kpis={project.kpis} />
         </Section>
       )}
 
       {/* 14. Implementation Roadmap ---------------------------------------------------------- */}
       {project.roadmap && (
-        <Section eyebrow="15 · Implementation Roadmap" title="Phased delivery">
+        <Section eyebrow={num("Implementation Roadmap")} title="Phased delivery">
           <RoadmapTimeline phases={project.roadmap} />
         </Section>
       )}
 
       {/* 16. Implementation Notes -------------------------------------------------- */}
       {project.implementationNotes && (
-        <Section eyebrow="16 · Implementation Notes" title="Notes on implementation">
+        <Section eyebrow={num("Implementation Notes")} title="Notes on implementation">
           {project.implementationNotes.body && (
             <div className="mb-8">
               <Prose text={project.implementationNotes.body} />
@@ -412,25 +419,76 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* 17. Reflection ------------------------------------------------------------------- */}
       {project.lessonsLearned && (
-        <Section eyebrow="17 · Reflection" title="Lessons learned">
+        <Section eyebrow={num("Reflection")} title="Lessons learned">
           <BulletList items={project.lessonsLearned} />
         </Section>
       )}
 
       {/* 18. Future Improvements ----------------------------------------------------------------- */}
       {project.futureImprovements && (
-        <Section eyebrow="18 · Future Improvements" title="What comes next">
+        <Section eyebrow={num("Future Improvements")} title="What comes next">
           <BulletList items={project.futureImprovements} />
         </Section>
       )}
 
-      {/* 19. Open questions — what the note deliberately does not settle ------ */}
-      {project.openQuestions && (
+      {/* Sensitivity — what this design becomes under different inputs ------ */}
+      {project.tailoring && (
         <Section
-          eyebrow="19 · Open Questions"
-          title="What I have not resolved"
-          lede="Points where I do not think the reasoning above is strong enough to be relied on yet."
+          eyebrow={num("If Your Situation Differs")}
+          title="What changes the answer"
+          lede="Every decision above is downstream of a handful of inputs. If yours differ, so should the architecture. This is where the note is most likely to be useful to someone solving the same class of problem under different conditions."
         >
+          <div className="space-y-0">
+            {project.tailoring.map((t, i) => (
+              <article key={i} className="grid gap-6 border-t border-line py-8 lg:grid-cols-[16rem_1fr]">
+                <div>
+                  <p className="font-display text-lg leading-snug text-ink">{t.parameter}</p>
+                  <dl className="mt-4 space-y-3">
+                    <div>
+                      <dt className="eyebrow">Assumed here</dt>
+                      <dd className="mt-1 text-[0.875rem] leading-snug text-ink-soft">{t.hereValue}</dd>
+                    </div>
+                    <div>
+                      <dt className="eyebrow">Instead</dt>
+                      <dd className="mt-1 border-l-2 border-accent pl-3 text-[0.875rem] font-medium leading-snug text-ink">
+                        {t.altValue}
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div>
+                    <p className="eyebrow mb-2">The architecture becomes</p>
+                    <p className="text-[0.9375rem] leading-relaxed text-ink-soft">{t.architectureChange}</p>
+                  </div>
+                  <div>
+                    <p className="eyebrow mb-2">Why</p>
+                    <p className="text-[0.9375rem] leading-relaxed text-ink-soft">{t.why}</p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          {project.assumptionsToTest && (
+            <div className="mt-12 border-t-2 border-accent pt-6">
+              <p className="eyebrow mb-4">Assumptions I would test first</p>
+              <ol className="max-w-reading space-y-3">
+                {project.assumptionsToTest.map((a, i) => (
+                  <li key={i} className="grid gap-3 sm:grid-cols-[2.5rem_1fr]">
+                    <span className="font-mono text-micro text-ink-muted">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="text-[0.9375rem] leading-relaxed text-ink-soft">{a}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+        </Section>
+      )}
+
+      {/* Legacy: notes that still carry an open-questions list ---------------- */}
+      {!project.tailoring && project.openQuestions && (
+        <Section eyebrow={num("Open Questions")} title="What I have not resolved">
           <ol className="space-y-0">
             {project.openQuestions.map((q, i) => (
               <li key={i} className="grid gap-3 border-t border-line py-5 sm:grid-cols-[3rem_1fr]">

@@ -112,9 +112,7 @@ export function StakeholderTable({ rows }: { rows: NonNullable<CaseStudy["stakeh
               <td className="whitespace-nowrap font-medium text-ink">{s.role}</td>
               <td className="max-w-[14rem]">{s.interest}</td>
               <td className="max-w-[14rem]">{s.concern}</td>
-              <td className="whitespace-nowrap font-mono text-micro uppercase tracking-[0.08em] text-accent-deep">
-                {s.influence}
-              </td>
+              <td className="whitespace-nowrap">{s.influence}</td>
             </tr>
           ))}
         </tbody>
