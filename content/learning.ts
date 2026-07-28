@@ -29,12 +29,12 @@ export const learning: Learning = {
       "target": 250,
       "scheduled": 100,
       "weeks": [
-        30,
-        20,
-        15,
-        15,
-        10,
-        10
+        "30",
+        "20",
+        "15",
+        "15",
+        "10",
+        "10"
       ],
       "group": "Foundation",
       "state": "building"
@@ -44,12 +44,12 @@ export const learning: Learning = {
       "target": 40,
       "scheduled": 17,
       "weeks": [
-        2,
-        10,
-        5,
-        0,
-        0,
-        0
+        "2",
+        "10",
+        "5",
+        "0",
+        "0",
+        "0"
       ],
       "group": "Foundation",
       "state": "solid"
@@ -59,12 +59,12 @@ export const learning: Learning = {
       "target": 80,
       "scheduled": 25,
       "weeks": [
-        0,
-        10,
-        10,
-        0,
-        0,
-        0
+        "0",
+        "10",
+        "10",
+        "0",
+        "0",
+        "0"
       ],
       "group": "AI",
       "state": "building"
@@ -74,12 +74,12 @@ export const learning: Learning = {
       "target": 80,
       "scheduled": 5,
       "weeks": [
-        0,
-        0,
-        0,
-        0,
-        5,
-        0
+        "0",
+        "0",
+        "0",
+        "0",
+        "5",
+        "0"
       ],
       "group": "AI",
       "state": "next"
@@ -89,12 +89,12 @@ export const learning: Learning = {
       "target": 80,
       "scheduled": 12,
       "weeks": [
-        2,
-        0,
-        5,
-        5,
-        0,
-        0
+        "2",
+        "0",
+        "5",
+        "5",
+        "0",
+        "0"
       ],
       "group": "AI",
       "state": "building"
@@ -104,12 +104,12 @@ export const learning: Learning = {
       "target": 40,
       "scheduled": 5,
       "weeks": [
-        0,
-        0,
-        5,
-        0,
-        0,
-        0
+        "0",
+        "0",
+        "5",
+        "0",
+        "0",
+        "0"
       ],
       "group": "AI",
       "state": "next"
@@ -119,12 +119,12 @@ export const learning: Learning = {
       "target": 50,
       "scheduled": 22,
       "weeks": [
-        2,
-        0,
-        5,
-        5,
-        0,
-        10
+        "2",
+        "0",
+        "5",
+        "5",
+        "0",
+        "10"
       ],
       "group": "Automation",
       "state": "solid"
@@ -134,12 +134,12 @@ export const learning: Learning = {
       "target": 40,
       "scheduled": 20,
       "weeks": [
-        0,
-        0,
-        0,
-        0,
-        10,
-        10
+        "0",
+        "0",
+        "0",
+        "0",
+        "10",
+        "10"
       ],
       "group": "Data",
       "state": "building"
@@ -149,12 +149,12 @@ export const learning: Learning = {
       "target": 50,
       "scheduled": 10,
       "weeks": [
-        0,
-        0,
-        0,
-        0,
-        10,
-        0
+        "0",
+        "0",
+        "0",
+        "0",
+        "10",
+        "0"
       ],
       "group": "Platform",
       "state": "next"
@@ -164,12 +164,12 @@ export const learning: Learning = {
       "target": 50,
       "scheduled": 10,
       "weeks": [
-        0,
-        0,
-        0,
-        0,
-        10,
-        0
+        "0",
+        "0",
+        "0",
+        "0",
+        "10",
+        "0"
       ],
       "group": "Backend",
       "state": "next"
@@ -179,12 +179,12 @@ export const learning: Learning = {
       "target": 40,
       "scheduled": 10,
       "weeks": [
-        0,
-        0,
-        0,
-        0,
-        10,
-        0
+        "0",
+        "0",
+        "0",
+        "0",
+        "10",
+        "0"
       ],
       "group": "Backend",
       "state": "building"
@@ -194,12 +194,12 @@ export const learning: Learning = {
       "target": 60,
       "scheduled": 35,
       "weeks": [
-        10,
-        5,
-        5,
-        5,
-        0,
-        10
+        "10",
+        "5",
+        "5",
+        "5",
+        "0",
+        "10"
       ],
       "group": "Architecture",
       "state": "building"
@@ -209,12 +209,12 @@ export const learning: Learning = {
       "target": 60,
       "scheduled": 29,
       "weeks": [
-        4,
-        5,
-        5,
-        5,
-        0,
-        10
+        "4",
+        "5",
+        "5",
+        "5",
+        "0",
+        "10"
       ],
       "group": "Architecture",
       "state": "building"
@@ -224,12 +224,12 @@ export const learning: Learning = {
       "target": 80,
       "scheduled": 0,
       "weeks": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
       ],
       "group": "Cloud",
       "state": "next"
@@ -303,3 +303,4 @@ export const learning: Learning = {
     }
   ]
 };
+```[cite: 2]
