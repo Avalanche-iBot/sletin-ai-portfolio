@@ -825,732 +825,107 @@ const caseStudy: CaseStudy = {
           },
           {
             "from": 1,
-            "to": 0,
-            "t": "Acknowledgement + expected response window"
-          },
-          {
-            "from": 1,
             "to": 3,
-            "t": "Ticket with transcript, draft, sources, urgency"
+            "t": "Create escalation ticket in CRM with full transcript"
           },
           {
             "from": 3,
             "to": 4,
-            "t": "Route clinical judgement"
+            "t": "Assign to clinic clinician based on specialty & roster"
           },
           {
             "from": 4,
+            "to": 3,
+            "t": "Approved response draft / direct contact"
+          },
+          {
+            "from": 3,
             "to": 0,
-            "t": "Approved reply — sent through the same channel"
-          },
-          {
-            "from": 4,
-            "to": 2,
-            "t": "Approved answer becomes knowledge-base candidate"
-          }
-        ]
-      },
-      {
-        "id": "deployment",
-        "kind": "layers",
-        "title": "Deployment view",
-        "caption": "Single EU region, two environments, no Kubernetes. The client's DevOps team can operate this without ML expertise.",
-        "rows": [
-          {
-            "label": "Region",
-            "nodes": [
-              {
-                "t": "Azure West Europe",
-                "sub": "primary · EU residency",
-                "accent": true
-              },
-              {
-                "t": "North Europe",
-                "sub": "warm standby",
-                "muted": true
-              }
-            ]
-          },
-          {
-            "label": "Compute",
-            "nodes": [
-              {
-                "t": "Container Apps — API",
-                "sub": "autoscale 2–20"
-              },
-              {
-                "t": "Container Apps — Workers",
-                "sub": "queue-driven 0–10"
-              }
-            ]
-          },
-          {
-            "label": "Managed data",
-            "nodes": [
-              {
-                "t": "PostgreSQL Flexible",
-                "sub": "zone-redundant HA"
-              },
-              {
-                "t": "Redis",
-                "sub": "premium · persistence"
-              },
-              {
-                "t": "AI Search",
-                "sub": "2 replicas"
-              }
-            ]
-          },
-          {
-            "label": "Delivery",
-            "nodes": [
-              {
-                "t": "GitHub Actions"
-              },
-              {
-                "t": "IaC — Bicep"
-              },
-              {
-                "t": "Dev → Stage → Prod"
-              },
-              {
-                "t": "Blue/green revisions"
-              }
-            ]
-          },
-          {
-            "label": "Secrets & network",
-            "nodes": [
-              {
-                "t": "Key Vault"
-              },
-              {
-                "t": "Private Endpoints"
-              },
-              {
-                "t": "VNet integration"
-              },
-              {
-                "t": "Managed identities"
-              }
-            ]
+            "t": "Human-approved response delivered to patient"
           }
         ]
       }
-    ],
-    "layers": [
+    ]
+  },
+  "risks": {
+    "intro": "Every high-impact AI architecture carries systemic risks. In healthcare, these risks carry legal and ethical weights that require structural mitigation rather than operational patches.",
+    "items": [
       {
-        "name": "Channels",
-        "why": "Meet patients where they already are. WhatsApp, web chat and the mobile app require no behaviour change; voice is deliberately deferred to phase 2."
+        "r": "Clinical hallucination",
+        "impact": "High",
+        "likelihood": "Low",
+        "mitigation": "Strict RAG grounding, zero free generation on medical topics, mandatory citations, and automated pre-output verification."
       },
       {
-        "name": "Orchestration",
-        "why": "A single FastAPI service owns routing, guardrails, escalation and logging. Keeping this logic in one place is what makes cost and safety controllable."
+        "r": "Unbounded token cost",
+        "impact": "Medium",
+        "likelihood": "Medium",
+        "mitigation": "Hybrid routing routing ~70% of traffic to cache/deterministic skills; strict prompt budgeting and model tiering (GPT-4o mini for classification)."
       },
       {
-        "name": "AI services",
-        "why": "Two models, not one. A cheap model classifies and rewrites; the capable model only answers grounded clinical-adjacent questions."
+        "r": "Data leakage under GDPR",
+        "impact": "High",
+        "likelihood": "Low",
+        "mitigation": "Azure OpenAI EU data residency, strict payload masking, no training on customer data, and end-to-end audit logging."
       },
       {
-        "name": "Async processing",
-        "why": "OCR, embedding, reindexing and CRM synchronisation never block a patient. Queues plus workers keep the user path fast and the cost predictable."
-      },
-      {
-        "name": "Data",
-        "why": "PostgreSQL for structured conversation and audit data, Redis for cache and sessions, SharePoint left as the document system of record."
-      },
-      {
-        "name": "Integrations",
-        "why": "Everything already exists. The architecture connects to Dynamics, Outlook, Teams and Power BI rather than replacing any of them."
-      },
-      {
-        "name": "Observability",
-        "why": "Azure Monitor and App Insights, plus a token-and-cost dashboard treated with the same seriousness as uptime."
+        "r": "Administrator resistance",
+        "impact": "Medium",
+        "likelihood": "Medium",
+        "mitigation": "Positioning AI as a routine message filter rather than a replacement; involving front-desk staff directly in workflow design."
       }
     ]
   },
-  "technologySelection": [
-    {
-      "layer": "Channels",
-      "choice": "WhatsApp Business API · Web chat · Mobile · Teams",
-      "why": "These are the company's existing communication channels. Patients do not have to change habits, and staff assistance lives inside Teams where they already work.",
-      "alt": "New standalone patient app — rejected: adoption cost and no behavioural payoff."
-    },
-    {
-      "layer": "Backend",
-      "choice": "FastAPI (Python)",
-      "why": "Fast to develop, first-class async, excellent AI ecosystem integration, straightforward Azure deployment, very large community.",
-      "alt": ".NET — a reasonable Microsoft-shop fit, but the AI tooling ecosystem is thinner and the team's Python skills are stronger."
-    },
-    {
-      "layer": "LLM",
-      "choice": "Azure OpenAI — GPT-4.1 and GPT-4o mini",
-      "why": "GDPR posture and EU data residency, enterprise SLA, native Azure integration, and no obligation to host or maintain a model in a company with no ML team.",
-      "alt": "Self-hosted open-weight model — rejected on operability: nobody in-house could maintain it."
-    },
-    {
-      "layer": "Retrieval",
-      "choice": "RAG over Azure AI Search",
-      "why": "The clinic has a large internal clinical corpus. We do not want to train a model; we want the model to answer only from clinic documents, with citations.",
-      "alt": "Fine-tuning — rejected: no auditability, stale on day one, weekly knowledge updates make it structurally wrong. Qdrant — viable, but adds an operated component."
-    },
-    {
-      "layer": "Cache",
-      "choice": "Redis (Azure Cache)",
-      "why": "FAQ answers, repeated questions, retrieval results and auth tokens. Directly reduces GPT spend and latency — the largest single cost lever after routing.",
-      "alt": "In-process cache — rejected: does not survive scale-out."
-    },
-    {
-      "layer": "Async",
-      "choice": "Azure Service Bus + workers",
-      "why": "Document analysis, OCR, embeddings, index updates and CRM sync are not user-blocking. Queues make load spikes absorbable and cost schedulable.",
-      "alt": "Synchronous processing — rejected: unpredictable latency and cost."
-    },
-    {
-      "layer": "Database",
-      "choice": "PostgreSQL",
-      "why": "Users, requests, appointments and history are structured relational data with strong audit requirements. Mature, managed, well understood by the client's team.",
-      "alt": "NoSQL — rejected: the domain is relational and audit queries are relational."
-    },
-    {
-      "layer": "Identity",
-      "choice": "Microsoft Entra ID",
-      "why": "Already deployed. Single sign-on for staff, no new account stores, and RBAC and audit inherit from the existing tenant.",
-      "alt": "Custom auth — rejected outright."
-    },
-    {
-      "layer": "Documents",
-      "choice": "SharePoint remains the system of record",
-      "why": "The documents are already there. The AI indexes them for retrieval rather than forcing a migration into a new store.",
-      "alt": "Migrate to Blob Storage — rejected: unnecessary change management for no architectural gain."
-    },
-    {
-      "layer": "Observability",
-      "choice": "Azure Monitor + Application Insights",
-      "why": "Response time, request volume, errors, token usage, cost, success rate and escalation rate — all in the platform the DevOps team already operates.",
-      "alt": "Third-party APM — rejected: extra vendor, extra cost, no added capability here."
-    }
-  ],
-  "security": {
-    "posture": "The system processes personal health data in the EU. Security was treated as a design input, not a hardening phase. The dominant decisions — Azure OpenAI over a public API, no data leaving the EU, full interaction logging, retrieval-only clinical answers — all originate from the compliance conversation in Discovery.",
-    "controls": [
+  "cost": {
+    "model": "Hybrid CAPEX / OPEX structure aligned with enterprise procurement.",
+    "capex": "€215,000 total implementation cost (integration, architecture, pilot build, security hardening).",
+    "opex": "€65,000 annual run cost (Azure consumption, API keys, maintenance, support licenses).",
+    "roi": "Estimated payback period of 14 months based on avoided administrative headcount expansion across newly opened clinics."
+  },
+  "kpi": {
+    "intro": "Success is tracked across technical performance, operational efficiency, and clinical safety metrics.",
+    "metrics": [
       {
-        "t": "Data residency",
-        "d": "All processing in Azure West Europe. Azure OpenAI with no training on customer data and no cross-region egress of personal health data."
+        "name": "First Response Time",
+        "target": "< 30 seconds",
+        "baseline": "12 minutes"
       },
       {
-        "t": "Identity & access",
-        "d": "Entra ID SSO for staff, OAuth 2.0 / OIDC, RBAC by clinic and role, managed identities for service-to-service calls. Patients are verified per channel before any record is exposed."
+        "name": "Automation Rate",
+        "target": "≥ 70% of inbound requests",
+        "baseline": "0%"
       },
       {
-        "t": "Encryption",
-        "d": "TLS 1.2+ in transit; encryption at rest across PostgreSQL, Redis, Blob and Search. Keys and secrets in Azure Key Vault with rotation."
+        "name": "AI Cost per Request",
+        "target": "< €0.03",
+        "baseline": "N/A"
       },
       {
-        "t": "Data minimisation",
-        "d": "Only the fields required for the request are sent to the model. Identifiers are pseudonymised in prompts wherever the answer does not require them."
-      },
-      {
-        "t": "Prompt injection defence",
-        "d": "Input screening, instruction/data separation, retrieved content treated as untrusted data, Azure AI Content Safety, and a system prompt that cannot be overridden by user text."
-      },
-      {
-        "t": "Clinical guardrail",
-        "d": "A topic classifier blocks diagnosis and treatment requests before generation. Clinical answers must carry a citation to approved content or they are not sent."
-      },
-      {
-        "t": "Audit trail",
-        "d": "Every interaction persists request, response, retrieved sources, model, tokens, cost, latency and outcome — with configurable retention."
-      },
-      {
-        "t": "Right to erasure",
-        "d": "Patient-scoped deletion across PostgreSQL, cache, logs and search index, executed as a tracked workflow with a completion certificate."
+        "name": "Clinical Escalation Accuracy",
+        "target": "100% routing of low-confidence items",
+        "baseline": "N/A"
       }
     ]
   },
-  "scalability": {
-    "body": "The company plans ~80 clinics in three years plus entry into France. The design target is therefore roughly 4× current volume with a new locale, achieved without re-architecture. Scale is handled by making the expensive path rare rather than by making it fast.",
-    "levers": [
+  "roadmap": {
+    "phases": [
       {
-        "t": "Horizontal stateless scale",
-        "d": "The API layer holds no session state — sessions live in Redis. Container Apps scales 2→20 replicas on concurrent-request metrics."
+        "phase": "Phase 1: Discovery & Architecture",
+        "duration": "Months 1–2",
+        "details": "Stakeholder interviews, data mapping, security baseline, and target architecture validation."
       },
       {
-        "t": "Queue-based load absorption",
-        "d": "Workers scale independently on queue depth. Volume spikes lengthen the queue rather than degrading patient-facing latency."
+        "phase": "Phase 2: MVP Build & Integration",
+        "duration": "Months 3–4",
+        "details": "FastAPI orchestration layer, Dynamics 365 connectors, RAG pipeline setup, and pilot clinic deployment."
       },
       {
-        "t": "Deterministic-first routing",
-        "d": "Growth in traffic is mostly growth in repeated questions — which the cache absorbs at near-zero marginal cost."
-      },
-      {
-        "t": "Locale as configuration",
-        "d": "Knowledge base partitioned by language with locale-filtered retrieval. Adding French is a content and configuration exercise, not a code change."
-      },
-      {
-        "t": "Model capacity management",
-        "d": "Provisioned throughput for baseline plus pay-as-you-go burst, with per-tenant token quotas to stop one clinic starving another."
-      },
-      {
-        "t": "Index scaling",
-        "d": "Azure AI Search replicas for query throughput, partitions for corpus growth; versioned indexes swap atomically during reindexing."
+        "phase": "Phase 3: Rollout & Optimisation",
+        "duration": "Months 5–6",
+        "details": "Scale across all 38 Italian clinics, fine-tune routing thresholds, and activate advanced analytics dashboard."
       }
     ]
-  },
-  "costOptimization": {
-    "body": "The CFO set an €80,000 annual OPEX ceiling and a target of under €1.50 per patient request, down from ~€4.00. That translates into a hard technical requirement of under €0.03 average AI cost per request — which is only achievable if most requests never reach a model.",
-    "levers": [
-      {
-        "n": "01",
-        "t": "Do not use an LLM where a program will do",
-        "d": "\"What are your opening hours?\" → deterministic FAQ → zero tokens. This is the first rule of enterprise AI and the largest single lever in the entire cost model."
-      },
-      {
-        "n": "02",
-        "t": "Redis cache",
-        "d": "If the same question is asked a thousand times, do not pay a thousand times. First answer is computed, cached and served from memory thereafter."
-      },
-      {
-        "n": "03",
-        "t": "Model routing",
-        "d": "FAQ and classification → GPT-4o mini. Complex clinical-adjacent questions → GPT-4.1. Savings of tens of percent for no perceptible quality loss."
-      },
-      {
-        "n": "04",
-        "t": "Prompt length discipline",
-        "d": "Never send a whole document. Send only the passages retrieval identified as relevant, under an enforced token budget."
-      },
-      {
-        "n": "05",
-        "t": "Good RAG is a cost strategy",
-        "d": "The better the retrieval, the less context is required. Retrieval precision and cost per request are the same metric viewed from two directions."
-      },
-      {
-        "n": "06",
-        "t": "Asynchronous processing",
-        "d": "Embeddings, OCR and indexing do not need to happen while a patient waits. Workers run them off-peak on batch pricing."
-      },
-      {
-        "n": "07",
-        "t": "Sessions in Redis",
-        "d": "Do not reassemble conversation history from scratch on every turn — that is tokens paid twice for the same context."
-      },
-      {
-        "n": "08",
-        "t": "Log tiering",
-        "d": "Hot audit data in PostgreSQL, older records archived to cool Blob Storage with lifecycle policies while remaining discoverable."
-      },
-      {
-        "n": "09",
-        "t": "Daily cost observability",
-        "d": "Cost broken down by user, department, model and prompt every day. An unnoticed prompt regression is a budget event."
-      },
-      {
-        "n": "10",
-        "t": "Right-sized model selection",
-        "d": "Do not use the frontier model for trivia. A smaller model frequently performs identically on the task that actually needs doing."
-      }
-    ],
-    "model": [
-      {
-        "k": "Requests / day",
-        "v": "~5,000"
-      },
-      {
-        "k": "Served without a model",
-        "v": "~70% → €0.00"
-      },
-      {
-        "k": "Classification cost",
-        "v": "~€0.0004 / request"
-      },
-      {
-        "k": "RAG answer cost",
-        "v": "~€0.06 / request"
-      },
-      {
-        "k": "Blended average target",
-        "v": "< €0.03 / request"
-      },
-      {
-        "k": "Annual AI OPEX estimate",
-        "v": "~€45–55k, inside the €80k ceiling"
-      }
-    ]
-  },
-  "risks": [
-    {
-      "n": "01",
-      "risk": "LLM hallucination",
-      "severity": "Critical",
-      "consequence": "A patient receives incorrect clinical information. Legal exposure and loss of trust.",
-      "mitigation": "RAG only; answers restricted to the internal approved knowledge base; escalate to a human when no grounded answer exists; the model is explicitly forbidden from guessing."
-    },
-    {
-      "n": "02",
-      "risk": "Personal data leakage (GDPR)",
-      "severity": "Critical",
-      "consequence": "Regulatory action, litigation, reputational damage.",
-      "mitigation": "Azure OpenAI with EU residency and no training on customer data; encryption; access control; data minimisation in prompts; complete action logging."
-    },
-    {
-      "n": "03",
-      "risk": "High LLM operating cost",
-      "severity": "High",
-      "consequence": "The project stops being economically viable.",
-      "mitigation": "Redis cache; deterministic FAQ path; small model for simple tasks; prompt-length limits; token ceilings; daily cost dashboard."
-    },
-    {
-      "n": "04",
-      "risk": "Poor knowledge-base quality",
-      "severity": "High",
-      "consequence": "The AI answers confidently with outdated information — a silent failure mode.",
-      "mitigation": "A named Knowledge Owner; scheduled document review; automatic reindexing; staleness alerts on source documents."
-    },
-    {
-      "n": "05",
-      "risk": "Staff resistance",
-      "severity": "High",
-      "consequence": "The system is bypassed and never adopted.",
-      "mitigation": "Training; single-clinic pilot; positioning AI explicitly as an assistant, not a replacement; involving administrators in design and evaluation."
-    },
-    {
-      "n": "06",
-      "risk": "Azure OpenAI unavailability",
-      "severity": "Medium",
-      "consequence": "The chat stops responding.",
-      "mitigation": "Degraded mode with deterministic FAQ fallback; retries with backoff; secondary region; health monitoring and status transparency to patients."
-    },
-    {
-      "n": "07",
-      "risk": "CRM integration failure",
-      "severity": "Medium",
-      "consequence": "Patient records or appointments are not created — information is lost.",
-      "mitigation": "Message queues with retry and dead-letter handling; idempotent writes; error journal; integration monitoring with alerting."
-    },
-    {
-      "n": "08",
-      "risk": "Load growth",
-      "severity": "Medium",
-      "consequence": "System slows as the clinic network doubles.",
-      "mitigation": "Horizontal scaling; load balancing; queues; Redis; load testing at 4× projected volume before rollout."
-    },
-    {
-      "n": "09",
-      "risk": "Prompt injection",
-      "severity": "High",
-      "consequence": "A user manipulates the AI into ignoring its clinical restrictions.",
-      "mitigation": "Hardened system prompt; input validation; guardrails; Azure AI Content Safety; retrieved content treated as untrusted; red-team test suite."
-    },
-    {
-      "n": "10",
-      "risk": "Vendor lock-in",
-      "severity": "Medium",
-      "consequence": "The entire architecture depends on one provider; migration becomes expensive.",
-      "mitigation": "LLM access behind an internal abstraction; model swappable by configuration; embeddings and documents stored independently of the vendor."
-    }
-  ],
-  "kpis": [
-    {
-      "category": "Business",
-      "kpi": "Average response time",
-      "baseline": "12 min",
-      "target": "< 30 sec",
-      "why": "Faster patient service"
-    },
-    {
-      "category": "Business",
-      "kpi": "Automated request resolution",
-      "baseline": "0%",
-      "target": "≥ 70%",
-      "why": "Reduced load on staff"
-    },
-    {
-      "category": "Business",
-      "kpi": "Cost per customer request",
-      "baseline": "€4.00",
-      "target": "< €1.50",
-      "why": "Lower operating expenditure"
-    },
-    {
-      "category": "Business",
-      "kpi": "Administrative workload",
-      "baseline": "baseline",
-      "target": "− 50%",
-      "why": "Frees administrator time"
-    },
-    {
-      "category": "AI Quality",
-      "kpi": "AI answer accuracy",
-      "baseline": "—",
-      "target": "≥ 95%",
-      "why": "Answer quality"
-    },
-    {
-      "category": "AI Quality",
-      "kpi": "Hallucination rate",
-      "baseline": "—",
-      "target": "< 1%",
-      "why": "Minimises false answers"
-    },
-    {
-      "category": "AI Quality",
-      "kpi": "Human escalation accuracy",
-      "baseline": "—",
-      "target": "> 99%",
-      "why": "AI correctly recognises when to hand off"
-    },
-    {
-      "category": "AI Quality",
-      "kpi": "RAG retrieval precision",
-      "baseline": "—",
-      "target": "≥ 95%",
-      "why": "Retrieves the right documents"
-    },
-    {
-      "category": "Technical",
-      "kpi": "API response time",
-      "baseline": "—",
-      "target": "< 3 sec",
-      "why": "System responsiveness"
-    },
-    {
-      "category": "Technical",
-      "kpi": "System availability (SLA)",
-      "baseline": "—",
-      "target": "99.9%",
-      "why": "Service reliability"
-    },
-    {
-      "category": "Technical",
-      "kpi": "Failed API requests",
-      "baseline": "—",
-      "target": "< 0.5%",
-      "why": "Integration stability"
-    },
-    {
-      "category": "Technical",
-      "kpi": "Average AI cost per request",
-      "baseline": "—",
-      "target": "< €0.03",
-      "why": "LLM spend control"
-    },
-    {
-      "category": "Experience",
-      "kpi": "Customer satisfaction (CSAT)",
-      "baseline": "82%",
-      "target": "> 90%",
-      "why": "User satisfaction"
-    },
-    {
-      "category": "Experience",
-      "kpi": "Net Promoter Score (NPS)",
-      "baseline": "45",
-      "target": "> 60",
-      "why": "Patient loyalty"
-    },
-    {
-      "category": "Operations",
-      "kpi": "Daily AI adoption by staff",
-      "baseline": "0%",
-      "target": "> 90%",
-      "why": "Real usage by employees"
-    }
-  ],
-  "roadmap": [
-    {
-      "phase": "Phase 1",
-      "name": "Discovery",
-      "duration": "2–3 weeks",
-      "goal": "Understand the business and define requirements.",
-      "activities": [
-        "Interviews with all stakeholders",
-        "Business process analysis",
-        "Data analysis",
-        "Existing IT infrastructure analysis",
-        "KPI definition",
-        "Risk analysis",
-        "Budget definition",
-        "Pilot scenario selection"
-      ],
-      "deliverables": [
-        "Business Requirements Document (BRD)",
-        "Functional requirements",
-        "Non-functional requirements",
-        "AI use cases",
-        "Success metrics"
-      ]
-    },
-    {
-      "phase": "Phase 2",
-      "name": "Architecture & Design",
-      "duration": "2 weeks",
-      "goal": "Design the solution.",
-      "activities": [
-        "Architecture selection",
-        "LLM selection",
-        "RAG design",
-        "API design",
-        "Integration design",
-        "Security design",
-        "Database design",
-        "Monitoring design",
-        "Cost optimisation design"
-      ],
-      "deliverables": [
-        "Solution architecture diagram",
-        "API specification",
-        "Security architecture",
-        "Data flow diagram",
-        "High Level Design (HLD)"
-      ]
-    },
-    {
-      "phase": "Phase 3",
-      "name": "MVP Development",
-      "duration": "4–6 weeks",
-      "goal": "Build a minimally working solution.",
-      "activities": [
-        "Backend development",
-        "Azure OpenAI integration",
-        "CRM integration",
-        "RAG configuration",
-        "Redis configuration",
-        "PostgreSQL setup",
-        "Web chat implementation",
-        "Logging",
-        "Monitoring"
-      ],
-      "deliverables": [
-        "Working MVP",
-        "Integration tests",
-        "API documentation"
-      ]
-    },
-    {
-      "phase": "Phase 4",
-      "name": "Pilot",
-      "duration": "3–4 weeks",
-      "goal": "Validate the system with a limited user group.",
-      "activities": [
-        "Launch in a single clinic",
-        "Staff training",
-        "Feedback collection",
-        "KPI measurement",
-        "AI error analysis",
-        "Prompt optimisation",
-        "Evaluation harness setup"
-      ],
-      "deliverables": [
-        "Pilot report",
-        "Updated architecture",
-        "KPI dashboard"
-      ]
-    },
-    {
-      "phase": "Phase 5",
-      "name": "Production Rollout",
-      "duration": "4–8 weeks",
-      "goal": "Launch across the company.",
-      "activities": [
-        "Scaling",
-        "User migration",
-        "Connecting remaining clinics",
-        "Redundancy configuration",
-        "Fault tolerance",
-        "SLA configuration",
-        "User training"
-      ],
-      "deliverables": [
-        "Production system",
-        "User documentation",
-        "Operational runbook"
-      ]
-    },
-    {
-      "phase": "Phase 6",
-      "name": "Continuous Improvement",
-      "duration": "Ongoing",
-      "goal": "Continuously improve the system.",
-      "activities": [
-        "Answer quality monitoring",
-        "Hallucination analysis",
-        "Knowledge base updates",
-        "Cost optimisation",
-        "Model updates",
-        "A/B testing of prompts",
-        "New AI scenarios",
-        "Monthly architecture review"
-      ],
-      "deliverables": [
-        "Monthly KPI report",
-        "Cost report",
-        "Updated knowledge base",
-        "Architecture improvement plan"
-      ]
-    }
-  ],
-  "implementationNotes": {
-    "body": "The implementation is being built as a thin vertical slice rather than layer by layer: one channel, one deterministic skill, one RAG path, full logging. That order proves the routing and cost model early, which is where the architectural risk actually lives.",
-    "decisions": [
-      {
-        "id": "ADR-001",
-        "t": "Hybrid routing before model selection",
-        "d": "The router is the primary architectural artefact. Model choice is a downstream, swappable decision."
-      },
-      {
-        "id": "ADR-002",
-        "t": "RAG instead of fine-tuning",
-        "d": "Weekly knowledge updates and a hard auditability requirement make fine-tuning structurally wrong here."
-      },
-      {
-        "id": "ADR-003",
-        "t": "Azure OpenAI over direct provider APIs",
-        "d": "EU residency, enterprise SLA and existing tenant governance outweigh marginal capability differences."
-      },
-      {
-        "id": "ADR-004",
-        "t": "Container Apps instead of Kubernetes",
-        "d": "The client's DevOps team should not inherit cluster operations for a workload this shape."
-      },
-      {
-        "id": "ADR-005",
-        "t": "SharePoint stays the document system of record",
-        "d": "Index in place. Avoid a migration that adds change-management cost and no architectural value."
-      },
-      {
-        "id": "ADR-006",
-        "t": "Cost per request as a non-functional requirement",
-        "d": "€0.03 blended average is tested in CI against a representative traffic mix, like any other NFR."
-      }
-    ],
-    "repoStructure": [
-      "app/api — FastAPI routes, channel adapters, auth",
-      "app/orchestration — router, guardrails, escalation controller",
-      "app/rag — chunking, embedding, retrieval, reranking, citation checks",
-      "app/skills — deterministic FAQ and transactional CRM/booking skills",
-      "app/workers — Celery tasks for OCR, embeddings, reindex, CRM sync",
-      "app/observability — token accounting, cost metering, structured audit logging",
-      "eval — golden question set, hallucination and retrieval-precision harness",
-      "infra — Bicep templates, GitHub Actions workflows"
-    ]
-  },
-  "lessonsLearned": [
-    "The CEO's brief and the correct architecture were two different projects. Discovery, not technology selection, closed that gap.",
-    "The most valuable architectural decision in this case was deciding what the AI must not do. Constraints produced a cheaper and safer system than capabilities would have.",
-    "Cost modelling belongs in the first architecture session. Retro-fitting a cost ceiling onto a working system means rewriting the routing layer.",
-    "\"No in-house ML team\" is one of the highest-leverage constraints a client can give you. It eliminated more design options than the budget did.",
-    "Front-desk staff were the real adoption risk, not the CMO. Involving them during design converted the loudest sceptics into the pilot's advocates.",
-    "Writing 40 discovery questions before drawing any diagram felt slow and was the fastest part of the whole exercise."
-  ],
-  "futureImprovements": [
-    "Voice channel via Azure Speech, reusing the same orchestration layer — the phase-2 commitment made during Discovery.",
-    "Agentic rescheduling: a constrained agent that can propose and confirm appointment changes across clinics under explicit permission scopes.",
-    "Continuous evaluation loop where clinician-approved escalation answers become reviewed knowledge-base candidates.",
-    "Per-clinic cost and quality dashboards in Power BI, using the existing BI estate rather than a new tool.",
-    "French locale rollout as a configuration and content exercise, validating the locale-as-configuration assumption.",
-    "Semantic caching on embeddings rather than exact-match caching, to widen the zero-token path beyond literal repeats."
-  ]
+  }
 };
 
 export default caseStudy;
