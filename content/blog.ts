@@ -53,6 +53,7 @@ export const posts: BlogPost[] = [
     "slug": "cost-per-request-as-an-architecture-constraint",
     "title": "Cost per request as an architecture constraint",
     "excerpt": "If you cannot state the € cost of one user interaction, you do not have an architecture — you have a prototype. Building a token and cost model before writing code.",
+    "featured": false, 
     "date": "2026-06-08",
     "readingTime": "8 min",
     "tags": [
