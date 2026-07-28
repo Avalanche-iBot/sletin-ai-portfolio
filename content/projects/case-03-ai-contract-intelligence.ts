@@ -277,8 +277,28 @@ const caseStudy: CaseStudy = {
     ],
     "conclusion": "The programme is sequenced so structured, verifiable value lands before any generative feature reaches Legal — which is also the order that builds the trust the generative layer will need."
   },
+  "alternatives": [
+    {
+      "option": "General retrieval over the contract PDFs",
+      "verdict": "Set aside",
+      "caseFor": "Quick to stand up, and for exploratory questions across a large estate it is genuinely useful from week one.",
+      "caseAgainst": "It answers questions but cannot hold obligations. Once anyone wants to know which commitments fall due next quarter, a chat surface over documents has no structure to answer from, and retrofitting one later is a rebuild."
+    },
+    {
+      "option": "Commercial contract lifecycle platform",
+      "verdict": "Set aside",
+      "caseFor": "Mature, legally aware, and someone else maintains the clause taxonomy, which is not a small thing given how much of the work here is taxonomy rather than technology.",
+      "caseAgainst": "These platforms generally assume contracts are authored inside them. An estate that already exists in several languages and formats has to be migrated in, and the migration is the hard part the product does not solve."
+    },
+    {
+      "option": "Typed obligation store with constrained generation",
+      "verdict": "Direction taken in this note",
+      "caseFor": "Extraction writes into a structure that can be queried, reported and reconciled, and generation is constrained to cite from it. That is what makes an extracted term checkable rather than merely plausible.",
+      "caseAgainst": "It forces the schema decision very early, before enough of the estate has been read to know whether the schema is right. Getting it wrong means reprocessing everything."
+    }
+  ],
   "architecture": {
-    "overview": "A structure-aware ingestion pipeline writes into a typed obligation store. Retrieval and generation sit on top and are constrained to cite from it. Chat is a surface, not the system.",
+    "overview": "One workable shape: a structure-aware ingestion pipeline writes into a typed obligation store. Retrieval and generation sit on top and are constrained to cite from it. Chat is a surface, not the system.",
     "diagrams": [
       {
         "id": "system-overview",
@@ -501,6 +521,12 @@ const caseStudy: CaseStudy = {
       }
     ]
   },
+  "openQuestions": [
+    "Whether clause equivalence across languages can be treated as reliable at this level of confidence. Two clauses can be legally equivalent and lexically unrelated, and I have no dependable way to establish that automatically.",
+    "The extraction accuracy needed before anyone relies on an obligation date is unknown to me. It is plainly higher than the accuracy needed for search, but I cannot say where the line sits without a legal owner setting it.",
+    "Who is accountable when an obligation is extracted incorrectly and missed. That is a governance question rather than an architectural one, and the architecture quietly assumes an answer exists.",
+    "The obligation schema is proposed here without having read a representative sample of the estate. That is the wrong order, and I would expect it to change."
+  ],
   "risks": [
     {
       "n": "01",

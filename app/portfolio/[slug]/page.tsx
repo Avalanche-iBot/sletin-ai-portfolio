@@ -140,7 +140,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       )}
 
       {project.analysis && (
-        <Section eyebrow="05 · Business Analysis" title="Is AI even the right tool here?">
+        <Section eyebrow="05 · Business Analysis" title="Is AI even the right tool here?" lede="Working through this before any design, on the assumption that the answer might be no.">
           <div className="grid gap-8 lg:grid-cols-2">
             {project.analysis.aiNeeded && (
               <div className="frame p-6">
@@ -207,7 +207,11 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* 6. Solution Design ------------------------------------------------------- */}
       {project.solutionDesign && (
-        <Section eyebrow="06 · Solution Design" title="Design principles and the request path">
+        <Section
+          eyebrow="06 · Solution Design"
+          title="Design principles and the request path"
+          lede="These are the principles I would argue for given the constraints above — positions rather than conclusions. Each carries a cost, and the next section sets out what holding them gives up."
+        >
           {project.solutionDesign.principles && (
             <div className="mb-10">
               <PointList points={project.solutionDesign.principles} />
@@ -229,9 +233,47 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         </Section>
       )}
 
-      {/* 7 + 8. Enterprise Architecture & Technology Selection ---------------------- */}
+      {/* 7. Approaches considered — a note must show what it rejected --------- */}
+      {project.alternatives && (
+        <Section
+          eyebrow="07 · Approaches Considered"
+          title="What else was on the table"
+          lede="Broadly defensible directions, not straw men. Given the constraints in this note I would take one of them — but the case against it is real, and a different weighting of those constraints lands somewhere else."
+        >
+          <div className="space-y-0">
+            {project.alternatives.map((a) => (
+              <article key={a.option} className="grid gap-6 border-t border-line py-8 lg:grid-cols-[15rem_1fr]">
+                <div>
+                  <p className="font-display text-lg text-ink">{a.option}</p>
+                  {a.verdict && (
+                    <p className="mt-2 font-mono text-micro uppercase tracking-[0.08em] text-ink-muted">
+                      {a.verdict}
+                    </p>
+                  )}
+                </div>
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div>
+                    <p className="eyebrow mb-2">Case for</p>
+                    <p className="text-[0.9375rem] leading-relaxed text-ink-soft">{a.caseFor}</p>
+                  </div>
+                  <div>
+                    <p className="eyebrow mb-2">Case against</p>
+                    <p className="text-[0.9375rem] leading-relaxed text-ink-soft">{a.caseAgainst}</p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </Section>
+      )}
+
+      {/* 8 + 9. Enterprise Architecture & Technology Selection ---------------------- */}
       {project.architecture && (
-        <Section eyebrow="07 · Enterprise Architecture" title="System design">
+        <Section
+          eyebrow="08 · Enterprise Architecture"
+          title="One possible system design"
+          lede="A design I would take into a review, not a specification. Several component choices could reasonably go the other way; where that is true, the technology table names the alternative."
+        >
           {project.architecture.overview && (
             <div className="mb-10">
               <Prose text={project.architecture.overview} />
@@ -261,14 +303,14 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       )}
 
       {project.technologySelection && (
-        <Section eyebrow="08 · Technology Selection" title="What was chosen, and what was rejected">
+        <Section eyebrow="09 · Technology Selection" title="What I would choose, and what I would set aside">
           <TechSelectionTable rows={project.technologySelection} />
         </Section>
       )}
 
       {/* 9. Security ----------------------------------------------------------------- */}
       {project.security && (
-        <Section eyebrow="09 · Security" title="Security posture">
+        <Section eyebrow="10 · Security" title="Security posture">
           {project.security.posture && (
             <div className="mb-8">
               <Prose text={project.security.posture} />
@@ -280,7 +322,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* 10. Scalability --------------------------------------------------------------- */}
       {project.scalability && (
-        <Section eyebrow="10 · Scalability" title="How the system holds up under load">
+        <Section eyebrow="11 · Scalability" title="How the system holds up under load">
           {project.scalability.body && (
             <div className="mb-8">
               <Prose text={project.scalability.body} />
@@ -292,7 +334,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* 11. Cost Optimization ---------------------------------------------------------- */}
       {project.costOptimization && (
-        <Section eyebrow="11 · Cost Optimization" title="Keeping unit economics under control">
+        <Section eyebrow="12 · Cost Optimization" title="Keeping unit economics under control">
           <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
             <div>
               {project.costOptimization.body && (
@@ -314,28 +356,28 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* 12. Risks ------------------------------------------------------------------------- */}
       {project.risks && (
-        <Section eyebrow="12 · Risks" title="What could go wrong, and the mitigation for each">
+        <Section eyebrow="13 · Risks" title="What could go wrong, and the mitigation for each">
           <RiskTable risks={project.risks} />
         </Section>
       )}
 
       {/* 13. KPIs -------------------------------------------------------------------------- */}
       {project.kpis && (
-        <Section eyebrow="13 · KPIs" title="How success is measured">
+        <Section eyebrow="14 · KPIs" title="How success is measured">
           <KpiTable kpis={project.kpis} />
         </Section>
       )}
 
       {/* 14. Implementation Roadmap ---------------------------------------------------------- */}
       {project.roadmap && (
-        <Section eyebrow="14 · Implementation Roadmap" title="Phased delivery">
+        <Section eyebrow="15 · Implementation Roadmap" title="Phased delivery">
           <RoadmapTimeline phases={project.roadmap} />
         </Section>
       )}
 
-      {/* 15 + 16. Implementation Notes / Repo -------------------------------------------------- */}
+      {/* 16. Implementation Notes -------------------------------------------------- */}
       {project.implementationNotes && (
-        <Section eyebrow="15 · Implementation Notes" title="Notes from building it">
+        <Section eyebrow="16 · Implementation Notes" title="Notes on implementation">
           {project.implementationNotes.body && (
             <div className="mb-8">
               <Prose text={project.implementationNotes.body} />
@@ -368,8 +410,40 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         </Section>
       )}
 
-      {/* 17. Discussion — the closing move of every note is an invitation to disagree */}
-      <Section eyebrow="17 · Discussion" title="Where would you have decided differently?">
+      {/* 17. Reflection ------------------------------------------------------------------- */}
+      {project.lessonsLearned && (
+        <Section eyebrow="17 · Reflection" title="Lessons learned">
+          <BulletList items={project.lessonsLearned} />
+        </Section>
+      )}
+
+      {/* 18. Future Improvements ----------------------------------------------------------------- */}
+      {project.futureImprovements && (
+        <Section eyebrow="18 · Future Improvements" title="What comes next">
+          <BulletList items={project.futureImprovements} />
+        </Section>
+      )}
+
+      {/* 19. Open questions — what the note deliberately does not settle ------ */}
+      {project.openQuestions && (
+        <Section
+          eyebrow="19 · Open Questions"
+          title="What I have not resolved"
+          lede="Points where I do not think the reasoning above is strong enough to be relied on yet."
+        >
+          <ol className="space-y-0">
+            {project.openQuestions.map((q, i) => (
+              <li key={i} className="grid gap-3 border-t border-line py-5 sm:grid-cols-[3rem_1fr]">
+                <span className="font-mono text-micro text-accent-deep">{String(i + 1).padStart(2, "0")}</span>
+                <p className="max-w-reading text-[0.9375rem] leading-relaxed text-ink-soft">{q}</p>
+              </li>
+            ))}
+          </ol>
+        </Section>
+      )}
+
+      {/* Discussion — the closing move of every note is an invitation to disagree */}
+      <Section eyebrow="Discussion" title="Where would you have decided differently?">
         <Prose text="This is one reading of the problem, not the only defensible one. Several decisions above rest on assumptions that discovery would need to confirm, and at least one of them is probably wrong. If your experience points somewhere else, I would rather hear it than not." />
         <div className="mt-7 flex flex-wrap items-center gap-6">
           <Link href="/contact" className="btn btn-ghost">
@@ -393,20 +467,6 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           )}
         </div>
       </Section>
-
-      {/* 18. Lessons Learned ------------------------------------------------------------------- */}
-      {project.lessonsLearned && (
-        <Section eyebrow="18 · Reflection" title="Lessons learned">
-          <BulletList items={project.lessonsLearned} />
-        </Section>
-      )}
-
-      {/* 19. Future Improvements ----------------------------------------------------------------- */}
-      {project.futureImprovements && (
-        <Section eyebrow="19 · Future Improvements" title="What comes next">
-          <BulletList items={project.futureImprovements} />
-        </Section>
-      )}
 
       {/* Prev / next -------------------------------------------------------------------------------- */}
       <nav className="shell flex flex-col gap-4 border-t border-line py-10 sm:flex-row sm:items-center sm:justify-between">

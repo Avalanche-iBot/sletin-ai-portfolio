@@ -270,8 +270,28 @@ const caseStudy: CaseStudy = {
     ],
     "conclusion": "Scope was reframed from 'AI support agent' to 'agent-assist platform with earned autonomy': autonomy is granted per intent, only after that intent clears an accuracy gate in production shadow mode."
   },
+  "alternatives": [
+    {
+      "option": "The helpdesk vendor's native AI",
+      "verdict": "Set aside",
+      "caseFor": "Zero integration work, and the answer surface sits exactly where agents already work. Support tooling vendors have also had years to make this specific problem look easy.",
+      "caseAgainst": "Retrieval quality and version awareness are not exposed as controls, which is precisely where a product with several supported releases breaks. If the assistant cites current documentation to a customer on an older version, the resulting ticket is worse than the original one."
+    },
+    {
+      "option": "Autonomous resolution agent",
+      "verdict": "Set aside",
+      "caseFor": "The largest deflection numbers come from here, and for genuinely simple account questions there is little reason to keep a human in the path.",
+      "caseAgainst": "Contractual response commitments have to remain auditable, and an autonomous path makes it much harder to show what was promised to whom. I would want a far stronger evidence base before letting a model send anything unreviewed under an SLA."
+    },
+    {
+      "option": "Draft-only assistant, human always sends",
+      "verdict": "Direction taken in this note",
+      "caseFor": "Every outbound message keeps a human author, which preserves the audit position and lets accuracy be measured against agent edits rather than against a benchmark.",
+      "caseAgainst": "It caps the achievable saving at the drafting portion of handling time, and it depends on agents trusting the drafts. If they rewrite everything, the system costs money and saves nothing."
+    }
+  ],
   "architecture": {
-    "overview": "A Zendesk-embedded assist layer over a hybrid resolution engine: deterministic tool-calling for account state, version-aware retrieval for documentation, and a policy engine that decides between draft, auto-send and escalate per intent.",
+    "overview": "One workable shape: a helpdesk-embedded assist layer over a hybrid resolution engine: deterministic tool-calling for account state, version-aware retrieval for documentation, and a policy engine that decides between draft, auto-send and escalate per intent.",
     "diagrams": [
       {
         "id": "system-overview",
@@ -486,6 +506,12 @@ const caseStudy: CaseStudy = {
       }
     ]
   },
+  "openQuestions": [
+    "Whether auto-send is ever defensible under a contractual SLA is left unresolved. I have argued against it, but the argument rests on a risk appetite I assumed rather than one anybody stated.",
+    "Version-aware retrieval is easy to describe and expensive to maintain. I have not costed the ongoing work of keeping release metadata correct, and that cost may exceed the saving the system produces.",
+    "Deflection rate is the metric everyone asks for and the one most easily gamed, since a ticket closed and reopened counts twice in the wrong direction. I have not found a formulation of it I actually trust.",
+    "The design assumes agents will edit rather than discard drafts. If the opposite happens, nothing in this architecture detects it early."
+  ],
   "risks": [
     {
       "n": "01",

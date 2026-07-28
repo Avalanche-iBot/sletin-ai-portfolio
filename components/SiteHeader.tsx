@@ -21,7 +21,7 @@ function BrandMark() {
           className="absolute -bottom-1 left-0 h-[1.5px] w-full bg-accent"
         />
       </span>
-      <span className="font-mono text-spec uppercase tracking-[0.14em] text-ink-muted">
+      <span className="hidden font-mono text-spec uppercase tracking-[0.14em] text-ink-muted sm:inline">
         {site.brandShort}
       </span>
     </span>

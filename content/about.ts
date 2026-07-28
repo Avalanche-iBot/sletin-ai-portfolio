@@ -1,159 +1,141 @@
-// Generated content module. Edit freely — this is the CMS layer.
+// Content module — the CMS layer. Edit freely.
 import type { About } from "./types";
 
 export const about: About = {
-  "eyebrow": "About",
-  "title": "From wells and cost reports to enterprise AI architecture.",
-  "lede": "I am Aleksandr Sletin — an engineer and project manager based in Italy, working in industrial operations inside large international organisations. Over the last two years I have deliberately re-pointed my thinking at one question: how an enterprise AI system can be designed so that a real company can afford, trust, audit and operate it.",
-  "paragraphs": [
-    "My path has zig-zagged, and that turns out to be the point. Petroleum engineering gave me the domain. Project management gave me the delivery discipline and the vocabulary of the business. An AI startup gave me my first real exposure to what breaks in AI projects — which is almost never the model.",
-    "What I am not, yet, is a ten-year platform engineer. I am explicit about that on this site. What I am is someone who can sit a CFO, a CIO and a front-line operator in the same room, come out with a defensible architecture, and then build enough of it to find out where the reasoning was wrong."
+  eyebrow: "About",
+  title: "I optimise business processes before I optimise prompts.",
+  lede:
+    "This page is not a career summary. It is an attempt to describe how I think about operational problems, because that is the only part of a person that is useful to a reader deciding whether the rest of this site is worth their time.",
+
+  paragraphs: [
+    "What I enjoy about designing AI solutions has very little to do with models. It is the moment in a discovery conversation when two people describe the same process and disagree without noticing — one of them is describing how it is supposed to work, the other how it actually works, and the gap between them is where the entire project lives. Finding that gap is the interesting part. Everything downstream is engineering.",
+    "I came to this from operations, which shapes what I notice first. When someone describes a problem, my instinct is not to ask which model would solve it. It is to ask how many times a week this happens, who currently absorbs the cost of it going wrong, and what they would do if the system were unavailable for a day. Those three answers usually determine the architecture more than any technical requirement does.",
+    "The habit I most want to keep is treating a proposed solution as a hypothesis rather than a conclusion. Most enterprise AI work I have seen fail did not fail on accuracy. It failed because a reasonable-sounding assumption went unexamined for three months — about data quality, about who would maintain it, about whether anyone actually wanted the output. Writing the reasoning down, in public, is a way of making those assumptions findable while they are still cheap to fix.",
   ],
-  "timeline": [
-    {
-      "period": "2019 — 2021",
-      "role": "Petroleum Engineer",
-      "org": "Energy sector",
-      "body": "Field and technical engineering. Digitised a 2,300-pipeline asset database — my first real lesson in how much enterprise value is trapped in unstructured technical documents.",
-      "tags": [
-        "Asset data",
-        "Technical documentation"
-      ]
-    },
-    {
-      "period": "2021 — 2022",
-      "role": "Project Management track · PMP",
-      "org": "PMI certification",
-      "body": "Formalised delivery: Agile/Scrum, stakeholder management, earned value and cost control. MSc Management Engineering, University of Genoa.",
-      "tags": [
-        "PMP",
-        "Agile",
-        "Cost control"
-      ]
-    },
-    {
-      "period": "2022 — 2023",
-      "role": "AI Project Manager",
-      "org": "AI company",
-      "body": "Managed five AI projects end-to-end. Acted as the bridge between business stakeholders and the data-science team — requirements, feasibility, expectation management, delivery.",
-      "tags": [
-        "5 AI projects",
-        "Business ↔ DS bridge"
-      ]
-    },
-    {
-      "period": "2023",
-      "role": "Engineering Manager · ERP implementation",
-      "org": "Industrial client",
-      "body": "Led an ERP rollout: process mapping, integration boundaries, data migration, change management. Enterprise integration seen from the inside.",
-      "tags": [
-        "ERP",
-        "Process mapping",
-        "Change mgmt"
-      ]
-    },
-    {
-      "period": "Feb 2024 — present",
-      "role": "Industrial Operations Engineer / Cost Control",
-      "org": "Large international industrial organisation",
-      "body": "Operational and cost-control work inside a complex international enterprise — standards, governance, and the stakeholder reality that decides whether anything actually gets adopted.",
-      "tags": [
-        "Industrial operations",
-        "Enterprise context",
-        "Excel/VBA · Power BI"
-      ]
-    },
-    {
-      "period": "2025 — 2026",
-      "role": "Enterprise AI Solutions Architecture",
-      "org": "Deliberate transition",
-      "body": "A structured technical roadmap plus a growing set of written case studies: discovery → architecture → cost model → risks → KPIs → roadmap → reflection.",
-      "tags": [
-        "Target role",
-        "In progress"
-      ],
-      "current": true
-    }
+
+  background: [
+    "Engineering and operations in the energy sector",
+    "Project delivery and cost control in large international organisations",
+    "AI project management in a product company",
+    "Enterprise systems implementation and process optimisation",
   ],
-  "credentials": [
+
+  certifications: [
     {
-      "label": "PMP®",
-      "org": "Project Management Institute",
-      "note": "Certified project manager"
+      label: "PMP®",
+      org: "Project Management Institute",
+      shaped: "Constraints are design inputs, not obstacles",
+      mindset:
+        "PMP is usually described as a scheduling qualification, which misses the part that changed how I work. What it actually trains is the discipline of naming a constraint before you start — budget, scope, resource, deadline — and then treating a solution that violates one of them as invalid rather than ambitious. Applied to architecture, that means a design that ignores the fact that the client has no ML team is not a good design with a staffing problem. It is the wrong design.",
     },
     {
-      "label": "MSc Petroleum Engineering",
-      "org": "Gubkin / industry track",
-      "note": "Domain foundation"
+      label: "Data-Driven Management",
+      org: "Professional certification",
+      shaped: "Ask what decision the number is for",
+      mindset:
+        "The most useful thing this gave me was scepticism about metrics that nobody acts on. Before agreeing to measure something, I now ask which decision changes depending on the result. If no decision changes, the metric is decoration — and a surprising number of AI dashboards are built entirely out of decoration. It also made me wary of accuracy as a headline number, since it hides the distribution of the errors that actually matter.",
     },
     {
-      "label": "MSc Management Engineering",
-      "org": "University of Genoa",
-      "note": "Business & operations"
+      label: "Become a Product Manager",
+      org: "Professional certification",
+      shaped: "The user's workaround is the real requirement",
+      mindset:
+        "Product training reframed what a requirement is. Stakeholders describe solutions, not problems — and the workaround someone has already built for themselves in a spreadsheet tells you more about their actual need than anything they will say in a workshop. I now spend most of discovery looking for those workarounds. They are the cheapest available evidence about what a system has to do.",
     },
-    {
-      "label": "Languages",
-      "org": "RU · EN · IT",
-      "note": "Working proficiency across all three"
-    }
   ],
-  "strengths": [
+
+  approach: [
     {
-      "t": "Discovery & requirements",
-      "d": "Turning a vague executive sentence into testable requirements and a scoped architecture."
+      n: "01",
+      t: "Establish what actually happens",
+      d: "Before anything else: volume, frequency, who is involved, what the current cost of failure is, and what people have already built to cope. Stated process and observed process are rarely the same, and the difference is usually where the value is.",
     },
     {
-      "t": "Make-vs-buy judgement",
-      "d": "Knowing when not to use an LLM. Most cost overruns start here."
+      n: "02",
+      t: "Ask whether AI is the right tool",
+      d: "A large share of problems presented as AI problems are process problems, integration problems, or data-quality problems wearing a disguise. I would rather say so early than discover it after a pilot. Where a rule, a form change or a better handoff would do more, that goes in writing.",
     },
     {
-      "t": "Stakeholder translation",
-      "d": "Same architecture, three audiences: board, IT, operators."
+      n: "03",
+      t: "Name the constraints that bind",
+      d: "Budget, data protection, who will operate the thing after handover, what the organisation is already licensed for. These narrow the design space far faster than technical requirements do, and they are the constraints most often discovered too late.",
     },
     {
-      "t": "Cost modelling",
-      "d": "Cost per request, token budgets, OPEX ceilings — treated as design constraints."
+      n: "04",
+      t: "Design the cheapest thing that could work",
+      d: "Start from the simplest architecture that satisfies the constraints, then add complexity only where something demonstrably breaks. Sophistication that nobody can maintain is a liability disguised as an asset.",
     },
     {
-      "t": "Industrial domain fluency",
-      "d": "Energy, wells, maintenance, EPC, asset documentation."
+      n: "05",
+      t: "Write down what would prove this wrong",
+      d: "Every design rests on assumptions. Naming them — and saying what evidence would invalidate each — is what makes a proposal reviewable instead of merely persuasive.",
     },
-    {
-      "t": "Shipping under constraint",
-      "d": "PMP discipline: phased rollout, pilot before scale, measurable exit criteria."
-    }
   ],
-  "philosophy": [
+
+  strengths: [
     {
-      "n": "01",
-      "t": "The architecture starts before the technology",
-      "d": "Ten stakeholder questions well chosen will eliminate more risk than any model benchmark. Discovery is not a formality — it is the design activity."
+      t: "Discovery and requirements",
+      d: "Turning a vague executive sentence into testable statements and a scoped problem.",
     },
     {
-      "n": "02",
-      "t": "Do not use an LLM where a rule will do",
-      "d": "Hybrid by default: deterministic logic for deterministic questions, LLM only where natural language understanding is genuinely required. Cheaper, faster, more predictable."
+      t: "Make-vs-buy judgement",
+      d: "Knowing when not to reach for a model. Most cost overruns start with that decision.",
     },
     {
-      "n": "03",
-      "t": "Grounding over training",
-      "d": "Enterprises rarely need a fine-tuned model. They need retrieval they can audit, with citations, and a clean escalation path when confidence is low."
+      t: "Stakeholder translation",
+      d: "The same architecture explained three ways: to the board, to IT, to the people who will use it.",
     },
     {
-      "n": "04",
-      "t": "Cost and compliance are first-class requirements",
-      "d": "€ per request, GDPR posture, data residency and auditability belong in the first architecture diagram, not in a later hardening phase."
+      t: "Cost modelling",
+      d: "Cost per request, token budgets and operating ceilings treated as design constraints rather than reporting.",
     },
     {
-      "n": "05",
-      "t": "Design for the operator who will inherit it",
-      "d": "If the client has no ML team, the architecture must not assume one. Managed services, boring infrastructure, documented runbooks."
-    }
+      t: "Industrial process fluency",
+      d: "Operations, maintenance, asset documentation — environments where an unsourced answer is worse than no answer.",
+    },
+    {
+      t: "Delivery under constraint",
+      d: "Phased rollout, pilot before scale, explicit exit criteria. The unglamorous part that decides whether anything ships.",
+    },
   ],
-  "workingStyle": [
-    "Written-first: every decision lands in an ADR or a one-page brief before it lands in code.",
-    "Case-based learner — I build the realistic scenario, then learn the stack the scenario demands.",
-    "Explicit about gaps. I would rather say 'not yet' than overclaim and lose credibility in a technical interview.",
-    "Roughly 50 hours per week of structured study on top of a full-time role."
-  ]
+
+  philosophy: [
+    {
+      n: "01",
+      t: "Optimise the process before automating it",
+      d: "Automating a badly designed process makes it faster and harder to fix. The first question is whether the work needs to happen at all, not how to make a model do it.",
+    },
+    {
+      n: "02",
+      t: "Question assumptions before introducing AI",
+      d: "Ten well-chosen stakeholder questions eliminate more risk than any model benchmark. Discovery is not a formality that precedes design — it is the design activity.",
+    },
+    {
+      n: "03",
+      t: "Do not use a model where a rule will do",
+      d: "Deterministic logic for deterministic questions; a model only where language understanding is genuinely required. Cheaper, faster and far easier to explain when it goes wrong.",
+    },
+    {
+      n: "04",
+      t: "Grounding over training",
+      d: "Most organisations do not need a fine-tuned model. They need retrieval they can audit, answers that cite their source, and a clean escalation path when confidence is low.",
+    },
+    {
+      n: "05",
+      t: "Every architecture is a trade-off",
+      d: "There is no design without a cost somewhere — latency, money, flexibility, operability. A proposal that appears to have no downside has an undiscovered one.",
+    },
+    {
+      n: "06",
+      t: "Design for whoever inherits it",
+      d: "If the organisation has no ML team, the architecture must not quietly assume one. Managed services, unremarkable infrastructure, documented runbooks.",
+    },
+  ],
+
+  workingStyle: [
+    "Written first — a decision lands in a short brief before it lands in code, so it can be argued with while changing it is still cheap.",
+    "Case-based learner. I build the realistic scenario, then learn whatever stack the scenario demands, rather than the other way round.",
+    "Explicit about gaps. I would rather write 'not yet' than overclaim and lose the reader at the first technical question.",
+    "Comfortable being corrected in public. That is most of the reason this site exists in its current form.",
+  ],
 };

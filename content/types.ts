@@ -130,6 +130,11 @@ export type CaseStudy = {
   demoNote?: string;
   /** One line of measurable outcome, shown on cards. */
   impact?: string;
+  /**
+   * Questions the note deliberately leaves open. Rendered at the end, before
+   * the invitation to disagree.
+   */
+  openQuestions?: string[];
   techGroups?: TechGroup[];
 
   /* --- the 19 case-study sections --- */
@@ -163,6 +168,13 @@ export type CaseStudy = {
     conclusion?: string;
   };
   solutionDesign?: { principles?: Point[]; flow?: string[] };
+  /**
+   * Approaches that were on the table at architecture level, with the case for
+   * and against each. Exists so a note cannot read as if one answer was
+   * obvious — the reader can see what was rejected and disagree with the
+   * rejection.
+   */
+  alternatives?: { option: string; caseFor: string; caseAgainst: string; verdict?: string }[];
   architecture?: {
     overview?: string;
     diagrams?: Diagram[];
@@ -222,13 +234,30 @@ export type WhyMe = {
   pillars: { num: string; title: string; body: string; tags: string[] }[];
 };
 
+/**
+ * About.
+ *
+ * Deliberately not a biography. The employment timeline and the org names were
+ * removed: they answered "where has he been", which is a question a CV answers
+ * and which this site does not need to. What replaces them answers "how does
+ * he think", which is the only thing a reader of an architecture notebook can
+ * actually use.
+ *
+ * `background` is the one concession to context, kept generic on purpose —
+ * industry and function, never an employer.
+ */
 export type About = {
   eyebrow: string;
   title: string;
   lede: string;
+  /** Why I find this work interesting. First person, no achievements. */
   paragraphs: string[];
-  timeline: { period: string; role: string; org: string; body: string; tags: string[]; current?: boolean }[];
-  credentials: { label: string; org: string; note: string }[];
+  /** Generic context only: sector and function, never an organisation. */
+  background: string[];
+  /** What each certification changed about the way I think — not the badge. */
+  certifications: { label: string; org: string; shaped: string; mindset: string }[];
+  /** How I approach a business problem, as a sequence. */
+  approach: NumberedPoint[];
   strengths: Point[];
   philosophy: NumberedPoint[];
   workingStyle: string[];

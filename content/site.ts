@@ -3,7 +3,7 @@ import type { Site, WhyMe, Service, Engagement } from "./types";
 
 export const site: Site = {
   "name": "Aleksandr Sletin",
-  "brandShort": "A. Sletin",
+  "brandShort": "Aleksandr Sletin",
   "role": "Independent AI Architecture Notebook",
   "tagline": "Notes on how enterprise AI problems get analysed before they get built",
   "positioning": "An open notebook on enterprise AI architecture. Each case note takes an operational problem apart — the questions worth asking, the constraints that actually bind, the trade-offs behind each decision — and leaves the reasoning visible so it can be argued with.",

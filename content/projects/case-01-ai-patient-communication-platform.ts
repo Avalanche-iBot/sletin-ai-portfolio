@@ -515,8 +515,34 @@ const caseStudy: CaseStudy = {
       "Everything — request, response, sources, tokens, cost, latency — is logged for audit and KPI reporting."
     ]
   },
+  "alternatives": [
+    {
+      "option": "Off-the-shelf chatbot product",
+      "verdict": "Set aside",
+      "caseFor": "Fastest route to something running, and the vendor carries the compliance burden for the conversational layer. For a group this size that is a real argument, because it removes an entire class of work.",
+      "caseAgainst": "The escalation threshold and the clinical-topic boundary are the two decisions that matter most here, and both sit inside the vendor product. Licensing also tends to scale with patient count rather than request volume, which is the wrong axis for a business whose growth is patients."
+    },
+    {
+      "option": "Single model behind a system prompt",
+      "verdict": "Set aside",
+      "caseFor": "By far the simplest thing to build and the most flexible. It handles the long tail of phrasing a classifier will miss, and it can be running in days rather than weeks.",
+      "caseAgainst": "Cost per request becomes unbounded and unpredictable. More seriously, I cannot see how to demonstrate after the fact that the medical-advice boundary held on a given day. The evidence would be a prompt and a hope, which is not something I would want to put in front of a regulator."
+    },
+    {
+      "option": "Deterministic automation only",
+      "verdict": "Partially adopted",
+      "caseFor": "Cheapest to run, fully auditable, and it genuinely covers the majority of traffic. If the volume estimates hold, most of the value is available without a model at all.",
+      "caseAgainst": "It leaves the free-text remainder with reception, and that remainder is where the current cost sits. It also degrades badly at the edges: a patient who phrases a routine request unusually gets a worse experience than before."
+    },
+    {
+      "option": "Hybrid router with grounded fallback",
+      "verdict": "Direction taken in this note",
+      "caseFor": "Keeps the deterministic path for the traffic that deserves it and confines the model to cases that genuinely need language understanding, which is also where cost can be bounded per request.",
+      "caseAgainst": "It is the most complex option to operate, and the routing layer becomes a single place where a misconfiguration is expensive. It also assumes the deterministic share is large enough to justify building two paths, which I have not verified."
+    }
+  ],
   "architecture": {
-    "overview": "Seven logical layers on Azure, chosen so that nothing new has to be introduced into an existing Microsoft estate. The orchestration layer is where the intellectual content of this architecture sits: it is the component that decides whether a request costs €0.00 or €0.03, and whether a human sees it.",
+    "overview": "One workable shape: seven logical layers on Azure, arranged so that nothing new has to be introduced into an existing Microsoft estate. Most of the intellectual content sits in the orchestration layer, since that is the component deciding whether a request costs nothing or costs money, and whether a human sees it. If I were wrong about anything structural here, I would expect it to be that layer.",
     "diagrams": [
       {
         "id": "system-overview",
@@ -711,6 +737,12 @@ const caseStudy: CaseStudy = {
       }
     ]
   },
+  "openQuestions": [
+    "The split between deterministic and free-text traffic drives the entire economic case, and I estimated it rather than measured it. If the deterministic share is materially below the figure assumed here, the hybrid router stops paying for itself and the simpler options become more attractive.",
+    "The confidence threshold for escalation is set at a plausible-sounding number. There is no calibration data behind it, and choosing it well probably requires a labelled set of real escalations that does not exist yet.",
+    "The per-request cost ceiling assumes token behaviour I have not tested in Italian. Non-English retrieval and generation frequently cost more per unit of meaning, and I do not know by how much here.",
+    "Whether patients will use an automated channel for anything beyond scheduling is an open behavioural question. Nothing in this note is evidence about it, and it is the assumption most likely to invalidate the whole thing."
+  ],
   "risks": [
     {
       "n": "1",

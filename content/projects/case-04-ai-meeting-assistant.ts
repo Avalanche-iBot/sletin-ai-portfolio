@@ -281,8 +281,28 @@ const caseStudy: CaseStudy = {
       "Audio and transcript are deleted at 30 days; confirmed commitments persist."
     ]
   },
+  "alternatives": [
+    {
+      "option": "Transcription vendor plus manual write-up",
+      "verdict": "Set aside",
+      "caseFor": "Almost no build cost, no consent architecture beyond what the vendor already handles, and the accuracy problem stays with a human who is accountable for it.",
+      "caseAgainst": "It leaves the actual work untouched. Someone still reads the transcript and decides what was committed to, which is the expensive part and the part being complained about."
+    },
+    {
+      "option": "Automatic extraction straight into the tracker",
+      "verdict": "Set aside",
+      "caseFor": "The only version that removes the manual step entirely, and the only one that would show a clean time saving.",
+      "caseAgainst": "A commitment attributed to the wrong person, or invented from a hypothetical remark, creates a real obligation in a real system. The failure mode is not a bad summary. It is a colleague being chased for something they never agreed to."
+    },
+    {
+      "option": "Extraction with a confirmation queue",
+      "verdict": "Direction taken in this note",
+      "caseFor": "Keeps a human between extraction and the tracker while still removing the reading and typing. Confirmation is also the cheapest available source of labelled data for improving extraction.",
+      "caseAgainst": "Queues that nobody clears are a well-known failure pattern. If confirmation is skipped under time pressure, the design collapses into the automatic option without anyone deciding that it should."
+    }
+  ],
   "architecture": {
-    "overview": "A consent-gated capture path, an asynchronous extraction pipeline, and a confirmation queue that is the only route into the project tracker.",
+    "overview": "One workable shape: a consent-gated capture path, an asynchronous extraction pipeline, and a confirmation queue that is the only route into the project tracker.",
     "diagrams": [
       {
         "id": "system-overview",
@@ -474,6 +494,12 @@ const caseStudy: CaseStudy = {
       }
     ]
   },
+  "openQuestions": [
+    "Speaker attribution accuracy in overlapping speech is the constraint the whole design rests on, and I have not tested it on realistic audio. If it is materially worse than assumed, the confirmation queue becomes too noisy to use.",
+    "Consent handling is described for one jurisdiction. A matrix organisation spanning several would need a different design, and I do not know how much of this one survives that.",
+    "People behave differently when recorded, and the value of the system depends on meetings staying candid. I have no way to estimate that effect from here.",
+    "Whether a confirmation queue would actually be cleared, rather than becoming a second backlog, is an adoption question this note does not answer."
+  ],
   "risks": [
     {
       "n": "01",

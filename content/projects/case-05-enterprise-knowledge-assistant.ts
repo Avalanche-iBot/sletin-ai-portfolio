@@ -284,8 +284,28 @@ const caseStudy: CaseStudy = {
     ],
     "conclusion": "Positioned as a retrieval assistant with citations, never as an authority. The architecture enforces that positioning rather than relying on interface wording."
   },
+  "alternatives": [
+    {
+      "option": "Enterprise search without generation",
+      "verdict": "Set aside",
+      "caseFor": "No hallucination surface at all, and for users who know roughly which document they want it is often faster than a conversational answer.",
+      "caseAgainst": "It does not help the case that motivates the project: someone who does not know which of forty documents contains the answer. Ranking a list is not the same as answering the question."
+    },
+    {
+      "option": "Index everything, filter at answer time",
+      "verdict": "Set aside",
+      "caseFor": "Much simpler ingestion, and permission logic lives in one place rather than being spread through the pipeline.",
+      "caseAgainst": "Content the user is not entitled to still influences retrieval and can leak through paraphrase even when the source is withheld. In an environment with commercially sensitive agreements, that is not a risk I would want to carry."
+    },
+    {
+      "option": "Permission-aware ingestion with revision resolution",
+      "verdict": "Direction taken in this note",
+      "caseFor": "Entitlement is enforced before content reaches the model, and answers resolve against the live revision rather than whatever was indexed. That is the single thing determining whether an engineer trusts the system twice.",
+      "caseAgainst": "It couples the pipeline tightly to the document system's permission model, which is rarely as clean as it looks from outside. Reindexing on permission change is an operational cost that grows with the estate."
+    }
+  ],
   "architecture": {
-    "overview": "Permission-aware ingestion into an index carrying asset, agreement and revision metadata; query-time security filtering; live revision resolution against the DMS; citation-first answer composition.",
+    "overview": "One workable shape: permission-aware ingestion into an index carrying asset, agreement and revision metadata; query-time security filtering; live revision resolution against the DMS; citation-first answer composition.",
     "diagrams": [
       {
         "id": "system-overview",
@@ -635,6 +655,12 @@ const caseStudy: CaseStudy = {
       }
     ]
   },
+  "openQuestions": [
+    "Whether live revision resolution can be kept genuinely live against a document system that was not designed to be queried this way. If it lags, the system confidently cites superseded revisions, which is worse than returning nothing.",
+    "Permission drift over time is not addressed. Entitlements change more often than reindexing schedules assume, and I have not proposed a mechanism that would catch a stale grant.",
+    "The assumption that engineers will use a system rather than ask a colleague is the weakest part of this note. Asking a colleague is fast, socially cheap and comes with accountability, and I have no evidence about what would displace it.",
+    "This is the case closest to my own working experience, which makes me more confident than the evidence here justifies. That is worth stating plainly."
+  ],
   "risks": [
     {
       "n": "01",
