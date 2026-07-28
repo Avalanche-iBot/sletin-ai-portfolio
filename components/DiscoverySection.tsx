@@ -80,31 +80,34 @@ export function DiscoverySection({ discovery }: { discovery: NonNullable<CaseStu
 
           <div className="grid gap-6 lg:grid-cols-3">
             {discovery.assumptions && discovery.assumptions.length > 0 && (
-              <section className="frame border-t-2 border-t-accent p-6">
+              <section className="frame p-6">
                 <p className="eyebrow mb-1">Working assumptions</p>
-                <p className="mb-4 text-[0.75rem] leading-snug text-ink-muted">
+                <p className="text-[0.75rem] leading-snug text-ink-muted">
                   Believed, not verified — each one is a test waiting to be run
                 </p>
+                <div className="mb-4 mt-3 h-px w-10 bg-accent" aria-hidden />
                 <BulletList items={discovery.assumptions} />
               </section>
             )}
 
             {discovery.businessRisks && discovery.businessRisks.length > 0 && (
-              <section className="frame border-t-2 border-t-line-strong p-6">
+              <section className="frame p-6">
                 <p className="eyebrow mb-1">Business risks surfaced</p>
-                <p className="mb-4 text-[0.75rem] leading-snug text-ink-muted">
+                <p className="text-[0.75rem] leading-snug text-ink-muted">
                   Consequences the business has to own, whatever the design
                 </p>
+                <div className="mb-4 mt-3 h-px w-10 bg-line-strong" aria-hidden />
                 <BulletList items={discovery.businessRisks} />
               </section>
             )}
 
             {discovery.technicalConstraints && discovery.technicalConstraints.length > 0 && (
-              <section className="frame border-t-2 border-t-line-strong p-6">
+              <section className="frame p-6">
                 <p className="eyebrow mb-1">Technical constraints revealed</p>
-                <p className="mb-4 text-[0.75rem] leading-snug text-ink-muted">
+                <p className="text-[0.75rem] leading-snug text-ink-muted">
                   Not negotiable — these decide what the architecture may be
                 </p>
+                <div className="mb-4 mt-3 h-px w-10 bg-line-strong" aria-hidden />
                 <BulletList items={discovery.technicalConstraints} />
               </section>
             )}

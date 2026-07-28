@@ -20,6 +20,13 @@ export type TocEntry = { id: string; label: string; group: string; number: strin
 export function CaseNoteToc({ entries }: { entries: TocEntry[] }) {
   const [activeId, setActiveId] = useState<string | null>(entries[0]?.id ?? null);
   const [openOnMobile, setOpenOnMobile] = useState(false);
+  /**
+   * A group the reader opened by hand. Scroll position decides which group is
+   * open by default, but an explicit click has to win — otherwise the panel
+   * collapses again the moment the observer fires, which is what made the
+   * group headers feel broken.
+   */
+  const [pinnedGroup, setPinnedGroup] = useState<string | null>(null);
 
   useEffect(() => {
     const nodes = entries
@@ -32,7 +39,12 @@ export function CaseNoteToc({ entries }: { entries: TocEntry[] }) {
         const visible = records
           .filter((r) => r.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]) setActiveId(visible[0].target.id);
+        if (visible[0]) {
+          const id = visible[0].target.id;
+          setActiveId(id);
+          const group = entries.find((e) => e.id === id)?.group;
+          setPinnedGroup((pinned) => (pinned && pinned === group ? null : pinned));
+        }
       },
       // Bias the band towards the upper third of the viewport, so the heading
       // the reader is actually looking at wins over a long section below it.
@@ -50,7 +62,8 @@ export function CaseNoteToc({ entries }: { entries: TocEntry[] }) {
     else groups.push({ name: e.group, items: [e] });
   }
 
-  const activeGroup = entries.find((e) => e.id === activeId)?.group ?? groups[0]?.name;
+  const scrolledGroup = entries.find((e) => e.id === activeId)?.group ?? groups[0]?.name;
+  const activeGroup = pinnedGroup ?? scrolledGroup;
 
   return (
     <>
@@ -93,15 +106,18 @@ export function CaseNoteToc({ entries }: { entries: TocEntry[] }) {
             const open = g.name === activeGroup;
             return (
               <li key={g.name}>
-                <p
+                <button
+                  type="button"
+                  onClick={() => setPinnedGroup(open ? null : g.name)}
+                  aria-expanded={open}
                   className={
                     open
-                      ? "font-mono text-micro uppercase tracking-[0.1em] text-accent-deep"
-                      : "font-mono text-micro uppercase tracking-[0.1em] text-ink-muted"
+                      ? "w-full text-left font-mono text-micro uppercase tracking-[0.1em] text-accent-deep"
+                      : "w-full text-left font-mono text-micro uppercase tracking-[0.1em] text-ink-muted transition-colors hover:text-ink-soft"
                   }
                 >
                   {g.name}
-                </p>
+                </button>
 
                 {open ? (
                   <ol className="mt-2 space-y-1.5 border-l border-line pl-3">
@@ -130,7 +146,13 @@ export function CaseNoteToc({ entries }: { entries: TocEntry[] }) {
                     })}
                   </ol>
                 ) : (
-                  <p className="mt-1 pl-3 text-[0.75rem] text-ink-muted">{g.items.length} sections</p>
+                  <button
+                    type="button"
+                    onClick={() => setPinnedGroup(g.name)}
+                    className="mt-1 block pl-3 text-[0.75rem] text-ink-muted transition-colors hover:text-ink-soft"
+                  >
+                    {g.items.length} {g.items.length === 1 ? "section" : "sections"}
+                  </button>
                 )}
               </li>
             );

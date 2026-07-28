@@ -1,33 +1,51 @@
 import { cx, SEVERITY_TONE } from "@/lib/format";
 import type { CaseStudy } from "@/content/types";
 
-export function KpiTable({ kpis }: { kpis: NonNullable<CaseStudy["kpis"]> }) {
+/**
+ * KPIs as grouped cards rather than a table.
+ *
+ * A five-column table forced the KPI name into a two-character-wide column and
+ * pushed the rationale off the page — the widest column carried the least
+ * information. Grouping by category also removes the repetition of the category
+ * on every row, and lets the reader take in one dimension of measurement at a
+ * time.
+ */
+export function KpiTable({ rows }: { rows: NonNullable<CaseStudy["kpis"]> }) {
+  const groups: { name: string; items: typeof rows }[] = [];
+  for (const r of rows) {
+    const last = groups[groups.length - 1];
+    if (last && last.name === r.category) last.items.push(r);
+    else groups.push({ name: r.category, items: [r] });
+  }
+
   return (
-    <div className="overflow-x-auto">
-      <table className="spec-table min-w-[640px]">
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>KPI</th>
-            <th>Baseline</th>
-            <th>Target</th>
-            <th>Why it matters</th>
-          </tr>
-        </thead>
-        <tbody>
-          {kpis.map((k, i) => (
-            <tr key={i}>
-              <td className="whitespace-nowrap font-mono text-micro uppercase tracking-[0.08em] text-ink-muted">
-                {k.category}
-              </td>
-              <td className="font-medium text-ink">{k.kpi}</td>
-              <td className="whitespace-nowrap font-mono text-spec text-ink-muted">{k.baseline}</td>
-              <td className="whitespace-nowrap font-mono text-spec text-accent-deep">{k.target}</td>
-              <td className="max-w-xs">{k.why}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="space-y-10">
+      {groups.map((g) => (
+        <section key={g.name}>
+          <div className="mb-4 flex items-baseline gap-3 border-b border-line pb-2">
+            <h3 className="eyebrow">{g.name}</h3>
+            <span className="font-mono text-micro text-ink-muted">{g.items.length}</span>
+          </div>
+
+          <div className="grid gap-x-8 gap-y-6 md:grid-cols-2 xl:grid-cols-3">
+            {g.items.map((r, i) => (
+              <article key={i}>
+                <p className="font-display text-base leading-snug text-ink">{r.kpi}</p>
+
+                <p className="mt-2 flex flex-wrap items-baseline gap-x-2 text-[0.8125rem]">
+                  <span className="text-ink-muted">{r.baseline}</span>
+                  <span aria-hidden className="text-ink-muted">
+                    →
+                  </span>
+                  <span className="font-medium text-accent-deep">{r.target}</span>
+                </p>
+
+                <p className="mt-2 text-[0.8125rem] leading-relaxed text-ink-soft">{r.why}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
     </div>
   );
 }

@@ -50,10 +50,10 @@ const SECTION_ORDER: { id: string; label: string; group: string; has: (p: CaseSt
   { id: "risks", label: "Risks", group: "Design", has: (p) => !!p.risks },
   { id: "kpis", label: "KPIs", group: "Design", has: (p) => !!p.kpis },
   { id: "roadmap", label: "Implementation Roadmap", group: "Design", has: (p) => !!p.roadmap },
-  { id: "reflection", label: "Reflection", group: "Sensitivity", has: (p) => !!p.lessonsLearned },
-  { id: "future", label: "Future Improvements", group: "Sensitivity", has: (p) => !!p.futureImprovements },
-  { id: "tailoring", label: "If Your Situation Differs", group: "Sensitivity", has: (p) => !!p.tailoring },
-  { id: "open-questions", label: "Open Questions", group: "Sensitivity", has: (p) => !p.tailoring && !!p.openQuestions },
+  { id: "reflection", label: "Reflection", group: "Transfer & Limits", has: (p) => !!p.lessonsLearned },
+  { id: "future", label: "Future Improvements", group: "Transfer & Limits", has: (p) => !!p.futureImprovements },
+  { id: "tailoring", label: "If Your Situation Differs", group: "Transfer & Limits", has: (p) => !!p.tailoring },
+  { id: "open-questions", label: "Open Questions", group: "Transfer & Limits", has: (p) => !p.tailoring && !!p.openQuestions },
 ];
 
 function buildSections(project: CaseStudy) {
@@ -292,14 +292,20 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               <PointList points={project.solutionDesign.principles} />
             </div>
           )}
+          {project.solutionDesign.flowDiagram && (
+            <div className="mt-2">
+              <DiagramView diagram={project.solutionDesign.flowDiagram} />
+            </div>
+          )}
+
           {project.solutionDesign.flow && (
             <div>
               <p className="eyebrow mb-4">End-to-end flow</p>
-              <ol className="max-w-reading space-y-3">
-                {project.solutionDesign.flow.map((step, i) => (
-                  <li key={i} className="flex gap-3">
-                    <span className="font-mono text-spec text-accent-deep">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="text-[0.9375rem] leading-relaxed text-ink-soft">{step}</span>
+              <ol className="space-y-2">
+                {project.solutionDesign.flow.map((f, i) => (
+                  <li key={i} className="grid gap-3 sm:grid-cols-[2.5rem_1fr]">
+                    <span className="font-mono text-micro text-ink-muted">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="text-[0.9375rem] leading-relaxed text-ink-soft">{f}</span>
                   </li>
                 ))}
               </ol>

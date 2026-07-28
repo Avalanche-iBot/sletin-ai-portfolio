@@ -1,5 +1,6 @@
 import { cx } from "@/lib/format";
 import type { Diagram, DiagramNode } from "@/content/types";
+import { BlockDiagramView } from "@/components/diagrams/BlockDiagram";
 
 function NodeChip({ node }: { node: DiagramNode }) {
   return (
@@ -187,16 +188,19 @@ function SequenceDiagram({ d }: { d: Extract<Diagram, { kind: "sequence" }> }) {
 
 export function DiagramView({ diagram }: { diagram: Diagram }) {
   return (
-    <figure>
-      <p className="mb-3 font-mono text-spec font-medium text-ink">{diagram.title}</p>
+    <figure className="space-y-3">
+      <figcaption className="font-mono text-micro uppercase tracking-[0.1em] text-ink-soft">
+        {diagram.title}
+      </figcaption>
+
+      {diagram.kind === "blocks" && <BlockDiagramView d={diagram} />}
       {diagram.kind === "layers" && <LayersDiagram d={diagram} />}
       {diagram.kind === "flow" && <FlowDiagram d={diagram} />}
       {diagram.kind === "pipeline" && <PipelineDiagram d={diagram} />}
       {diagram.kind === "sequence" && <SequenceDiagram d={diagram} />}
+
       {diagram.caption && (
-        <figcaption className="mt-3 max-w-reading text-[0.8125rem] leading-relaxed text-ink-muted">
-          {diagram.caption}
-        </figcaption>
+        <p className="max-w-reading text-[0.8125rem] leading-relaxed text-ink-muted">{diagram.caption}</p>
       )}
     </figure>
   );

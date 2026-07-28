@@ -501,16 +501,111 @@ const caseStudy: CaseStudy = {
         "d": "Prompt, retrieved sources, confidence, cost and outcome are persisted for every single interaction."
       }
     ],
-    "flow": [
-      "Patient message arrives on WhatsApp, web chat or the mobile app.",
-      "Channel adapter normalises it and resolves patient identity against the CRM.",
-      "Guardrails and content safety screen the input; prompt-injection patterns are rejected.",
-      "Intent classifier assigns a category and a confidence score.",
-      "Deterministic branch: cached FAQ or a CRM/booking skill answers with zero tokens.",
-      "LLM branch: retrieval over the approved knowledge base, then a grounded answer with citations.",
-      "Confidence gate: below threshold, or forbidden topic, or urgency detected → human escalation with full transcript.",
-      "Everything — request, response, sources, tokens, cost, latency — is logged for audit and KPI reporting."
-    ]
+    "flowDiagram": {
+      "id": "end-to-end",
+      "kind": "blocks",
+      "title": "End-to-end flow",
+      "caption": "The same path stated once, without branching detail. Identify, screen, classify, answer by the cheapest sufficient means, escalate if in doubt, record everything.",
+      "nodes": [
+        {
+          "id": "arrive",
+          "t": "Message arrives",
+          "col": 0,
+          "row": 0,
+          "sub": "three channels"
+        },
+        {
+          "id": "ident",
+          "t": "Identity resolved",
+          "col": 1,
+          "row": 0,
+          "sub": "against CRM"
+        },
+        {
+          "id": "screen",
+          "t": "Screened",
+          "col": 2,
+          "row": 0,
+          "sub": "content safety"
+        },
+        {
+          "id": "classify",
+          "t": "Classified",
+          "col": 3,
+          "row": 0,
+          "sub": "intent + confidence",
+          "accent": true
+        },
+        {
+          "id": "cheap",
+          "t": "Answered without a model",
+          "col": 1,
+          "row": 1,
+          "sub": "cache · CRM · booking"
+        },
+        {
+          "id": "model",
+          "t": "Answered from approved knowledge",
+          "col": 3,
+          "row": 1,
+          "sub": "retrieval + citation"
+        },
+        {
+          "id": "gate",
+          "t": "Escalated if in doubt",
+          "col": 2,
+          "row": 2,
+          "sub": "clinician",
+          "accent": true
+        },
+        {
+          "id": "record",
+          "t": "Recorded for audit",
+          "col": 0,
+          "row": 2,
+          "sub": "request · sources · cost",
+          "muted": true
+        }
+      ],
+      "edges": [
+        {
+          "from": "arrive",
+          "to": "ident"
+        },
+        {
+          "from": "ident",
+          "to": "screen"
+        },
+        {
+          "from": "screen",
+          "to": "classify"
+        },
+        {
+          "from": "classify",
+          "to": "cheap",
+          "label": "~75%"
+        },
+        {
+          "from": "classify",
+          "to": "model",
+          "label": "~25%"
+        },
+        {
+          "from": "model",
+          "to": "gate"
+        },
+        {
+          "from": "cheap",
+          "to": "record",
+          "dashed": true
+        },
+        {
+          "from": "gate",
+          "to": "record",
+          "dashed": true
+        }
+      ]
+    }
   },
   "technologySelection": [
     {
@@ -967,192 +1062,554 @@ const caseStudy: CaseStudy = {
     "diagrams": [
       {
         "id": "system-overview",
-        "kind": "layers",
+        "kind": "blocks",
         "title": "System overview",
-        "caption": "Seven layers, deliberately boring infrastructure. The orchestration layer holds all the routing intelligence.",
-        "rows": [
+        "caption": "Nine logical components. The orchestrator is the only place a routing decision is made, which is deliberate: one component to review, one place to change a threshold, one audit surface.",
+        "nodes": [
           {
-            "label": "Channels",
+            "id": "patient",
+            "t": "Patient channels",
+            "col": 0,
+            "row": 0,
+            "sub": "WhatsApp · web · mobile"
+          },
+          {
+            "id": "edge",
+            "t": "API gateway",
+            "col": 1,
+            "row": 0,
+            "sub": "rate limit · WAF"
+          },
+          {
+            "id": "identity",
+            "t": "Directory",
+            "col": 2,
+            "row": 0,
+            "sub": "staff identity · RBAC"
+          },
+          {
+            "id": "orch",
+            "t": "Orchestrator",
+            "col": 1,
+            "row": 1,
+            "sub": "routing · guardrails",
+            "accent": true
+          },
+          {
+            "id": "det",
+            "t": "Deterministic skills",
+            "col": 0,
+            "row": 2,
+            "sub": "CRM · booking · FAQ"
+          },
+          {
+            "id": "rag",
+            "t": "Retrieval",
+            "col": 1,
+            "row": 2,
+            "sub": "hybrid search"
+          },
+          {
+            "id": "llm",
+            "t": "Generation",
+            "col": 2,
+            "row": 2,
+            "sub": "two model tiers",
+            "accent": true
+          },
+          {
+            "id": "esc",
+            "t": "Escalation",
+            "col": 3,
+            "row": 2,
+            "sub": "to a clinician"
+          },
+          {
+            "id": "store",
+            "t": "Conversation & audit store",
+            "col": 1,
+            "row": 3,
+            "sub": "append-only",
+            "span": 2
+          }
+        ],
+        "groups": [
+          {
+            "label": "Entry",
             "nodes": [
-              { "t": "WhatsApp Business API" },
-              { "t": "Website chat" },
-              { "t": "Mobile app" },
-              { "t": "Voice", "sub": "phase 2", "muted": true },
-              { "t": "Teams", "sub": "staff" }
+              "patient",
+              "edge",
+              "identity"
             ]
           },
           {
-            "label": "Edge",
+            "label": "Answer paths",
             "nodes": [
-              { "t": "Azure API Management", "sub": "rate limit · WAF" },
-              { "t": "Entra ID", "sub": "OAuth 2.0 / OIDC" }
+              "det",
+              "rag",
+              "llm",
+              "esc"
             ]
+          }
+        ],
+        "edges": [
+          {
+            "from": "patient",
+            "to": "edge"
           },
           {
-            "label": "Orchestration",
-            "nodes": [
-              { "t": "FastAPI service", "accent": true },
-              { "t": "Guardrails + Content Safety", "accent": true },
-              { "t": "Intent classifier", "accent": true },
-              { "t": "Hybrid router", "accent": true },
-              { "t": "Escalation controller", "accent": true }
-            ]
+            "from": "edge",
+            "to": "identity",
+            "dashed": true,
+            "label": "authz"
           },
           {
-            "label": "AI services",
-            "nodes": [
-              { "t": "Azure OpenAI GPT-4.1", "sub": "complex" },
-              { "t": "GPT-4o mini", "sub": "simple / classify" },
-              { "t": "Azure AI Search", "sub": "hybrid + semantic" },
-              { "t": "Embedding", "sub": "text to vectors" }
-            ]
+            "from": "edge",
+            "to": "orch"
           },
           {
-            "label": "Async",
-            "nodes": [
-              { "t": "Azure Service Bus" },
-              { "t": "Celery workers", "sub": "OCR · embed · sync" }
-            ]
+            "from": "orch",
+            "to": "det",
+            "label": "~75%"
           },
           {
-            "label": "Data",
-            "nodes": [
-              { "t": "PostgreSQL", "sub": "conversations · audit" },
-              { "t": "Redis", "sub": "cache · sessions" },
-              { "t": "SharePoint", "sub": "source documents" },
-              { "t": "Blob Storage", "sub": "processed artefacts" }
-            ]
+            "from": "orch",
+            "to": "rag",
+            "label": "free text"
           },
           {
-            "label": "Systems of record",
-            "nodes": [
-              { "t": "Dynamics 365 CRM" },
-              { "t": "Appointment system" },
-              { "t": "Outlook" },
-              { "t": "Power BI" }
-            ]
+            "from": "rag",
+            "to": "llm"
           },
           {
-            "label": "Observability",
-            "nodes": [
-              { "t": "Azure Monitor" },
-              { "t": "Application Insights" },
-              { "t": "Cost & token dashboard" },
-              { "t": "Key Vault" }
-            ]
+            "from": "llm",
+            "to": "esc",
+            "label": "low conf."
+          },
+          {
+            "from": "orch",
+            "to": "store",
+            "dashed": true,
+            "label": "log"
           }
         ]
       },
       {
-        "id": "hybrid-routing",
-        "kind": "flow",
+        "id": "request-flow",
+        "kind": "blocks",
         "title": "Request flow — hybrid routing",
-        "caption": "The single most important diagram in this case. Roughly 70% of traffic terminates before it reaches a language model.",
-        "steps": [
-          { "t": "Inbound message (WhatsApp / web / app)" },
-          { "t": "Identity resolution (CRM lookup + verification)" },
-          { "t": "Guardrails (injection & safety screen)" },
-          { "t": "Intent classification (GPT-4o mini)" },
-          { "t": "Router decision (3 outcomes)" }
+        "caption": "Every branch that avoids the model costs nothing and cannot hallucinate. The confidence gate sits at the end of the path rather than the start, because it needs an answer to judge.",
+        "nodes": [
+          {
+            "id": "in",
+            "t": "Message in",
+            "col": 0,
+            "row": 0,
+            "sub": "normalised"
+          },
+          {
+            "id": "guard",
+            "t": "Guardrails",
+            "col": 1,
+            "row": 0,
+            "sub": "injection screen"
+          },
+          {
+            "id": "intent",
+            "t": "Intent classifier",
+            "col": 2,
+            "row": 0,
+            "sub": "label + confidence",
+            "accent": true
+          },
+          {
+            "id": "cache",
+            "t": "Cache",
+            "col": 0,
+            "row": 1,
+            "sub": "normalised intent"
+          },
+          {
+            "id": "skill",
+            "t": "Deterministic skill",
+            "col": 1,
+            "row": 1,
+            "sub": "CRM · booking"
+          },
+          {
+            "id": "retr",
+            "t": "Retrieval",
+            "col": 2,
+            "row": 1,
+            "sub": "approved corpus only"
+          },
+          {
+            "id": "gen",
+            "t": "Grounded answer",
+            "col": 3,
+            "row": 1,
+            "sub": "with citation"
+          },
+          {
+            "id": "gate",
+            "t": "Confidence gate",
+            "col": 2,
+            "row": 2,
+            "sub": "threshold",
+            "accent": true
+          },
+          {
+            "id": "send",
+            "t": "Answer sent",
+            "col": 1,
+            "row": 3
+          },
+          {
+            "id": "human",
+            "t": "Clinician",
+            "col": 3,
+            "row": 3,
+            "sub": "full transcript"
+          },
+          {
+            "id": "log",
+            "t": "Audit record",
+            "col": 0,
+            "row": 3,
+            "sub": "tokens · cost · sources",
+            "muted": true
+          }
         ],
-        "branches": [
+        "groups": [
           {
-            "at": "Router decision",
-            "when": "A · Deterministic (~55%)",
-            "then": "Redis / FAQ cache hit → Templated answer → 0 tokens · €0.00"
+            "label": "Zero-token path",
+            "nodes": [
+              "cache",
+              "skill"
+            ]
           },
           {
-            "at": "Router decision",
-            "when": "B · Transactional skill (~15%)",
-            "then": "CRM / booking API call → Confirmed action → Minimal tokens"
+            "label": "Model path",
+            "nodes": [
+              "retr",
+              "gen"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "from": "in",
+            "to": "guard"
           },
           {
-            "at": "Router decision",
-            "when": "C · Natural language (~30%)",
-            "then": "RAG retrieval → Grounded answer + citations → Confidence gate → Answer or escalate"
+            "from": "guard",
+            "to": "intent"
+          },
+          {
+            "from": "intent",
+            "to": "cache",
+            "label": "known"
+          },
+          {
+            "from": "cache",
+            "to": "skill"
+          },
+          {
+            "from": "intent",
+            "to": "retr",
+            "label": "free text"
+          },
+          {
+            "from": "retr",
+            "to": "gen"
+          },
+          {
+            "from": "gen",
+            "to": "gate"
+          },
+          {
+            "from": "gate",
+            "to": "send",
+            "label": "pass"
+          },
+          {
+            "from": "gate",
+            "to": "human",
+            "label": "below"
+          },
+          {
+            "from": "skill",
+            "to": "send"
+          },
+          {
+            "from": "send",
+            "to": "log",
+            "dashed": true
           }
         ]
       },
       {
         "id": "rag-pipeline",
-        "kind": "pipeline",
-        "title": "RAG ingestion & retrieval pipeline",
-        "caption": "300,000 clinical PDFs in SharePoint. Ingestion is fully asynchronous; retrieval is synchronous and must return in under 400 ms.",
-        "lanes": [
+        "kind": "blocks",
+        "title": "RAG ingestion and retrieval",
+        "caption": "Ingestion runs offline and once per document; retrieval runs on every free-text request. Separating them is what makes the latency budget achievable and the embedding cost amortisable.",
+        "nodes": [
           {
-            "steps": [
-              "1. SharePoint change feed: Detect new and modified documents; a named Knowledge Owner approves clinical content before it becomes eligible.",
-              "2. Extract & OCR: Azure Document Intelligence for scanned material; layout-aware extraction preserves tables and headings.",
-              "3. Chunk: Semantic chunking with heading-path metadata, locale tag and approval status. Chunks inherit document-level access labels.",
-              "4. Embed: the embedding model runs in batch on Service Bus queues. Cost per document is amortised, never on the user path.",
-              "5. Index: Azure AI Search — hybrid keyword + vector with semantic reranking. Versioned index allows atomic swap and rollback."
-            ],
-            "label": "Ingestion — asynchronous, nightly workers"
+            "id": "dms",
+            "t": "Document source",
+            "col": 0,
+            "row": 0,
+            "sub": "existing corpus"
           },
           {
-            "steps": [
-              "6. Query rewrite: Conversation-aware rewrite plus locale filter, executed by the cheap model.",
-              "7. Hybrid retrieve: Top-k with metadata filters: approved content only, correct language, patient's access scope.",
-              "8. Rerank & trim: Semantic rerank, then trim to a strict token budget. Only the passages needed — never the whole document.",
-              "9. Grounded generation: GPT-4.1 with a system prompt that forbids answering outside the retrieved context and requires citation.",
-              "10. Verify & gate: Citation check, confidence score, forbidden-topic check. Fail any of the three and the conversation escalates."
-            ],
-            "label": "Retrieval — synchronous, on the user path"
+            "id": "review",
+            "t": "Clinician approval",
+            "col": 1,
+            "row": 0,
+            "sub": "gate",
+            "accent": true
+          },
+          {
+            "id": "ocr",
+            "t": "Extract & OCR",
+            "col": 2,
+            "row": 0
+          },
+          {
+            "id": "chunk",
+            "t": "Chunk",
+            "col": 3,
+            "row": 0,
+            "sub": "with provenance"
+          },
+          {
+            "id": "embed",
+            "t": "Embed",
+            "col": 3,
+            "row": 1,
+            "sub": "batch, off-path"
+          },
+          {
+            "id": "index",
+            "t": "Search index",
+            "col": 2,
+            "row": 1,
+            "sub": "per locale"
+          },
+          {
+            "id": "q",
+            "t": "Patient question",
+            "col": 0,
+            "row": 2
+          },
+          {
+            "id": "qembed",
+            "t": "Embed query",
+            "col": 1,
+            "row": 2
+          },
+          {
+            "id": "rank",
+            "t": "Hybrid retrieve",
+            "col": 2,
+            "row": 2,
+            "sub": "keyword + vector"
+          },
+          {
+            "id": "ctx",
+            "t": "Top-k context",
+            "col": 3,
+            "row": 2,
+            "sub": "5 chunks"
+          },
+          {
+            "id": "answer",
+            "t": "Generation",
+            "col": 3,
+            "row": 3,
+            "sub": "cited answer",
+            "accent": true
+          }
+        ],
+        "groups": [
+          {
+            "label": "Ingestion — offline, once per document",
+            "nodes": [
+              "dms",
+              "review",
+              "ocr",
+              "chunk",
+              "embed",
+              "index"
+            ]
+          },
+          {
+            "label": "Retrieval — per request",
+            "nodes": [
+              "q",
+              "qembed",
+              "rank",
+              "ctx",
+              "answer"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "from": "dms",
+            "to": "review"
+          },
+          {
+            "from": "review",
+            "to": "ocr",
+            "label": "approved"
+          },
+          {
+            "from": "ocr",
+            "to": "chunk"
+          },
+          {
+            "from": "chunk",
+            "to": "embed"
+          },
+          {
+            "from": "embed",
+            "to": "index"
+          },
+          {
+            "from": "q",
+            "to": "qembed"
+          },
+          {
+            "from": "qembed",
+            "to": "rank"
+          },
+          {
+            "from": "index",
+            "to": "rank",
+            "dashed": true
+          },
+          {
+            "from": "rank",
+            "to": "ctx"
+          },
+          {
+            "from": "ctx",
+            "to": "answer"
           }
         ]
       },
       {
-        "id": "escalation-sequence",
-        "kind": "sequence",
+        "id": "escalation",
+        "kind": "blocks",
         "title": "Human-in-the-loop escalation",
-        "caption": "Escalation is designed, measured and reported as a KPI — not treated as a failure.",
-        "actors": [
-          "Patient",
-          "Orchestrator",
-          "AI layer",
-          "Administrator",
-          "Clinician"
+        "caption": "Three independent triggers, one path out. Escalation is designed as an ordinary outcome rather than an error case — the volume it produces is a staffing number, not an exception count.",
+        "nodes": [
+          {
+            "id": "ans",
+            "t": "Candidate answer",
+            "col": 0,
+            "row": 0
+          },
+          {
+            "id": "t1",
+            "t": "Confidence below threshold",
+            "col": 1,
+            "row": 0
+          },
+          {
+            "id": "t2",
+            "t": "Forbidden topic detected",
+            "col": 1,
+            "row": 1,
+            "accent": true
+          },
+          {
+            "id": "t3",
+            "t": "Urgency signal",
+            "col": 1,
+            "row": 2
+          },
+          {
+            "id": "queue",
+            "t": "Escalation queue",
+            "col": 2,
+            "row": 1,
+            "sub": "priority ordered",
+            "accent": true
+          },
+          {
+            "id": "clin",
+            "t": "Clinician",
+            "col": 3,
+            "row": 1,
+            "sub": "reviews and replies"
+          },
+          {
+            "id": "patient",
+            "t": "Patient informed",
+            "col": 3,
+            "row": 2,
+            "sub": "handover message"
+          },
+          {
+            "id": "label",
+            "t": "Labelled example",
+            "col": 3,
+            "row": 0,
+            "sub": "feeds calibration",
+            "muted": true
+          }
         ],
-        "messages": [
+        "groups": [
           {
-            "from": 0,
-            "to": 1,
-            "t": "\"Swelling after implant — normal?\""
+            "label": "Triggers — any one is sufficient",
+            "nodes": [
+              "t1",
+              "t2",
+              "t3"
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "from": "ans",
+            "to": "t1"
           },
           {
-            "from": 1,
-            "to": 2,
-            "t": "Classify + retrieve from approved corpus"
+            "from": "ans",
+            "to": "t2"
           },
           {
-            "from": 2,
-            "to": 1,
-            "t": "Answer draft · confidence 0.61 · clinical topic"
+            "from": "ans",
+            "to": "t3"
           },
           {
-            "from": 1,
-            "to": 1,
-            "t": "Confidence < 0.85 AND clinical → escalate"
+            "from": "t1",
+            "to": "queue"
           },
           {
-            "from": 1,
-            "to": 3,
-            "t": "Create escalation ticket in CRM with full transcript"
+            "from": "t2",
+            "to": "queue"
           },
           {
-            "from": 3,
-            "to": 4,
-            "t": "Assign to clinic clinician based on specialty & roster"
+            "from": "t3",
+            "to": "queue"
           },
           {
-            "from": 4,
-            "to": 3,
-            "t": "Approved response draft / direct contact"
+            "from": "queue",
+            "to": "clin"
           },
           {
-            "from": 3,
-            "to": 0,
-            "t": "Human-approved response delivered to patient"
+            "from": "queue",
+            "to": "patient",
+            "dashed": true,
+            "label": "immediately"
+          },
+          {
+            "from": "clin",
+            "to": "label",
+            "dashed": true
           }
         ]
       }

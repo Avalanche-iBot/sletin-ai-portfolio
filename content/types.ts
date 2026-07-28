@@ -58,7 +58,38 @@ export type DiagramLane = { label: string; steps: string[]; note?: string };
 /** One message in a sequence diagram. `from`/`to` index into `actors`. */
 export type DiagramMessage = { from: number; to: number; t: string; note?: string };
 
+/** A box on a block diagram, placed on a fixed grid. */
+export type BlockNodeDef = {
+  id: string;
+  t: string;
+  sub?: string;
+  /** 0-based grid position. */
+  col: number;
+  row: number;
+  /** Columns spanned, default 1. */
+  span?: number;
+  accent?: boolean;
+  muted?: boolean;
+};
+
+/** A dashed container drawn around a set of nodes. */
+export type BlockGroupDef = { label: string; nodes: string[] };
+
+/** A directed connector. `label` annotates the condition or payload. */
+export type BlockEdge = { from: string; to: string; label?: string; dashed?: boolean };
+
+export type BlockDiagram = {
+  id: string;
+  kind: "blocks";
+  title: string;
+  caption?: string;
+  nodes: BlockNodeDef[];
+  groups?: BlockGroupDef[];
+  edges: BlockEdge[];
+};
+
 export type Diagram =
+  | BlockDiagram
   | { id: string; kind: "layers"; title: string; caption?: string; rows: DiagramRow[] }
   | {
       id: string;
@@ -190,7 +221,7 @@ export type CaseStudy = {
     outOfScope?: string[];
     conclusion?: string;
   };
-  solutionDesign?: { principles?: Point[]; flow?: string[] };
+  solutionDesign?: { principles?: Point[]; flow?: string[]; flowDiagram?: Diagram };
   /**
    * Approaches that were on the table at architecture level, with the case for
    * and against each. Exists so a note cannot read as if one answer was
