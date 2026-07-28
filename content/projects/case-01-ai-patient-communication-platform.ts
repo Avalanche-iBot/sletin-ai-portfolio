@@ -802,35 +802,36 @@ const caseStudy: CaseStudy = {
       }
     ]
   },
-  "risks": {
-    "intro": "Every high-impact AI architecture carries systemic risks. In healthcare, these risks carry legal and ethical weights that require structural mitigation rather than operational patches.",
-    "items": [
-      {
-        "r": "Clinical hallucination",
-        "impact": "High",
-        "likelihood": "Low",
-        "mitigation": "Strict RAG grounding, zero free generation on medical topics, mandatory citations, and automated pre-output verification."
-      },
-      {
-        "r": "Unbounded token cost",
-        "impact": "Medium",
-        "likelihood": "Medium",
-        "mitigation": "Hybrid routing routing ~70% of traffic to cache/deterministic skills; strict prompt budgeting and model tiering (GPT-4o mini for classification)."
-      },
-      {
-        "r": "Data leakage under GDPR",
-        "impact": "High",
-        "likelihood": "Low",
-        "mitigation": "Azure OpenAI EU data residency, strict payload masking, no training on customer data, and end-to-end audit logging."
-      },
-      {
-        "r": "Administrator resistance",
-        "impact": "Medium",
-        "likelihood": "Medium",
-        "mitigation": "Positioning AI as a routine message filter rather than a replacement; involving front-desk staff directly in workflow design."
-      }
-    ]
-  },
+  "risks": [
+    {
+      "n": "1",
+      "risk": "Clinical hallucination",
+      "severity": "High",
+      "consequence": "Providing incorrect medical or post-operative guidance to patients.",
+      "mitigation": "Strict RAG grounding, zero free generation on medical topics, mandatory citations, and automated pre-output verification."
+    },
+    {
+      "n": "2",
+      "risk": "Unbounded token cost",
+      "severity": "Medium",
+      "consequence": "Excessive API consumption driving up operational expenses beyond budget limits.",
+      "mitigation": "Hybrid routing routing ~70% of traffic to cache/deterministic skills; strict prompt budgeting and model tiering (GPT-4o mini for classification)."
+    },
+    {
+      "n": "3",
+      "risk": "Data leakage under GDPR",
+      "severity": "High",
+      "consequence": "Potential exposure of sensitive personal health data outside of compliance boundaries.",
+      "mitigation": "Azure OpenAI EU data residency, strict payload masking, no training on customer data, and end-to-end audit logging."
+    },
+    {
+      "n": "4",
+      "risk": "Administrator resistance",
+      "severity": "Medium",
+      "consequence": "Low user adoption or pushback from front-desk personnel fearing job displacement.",
+      "mitigation": "Positioning AI as a routine message filter rather than a replacement; involving front-desk staff directly in workflow design."
+    }
+  ],
   "cost": {
     "model": "Hybrid CAPEX / OPEX structure aligned with enterprise procurement.",
     "capex": "€215,000 total implementation cost (integration, architecture, pilot build, security hardening).",
