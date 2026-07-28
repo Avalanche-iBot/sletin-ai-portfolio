@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { site, whyMe } from "@/content/site";
 import { caseStudies, totalPlannedCaseStudies } from "@/content/projects";
-import { learning } from "@/content/learning";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Section } from "@/components/Primitives";
 
@@ -96,31 +95,6 @@ export default function HomePage() {
               </ul>
             </div>
           ))}
-        </div>
-      </Section>
-
-      {/* Learning journey preview ------------------------------------------ */}
-      <Section eyebrow="Learning journey" title={learning.title} lede={learning.lede}>
-        <div className="grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-3">
-          <div className="bg-canvas p-6">
-            <p className="font-display text-2xl text-ink">{learning.totals.scheduled}h</p>
-            <p className="mt-1 font-mono text-micro uppercase tracking-[0.08em] text-ink-muted">
-              scheduled of {learning.totals.target}h target
-            </p>
-          </div>
-          <div className="bg-canvas p-6">
-            <p className="font-display text-2xl text-ink">{learning.totals.hoursPerWeek}h</p>
-            <p className="mt-1 font-mono text-micro uppercase tracking-[0.08em] text-ink-muted">study hours / week</p>
-          </div>
-          <div className="bg-canvas p-6">
-            <p className="font-display text-2xl text-ink">{learning.totals.sprintWeeks} wks</p>
-            <p className="mt-1 font-mono text-micro uppercase tracking-[0.08em] text-ink-muted">current sprint</p>
-          </div>
-        </div>
-        <div className="mt-8">
-          <Link href="/learning" className="btn btn-ghost">
-            See the full roadmap
-          </Link>
         </div>
       </Section>
 

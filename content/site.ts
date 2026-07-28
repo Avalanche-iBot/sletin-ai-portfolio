@@ -53,6 +53,13 @@ export const whyMe: WhyMe = {
   ]
 };
 
+/**
+ * Retained but no longer rendered.
+ *
+ * A services menu framed the site as a consulting offer, which is not what it
+ * is. The data is kept here so a services or rate page can be reintroduced
+ * later as a deliberate decision rather than rebuilt from nothing.
+ */
 export const services: Service[] = [
   {
     "t": "Enterprise AI Strategy",
@@ -134,7 +141,6 @@ export const nav = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/portfolio", label: "Case Notes" },
-  { href: "/learning", label: "Learning Journey" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ] as const;

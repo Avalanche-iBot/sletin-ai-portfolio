@@ -263,33 +263,6 @@ export type About = {
   workingStyle: string[];
 };
 
-export type SkillState = "solid" | "building" | "next" | "later";
-
-export type Learning = {
-  eyebrow: string;
-  title: string;
-  lede: string;
-  totals: {
-    target: number;
-    scheduled: number;
-    remaining: number;
-    sprintWeeks: number;
-    hoursPerWeek: number;
-  };
-  sprint: { label: string; weeks: string[] };
-  skills: {
-    name: string;
-    target: number;
-    scheduled: number;
-    /** Hours planned per sprint week, aligned with `sprint.weeks`. */
-    weeks: string[];
-    group: string;
-    state: SkillState;
-  }[];
-  tracks: { t: string; state: string; items: string[] }[];
-  milestones: { q: string; t: string; d: string }[];
-};
-
 export type Service = { t: string; d: string; tier: string };
 
 /** Packaged engagement — the structure a price list can slot into later. */

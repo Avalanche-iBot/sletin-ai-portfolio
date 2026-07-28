@@ -5,7 +5,7 @@ import { posts } from "@/content/blog";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://aleksandrsletin.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/about", "/portfolio", "/learning", "/blog", "/contact"].map((path) => ({
+  const staticRoutes = ["", "/about", "/portfolio", "/blog", "/contact"].map((path) => ({
     url: `${siteUrl}${path}`,
     lastModified: new Date(),
   }));
