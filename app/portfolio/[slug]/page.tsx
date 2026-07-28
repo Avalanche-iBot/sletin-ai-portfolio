@@ -90,18 +90,23 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       {project.executiveSummary && (
         <Section first eyebrow={num("Executive Summary")} title="The situation, in brief">
           <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
-            {project.executiveSummary.verdict && (
-            <p className="mb-8 border-l-2 border-accent pl-5 font-display text-xl leading-snug text-ink md:text-2xl">
-              {project.executiveSummary.verdict}
-            </p>
-          )}
-          <Prose text={project.executiveSummary.statement} />
+            <Prose text={project.executiveSummary.statement} />
+
+            {/* Verdict and facts share the right rail; the accent rule divides them
+                from the narrative rather than sitting inside it. */}
+            <div className="space-y-8">
+              {project.executiveSummary.verdict && (
+                <p className="border-l-2 border-accent pl-5 font-display text-xl leading-snug text-ink">
+                  {project.executiveSummary.verdict}
+                </p>
+              )}
             {project.executiveSummary.highlights && (
               <div className="frame p-6">
                 <p className="eyebrow mb-4">At a glance</p>
                 <FactGrid facts={project.executiveSummary.highlights} />
               </div>
             )}
+            </div>
           </div>
         </Section>
       )}

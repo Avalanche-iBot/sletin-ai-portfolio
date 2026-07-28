@@ -512,6 +512,430 @@ const caseStudy: CaseStudy = {
       "Everything — request, response, sources, tokens, cost, latency — is logged for audit and KPI reporting."
     ]
   },
+  "technologySelection": [
+    {
+      "layer": "Channels",
+      "choice": "WhatsApp Business API, web chat widget, existing mobile app",
+      "why": "Patients already use these; a new channel would have to earn its own adoption before the system could prove anything.",
+      "alt": "A dedicated patient portal — rejected: adoption cost exceeds the problem being solved."
+    },
+    {
+      "layer": "Edge",
+      "choice": "Azure API Management",
+      "why": "Rate limiting, WAF and a single audited entry point, all configuration rather than code.",
+      "alt": "A hand-rolled gateway in the application — rejected: puts security controls in the least reviewed part of the codebase."
+    },
+    {
+      "layer": "Identity",
+      "choice": "Microsoft Entra ID (existing tenant)",
+      "why": "Staff identity, groups and audit already exist and are already governed. Nothing to build, nothing new to breach.",
+      "alt": "A separate identity provider — rejected: a second source of truth for who works here is a liability, not a feature."
+    },
+    {
+      "layer": "Orchestration runtime",
+      "choice": "Python service on Azure App Service",
+      "why": "The routing logic is the intellectual core and changes most often; it belongs in ordinary application code that any developer can read.",
+      "alt": "A low-code workflow tool — rejected: the routing rules are the thing most likely to need review, and low-code makes review harder."
+    },
+    {
+      "layer": "Intent classification",
+      "choice": "A small hosted model with a constrained label set",
+      "why": "No training data exists at design time, and a constrained label set keeps the failure mode legible: a wrong label is visible in the log.",
+      "alt": "A fine-tuned classifier — better on cost and latency, but needs labelled data and someone to retrain it. Revisit once the escalation log provides labels."
+    },
+    {
+      "layer": "Deterministic skills",
+      "choice": "Direct CRM and scheduling calls, plus a curated answer set",
+      "why": "Roughly three quarters of volume is answerable by lookup. Every one of those served without a model is cost and latency removed, not optimised.",
+      "alt": "Routing everything through the model with a good prompt — rejected on cost and on auditability."
+    },
+    {
+      "layer": "Retrieval",
+      "choice": "Azure AI Search, hybrid keyword plus vector",
+      "why": "Managed, EU-resident, and hybrid retrieval handles the case where a patient uses the clinical term and the document uses the colloquial one.",
+      "alt": "A self-hosted vector database — cheaper per query at volume, but needs an operator. There isn't one."
+    },
+    {
+      "layer": "Embedding",
+      "choice": "A hosted embedding model, batch only",
+      "why": "Documents are embedded once on ingestion, never on the user path, so throughput matters and latency does not.",
+      "alt": "Embedding at query time for the corpus — rejected: pays the same cost repeatedly for an unchanging document set."
+    },
+    {
+      "layer": "Generation",
+      "choice": "Two tiers — a cheaper model for simple grounded answers, a stronger one for complex free-text",
+      "why": "The cost ceiling only holds if model choice is a routing decision rather than a global default.",
+      "alt": "A single strong model everywhere — simpler, and roughly triples per-request cost for no measurable quality gain on simple answers."
+    },
+    {
+      "layer": "Cache",
+      "choice": "Redis",
+      "why": "Identical questions arrive thousands of times a day. A cache hit is the cheapest correct answer available.",
+      "alt": "Application-level in-memory cache — rejected: cannot be shared across instances or invalidated centrally."
+    },
+    {
+      "layer": "Conversation and audit store",
+      "choice": "PostgreSQL",
+      "why": "Every request, response, cited source, token count and routing decision has to be queryable for audit. Relational is the right shape for that.",
+      "alt": "Document store — rejected: audit queries are relational by nature and the schema is stable."
+    },
+    {
+      "layer": "Async processing",
+      "choice": "Queue plus worker pool",
+      "why": "Ingestion, OCR and embedding are slow and bursty; keeping them off the request path is what makes the user-facing latency budget achievable.",
+      "alt": "Synchronous ingestion — rejected: couples document upload to patient response time for no reason."
+    },
+    {
+      "layer": "Document source",
+      "choice": "Existing SharePoint corpus",
+      "why": "Permissions and versioning already exist there. Copying documents elsewhere would create a second, quietly diverging truth.",
+      "alt": "A new managed document store — rejected: migration cost plus permanent synchronisation burden."
+    },
+    {
+      "layer": "Observability and cost",
+      "choice": "Platform monitoring plus a per-request cost and token dashboard",
+      "why": "A cost ceiling that nobody can see daily is not a constraint, it is a hope.",
+      "alt": "Monthly billing review — rejected: discovers an overrun a month after it started."
+    }
+  ],
+  "security": {
+    "posture": "The clinical boundary is the security boundary here. Most of the controls below exist to make one guarantee demonstrable after the fact: that the system did not produce clinical advice, and that anything approaching it reached a human. A control that cannot be evidenced in a log is not a control in this context — it is an intention.\n\nThe second organising idea is that almost nothing is built. Identity, permissions, audit and document versioning are inherited from an estate that is already governed. That is deliberate: inherited controls have an owner, a review cycle and someone who notices when they break.",
+    "controls": [
+      {
+        "t": "Identity inherited, not built",
+        "d": "Staff authentication, group membership and role assignment come from the existing directory. No separate user store, no separate password reset path, no second place for an ex-employee's access to survive."
+      },
+      {
+        "t": "Patient identity resolved, never asserted",
+        "d": "A message is bound to a patient record through the CRM, not through anything the sender claims. Where identity cannot be resolved with confidence, the request is treated as anonymous and no record-specific information is returned."
+      },
+      {
+        "t": "Corpus integrity as a clinical control",
+        "d": "Generation draws only from a corpus a clinician has approved. Ingestion is a reviewed process with a named owner, because in this design the approval step is the difference between a grounded answer and an unlicensed medical opinion."
+      },
+      {
+        "t": "Citation enforced at the output boundary",
+        "d": "An answer that cannot cite an approved source does not get sent. This is enforced after generation rather than requested in the prompt — a prompt is guidance, a check is a control."
+      },
+      {
+        "t": "Prompt-injection screening on input",
+        "d": "Instruction-shaped patterns in patient text are rejected before classification. Worth being honest about the limits: screening reduces exposure but does not eliminate it, which is part of why the model has no authority to act on anything."
+      },
+      {
+        "t": "No write authority from the model path",
+        "d": "The model can compose an answer. It cannot book, cancel, amend a record or send anything on its own. Every state change goes through a deterministic skill with its own validation."
+      },
+      {
+        "t": "Data minimisation into the model",
+        "d": "Only the fields a given intent needs are placed in the context window. Clinical history is never sent to answer an administrative question, which is both a privacy control and a cost control."
+      },
+      {
+        "t": "Immutable audit trail",
+        "d": "Request, routing decision, confidence score, retrieved sources, tokens, cost, latency and outcome are written append-only. The routing decision is logged because 'why did it not escalate' is the question that will actually be asked."
+      },
+      {
+        "t": "Right to erasure, designed rather than retrofitted",
+        "d": "Conversation records are keyed to the patient record so deletion is a defined operation. Derived artefacts — cache entries, embeddings of patient text — are enumerated at design time, because these are what erasure requests usually miss."
+      },
+      {
+        "t": "Secrets and network posture",
+        "d": "Keys in a managed vault with rotation, no credentials in configuration, private networking between application and data layers, and public exposure limited to the gateway."
+      },
+      {
+        "t": "EU residency as a constraint on the option set",
+        "d": "Data residency narrows which models and which retrieval services are available at all. Treated as a filter applied before evaluation, rather than a compliance question asked after a technology is chosen."
+      }
+    ]
+  },
+  "scalability": {
+    "body": "Worth stating plainly, because it changes what this section is about: this system is not under load. Five thousand messages a day, concentrated into working hours, is on the order of one or two requests per second at peak. Doubling the clinic count and adding another country leaves it in the same order of magnitude. Any competent stateless service handles that on modest infrastructure.\n\nSo the scaling risks here are not throughput risks. They are corpus risks, locale risks and configuration risks — and the reason to say so is that 'scalability' sections tend to default to autoscaling and load balancers, which would be effort spent on the one dimension that is not actually threatened.\n\nThe dimension that does scale badly is the knowledge base: three hundred thousand documents today, growing, and re-embedding the whole corpus is a real cost every time the embedding model or the chunking strategy changes. That is the constraint worth designing around.",
+    "levers": [
+      {
+        "t": "Stateless request path",
+        "d": "Sessions in Redis, not in process memory, so instances can be added, replaced or moved without affecting an in-flight conversation. This is cheap to do at the start and expensive to retrofit."
+      },
+      {
+        "t": "Ingestion decoupled from serving",
+        "d": "Corpus growth consumes worker capacity, not response time. A large document import cannot degrade patient-facing latency because the two never share a path."
+      },
+      {
+        "t": "Corpus partitioned by locale from day one",
+        "d": "Italian, English and anticipated French are separate indexes rather than a language field in one index. Retrieval quality degrades when languages share an index, and the France expansion is planned rather than hypothetical."
+      },
+      {
+        "t": "Incremental re-embedding",
+        "d": "Content-hash tracking per chunk so that changing one document re-embeds one document. Without this, every chunking change becomes a full-corpus reprocessing job and effectively never happens."
+      },
+      {
+        "t": "Cache keyed on normalised intent, not raw text",
+        "d": "Thousands of phrasings of the same question collapse to one cache entry. This is the single largest lever on both cost and tail latency, and it improves as volume grows."
+      },
+      {
+        "t": "Per-clinic configuration as data",
+        "d": "Opening hours, services, pricing and escalation contacts live in configuration, not in prompts or code. Adding the thirty-ninth clinic must be an administrative action, not a deployment."
+      },
+      {
+        "t": "Provider rate limits treated as a design constraint",
+        "d": "Model quota, not compute, is the realistic bottleneck. The router degrades deliberately under quota pressure — cheaper tier first, then deterministic-only, then human — rather than failing."
+      },
+      {
+        "t": "Escalation capacity as the real ceiling",
+        "d": "The system can scale faster than the humans behind it. Escalation volume needs a monitored ceiling, because a queue nobody can clear is worse for a patient than a slow first response."
+      }
+    ]
+  },
+  "costOptimization": {
+    "body": "The cost ceiling only holds because most requests never reach a model. That is the whole economic argument, and it is worth separating two numbers that get conflated.\n\nCost per model-path request is the figure quoted below: roughly €0.03. Cost per inbound message is far lower, because only the free-text remainder — on the order of a quarter of volume — takes that path at all. Blended across everything arriving, the expected figure is closer to €0.008.\n\nThe €0.03 is a point estimate inside a range, not a measurement. It moves with model tier, how much retrieved context is packed into the prompt, answer length, and language: Italian text is generally less token-efficient than English, which pushes the same answer up the range. Realistically the band is €0.012 to €0.075 per model-path request — the low end being a cheaper tier answering a short grounded question, the high end being the strongest tier with a long context and a detailed answer. Anything above that band means the prompt is carrying context nobody reads, and that is a design defect rather than a pricing problem.\n\nOne caution on the figure: it is anchored to hosted model pricing as it stood in mid-2026. Token prices have fallen consistently, so treat the formula and the token counts as the durable part and the euro figure as something to recompute.",
+    "model": [
+      {
+        "k": "Formula",
+        "v": "(input tokens x price_in) + (output tokens x price_out) + retrieval query cost"
+      },
+      {
+        "k": "Input tokens, assumed",
+        "v": "~2,500 — system instructions, conversation turn, five retrieved chunks"
+      },
+      {
+        "k": "Output tokens, assumed",
+        "v": "~350 — a grounded answer with citation, not an essay"
+      },
+      {
+        "k": "Retrieval",
+        "v": "One hybrid query per request, cost roughly an order of magnitude below generation"
+      },
+      {
+        "k": "Point estimate",
+        "v": "~€0.03 per model-path request"
+      },
+      {
+        "k": "Plausible range",
+        "v": "€0.012 – €0.075, driven by model tier, context length and language"
+      },
+      {
+        "k": "Blended per inbound message",
+        "v": "~€0.008, since ~75% never reach a model"
+      },
+      {
+        "k": "Price basis",
+        "v": "Hosted mid-tier model pricing, mid-2026 — recompute rather than trust"
+      }
+    ],
+    "levers": [
+      {
+        "n": "01",
+        "t": "Do not use a model where a lookup will do",
+        "d": "Opening hours, a listed price, an appointment change. These are database questions. Answering them with a language model costs money, adds latency and introduces a failure mode that did not need to exist."
+      },
+      {
+        "n": "02",
+        "t": "Cache on normalised intent",
+        "d": "The same question arrives in hundreds of phrasings. Caching the raw string catches almost nothing; caching the resolved intent plus its parameters catches most of it. Largest single lever in the design."
+      },
+      {
+        "n": "03",
+        "t": "Route between model tiers",
+        "d": "A short grounded answer does not need the strongest model available. Tier selection by intent complexity is where a large share of the saving lives, and it costs nothing but a routing rule."
+      },
+      {
+        "n": "04",
+        "t": "Constrain prompt length deliberately",
+        "d": "Retrieved context is the largest and least disciplined part of the prompt. Five well-ranked chunks beat twenty mediocre ones on both accuracy and cost — retrieval quality is a cost lever, not only a quality lever."
+      },
+      {
+        "n": "05",
+        "t": "Invest in retrieval to spend less on generation",
+        "d": "Better ranking means less context needed for the same answer quality. This is the least obvious lever and one of the most effective: money spent on retrieval reduces money spent per request forever."
+      },
+      {
+        "n": "06",
+        "t": "Batch everything the user is not waiting for",
+        "d": "OCR, chunking and embedding run on queues, off-peak. Amortised across the corpus lifetime rather than paid on the request path."
+      },
+      {
+        "n": "07",
+        "t": "Re-embed incrementally",
+        "d": "Content hashing per chunk so a changed document costs one document. Without it, every improvement to chunking implies reprocessing the whole corpus, which means the improvement never ships."
+      },
+      {
+        "n": "08",
+        "t": "Tier the audit store",
+        "d": "Recent conversations stay queryable and fast; older records move to cheap storage while remaining retrievable for the retention period. Audit obligations do not require hot storage."
+      },
+      {
+        "n": "09",
+        "t": "Make cost observable daily, by dimension",
+        "d": "Cost per request, per intent, per model tier, per clinic. A monthly invoice discovers an overrun four weeks late. This is the control that turns the ceiling from an aspiration into a constraint."
+      },
+      {
+        "n": "10",
+        "t": "Set a hard per-request ceiling in code",
+        "d": "A request that would exceed its token budget degrades — shorter context, cheaper tier, or escalation — instead of quietly costing ten times the estimate. Budgets that exist only in a spreadsheet are not budgets."
+      }
+    ]
+  },
+  "kpis": [
+    {
+      "category": "Business",
+      "kpi": "Median first-response time",
+      "baseline": "~12 min",
+      "target": "< 30 sec",
+      "why": "The complaint that started the project. Median rather than mean, because the mean hides the cases that generate escalation."
+    },
+    {
+      "category": "Business",
+      "kpi": "Requests resolved without human involvement",
+      "baseline": "~0%",
+      "target": "≥ 65% by month six",
+      "why": "The direct measure of whether the deterministic layer is doing the work the economic case assumes it does."
+    },
+    {
+      "category": "Business",
+      "kpi": "Cost per resolved request",
+      "baseline": "Current cost, established in month one",
+      "target": "−40%",
+      "why": "Per-resolved rather than per-request: a cheap answer that fails and returns is not a saving. Expressed as a reduction because the absolute baseline has to be measured, not asserted."
+    },
+    {
+      "category": "Business",
+      "kpi": "Administrative hours per clinic per week",
+      "baseline": "Established in month one",
+      "target": "−50%",
+      "why": "The outcome leadership actually bought: growth to 80 clinics without proportional admin headcount."
+    },
+    {
+      "category": "Business",
+      "kpi": "Clinician time spent on scheduling",
+      "baseline": "Established in month one",
+      "target": "Near zero",
+      "why": "Clinicians absorbing organisational work was a stated driver. If this does not move, the project missed one of its two reasons for existing."
+    },
+    {
+      "category": "Safety",
+      "kpi": "Missed escalations",
+      "baseline": "No baseline — first month establishes it",
+      "target": "Zero tolerated; any instance triggers review",
+      "why": "The one metric that can end the project. A clinical question answered instead of escalated is the failure this whole architecture exists to prevent. Measured by clinician review of a sampled audit set, not by self-report."
+    },
+    {
+      "category": "Safety",
+      "kpi": "False escalations",
+      "baseline": "No baseline",
+      "target": "< 15%",
+      "why": "Deliberately loose. Over-escalation costs staff time; under-escalation costs a patient. The asymmetry belongs in the target, not in a comment."
+    },
+    {
+      "category": "Safety",
+      "kpi": "Forbidden-topic containment",
+      "baseline": "No baseline",
+      "target": "100%",
+      "why": "Diagnosis, dosage and treatment guidance must never be generated. Not a quality metric — a binary compliance one."
+    },
+    {
+      "category": "Safety",
+      "kpi": "Unsupported-claim rate",
+      "baseline": "No baseline",
+      "target": "< 1% of sampled answers",
+      "why": "Replaces 'hallucination rate', which is unmeasurable without a definition. Defined here as a claim not entailed by the cited source, assessed by manual review of a weekly sample."
+    },
+    {
+      "category": "Answer quality",
+      "kpi": "Citation correctness",
+      "baseline": "No baseline",
+      "target": "≥ 98%",
+      "why": "Whether the cited document actually contains the answer. Distinct from retrieval precision: a system can retrieve well and cite the wrong one of the retrieved documents."
+    },
+    {
+      "category": "Answer quality",
+      "kpi": "Intent classification accuracy",
+      "baseline": "No baseline",
+      "target": "≥ 95%",
+      "why": "Misclassification is how a clinical question ends up on the administrative path. This metric is upstream of the safety metrics, which is why it is watched separately."
+    },
+    {
+      "category": "Answer quality",
+      "kpi": "Retrieval recall at 5",
+      "baseline": "No baseline",
+      "target": "≥ 90%",
+      "why": "Whether the answer is present in the top five chunks at all. If it is not, no amount of generation quality recovers it."
+    },
+    {
+      "category": "Answer quality",
+      "kpi": "Answer edit rate on escalated cases",
+      "baseline": "No baseline",
+      "target": "Downward trend",
+      "why": "How much staff change the drafted answer before sending. The cheapest ongoing signal of real quality, and it needs no annotation effort."
+    },
+    {
+      "category": "Latency & reliability",
+      "kpi": "p95 end-to-end response time",
+      "baseline": "No baseline",
+      "target": "< 3 sec",
+      "why": "p95 rather than average: the average is dominated by cache hits and would look excellent while a fifth of patients wait."
+    },
+    {
+      "category": "Latency & reliability",
+      "kpi": "p95 on the deterministic path",
+      "baseline": "No baseline",
+      "target": "< 500 ms",
+      "why": "Three quarters of traffic takes this path. If it is not fast, the headline latency figure is meaningless."
+    },
+    {
+      "category": "Latency & reliability",
+      "kpi": "Availability of the patient-facing path",
+      "baseline": "No baseline",
+      "target": "99.9%",
+      "why": "Largely inherited from managed services rather than engineered. Worth stating so the number is not read as an achievement."
+    },
+    {
+      "category": "Latency & reliability",
+      "kpi": "Integration failure rate",
+      "baseline": "No baseline",
+      "target": "< 0.5%",
+      "why": "CRM and scheduling calls are where the deterministic path breaks. A failure here silently pushes volume onto the expensive path."
+    },
+    {
+      "category": "Cost control",
+      "kpi": "Cost per model-path request",
+      "baseline": "No baseline",
+      "target": "≤ €0.03, alert at €0.045",
+      "why": "The operating constraint expressed as a monitored figure. An alert threshold below the ceiling, because discovering the breach at the ceiling is discovering it late."
+    },
+    {
+      "category": "Cost control",
+      "kpi": "Share of traffic reaching a model",
+      "baseline": "No baseline",
+      "target": "≤ 30%",
+      "why": "The single number the entire economic case rests on. If it drifts upward, the architecture needs revisiting, not the budget."
+    },
+    {
+      "category": "Cost control",
+      "kpi": "Cache hit rate on repeated intents",
+      "baseline": "No baseline",
+      "target": "≥ 60%",
+      "why": "Direct measure of the largest cost lever. Should improve over time; if it does not, intent normalisation is not working."
+    },
+    {
+      "category": "Adoption",
+      "kpi": "Escalations handled inside the system",
+      "baseline": "No baseline",
+      "target": "≥ 90%",
+      "why": "Replaces a generic staff-adoption figure. If staff work around the interface, the audit trail has holes and every safety metric above becomes unreliable."
+    },
+    {
+      "category": "Adoption",
+      "kpi": "Patient satisfaction on completed interactions",
+      "baseline": "~0.82 CSAT",
+      "target": "> 0.90",
+      "why": "Per-interaction CSAT rather than NPS. NPS moves with pricing, clinical outcomes and parking; it cannot be attributed to this system."
+    },
+    {
+      "category": "Adoption",
+      "kpi": "Repeat use of the automated channel",
+      "baseline": "No baseline",
+      "target": "Upward trend",
+      "why": "Whether patients come back to it voluntarily. The behavioural assumption underneath the whole business case, and the one nothing in the design can prove in advance."
+    }
+  ],
   "alternatives": [
     {
       "option": "Off-the-shelf chatbot product",
