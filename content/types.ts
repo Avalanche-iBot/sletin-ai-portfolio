@@ -1,274 +1,140 @@
-/**
- * CONTENT SCHEMA — the single contract between content and presentation.
- *
- * Adding a case study = adding one file under content/projects/ that satisfies
- * `CaseStudy`, then registering it in content/projects/index.ts. No page,
- * route or component needs to change.
- *
- * Every narrative section is optional so a case study can be published in
- * "Draft" state with metadata only, and filled in section by section. The page
- * template renders a section if and only if its content exists.
- */
+// Generated content module. Edit freely — this is the CMS layer.
+import type { Site, WhyMe, Service, Engagement } from "./types";
 
-/* ------------------------------------------------------------------ atoms */
-
-/** Key/value pair, used for spec panels and fact grids. */
-export type Fact = { k: string; v: string };
-
-/** Title + description pair, used for principles, controls, levers, strengths. */
-export type Point = { t: string; d: string };
-
-/** Numbered title + description, where the order carries meaning. */
-export type NumberedPoint = { n: string; t: string; d: string };
-
-export type Status = "Draft" | "Discovery" | "In design" | "MVP in build" | "Live" | "Archived";
-
-/** 1–5. Drives the complexity meter on cards and the case header. */
-export type Complexity = 1 | 2 | 3 | 4 | 5;
-
-/* -------------------------------------------------------------- diagrams */
-
-export type DiagramNode = {
-  t: string;
-  /** Secondary line inside the node (protocol, model name, "phase 2"). */
-  sub?: string;
-  /** Highlights the node as part of the system's decision-making core. */
-  accent?: boolean;
-  /** Renders the node dashed — planned, deferred or external. */
-  muted?: boolean;
+export const site: Site = {
+  "name": "Aleksandr Sletin",
+  "brandShort": "A. Sletin",
+  "role": "AI Architecture Portfolio",
+  "tagline": "Designing Enterprise AI Systems That Solve Real Business Problems",
+  "positioning": "Engineering and project-delivery background in energy and industrial operations. PMP certified. Now designing enterprise AI architectures — where the hard part is not the model, but the questions you ask before you choose one.",
+  "location": "Milan, Italy",
+  "email": "alexander.slyotin@gmail.com",
+  "phone": "+39 371 469 0274",
+  "github": "https://github.com/Avalanche-iBot",
+  "linkedin": "https://linkedin.com/in/aleksandrsletin1995",
+  "availability": "Knowledge sharing, not consulting advice"
 };
 
-/** Horizontal band of a layered architecture view. */
-export type DiagramRow = { label: string; nodes: DiagramNode[] };
-
-/** One numbered step in a request/decision flow. */
-export type DiagramStep = { t: string; d?: string; accent?: boolean };
-
-/** A conditional branch off a flow, e.g. "confidence < 0.75 → escalate". */
-export type DiagramBranch = { at: string; when: string; then: string };
-
-/** Vertical stage of a pipeline (ingestion, retrieval, generation). */
-export type DiagramLane = { label: string; steps: string[]; note?: string };
-
-/** One message in a sequence diagram. `from`/`to` index into `actors`. */
-export type DiagramMessage = { from: number; to: number; t: string; note?: string };
-
-export type Diagram =
-  | { id: string; kind: "layers"; title: string; caption?: string; rows: DiagramRow[] }
-  | {
-      id: string;
-      kind: "flow";
-      title: string;
-      caption?: string;
-      steps: DiagramStep[];
-      branches?: DiagramBranch[];
+export const whyMe: WhyMe = {
+  "eyebrow": "Why this background is unusual",
+  "title": "Most AI architecture candidates have never sat in the room where the budget is decided.",
+  "body": "I did not come to AI from a computer-science degree. I came from industrial operations, cost reports and steering committees — which means I have spent years translating between people who own a technical system and people who own its budget. That translation layer is exactly where enterprise AI projects succeed or quietly die.",
+  "pillars": [
+    {
+      "num": "01",
+      "title": "Industrial domain depth",
+      "body": "Petroleum engineering MSc, field engineering experience, and several years of operational work inside large international industrial organisations. I understand P&IDs, inspection reports and asset data — and why an engineer will not trust a system that cannot show its source.",
+      "tags": [
+        "Oil & Gas",
+        "Industrial ops",
+        "Asset data"
+      ]
+    },
+    {
+      "num": "02",
+      "title": "Delivery discipline",
+      "body": "PMP certified. Five AI projects managed end-to-end at an AI company, plus a full ERP rollout. Scope, budget, stakeholders, phased rollout — the unglamorous part that decides whether an architecture ever reaches production.",
+      "tags": [
+        "PMP",
+        "Agile / Scrum",
+        "Cost control"
+      ]
+    },
+    {
+      "num": "03",
+      "title": "Architecture-first thinking",
+      "body": "Every case study here starts with Discovery, not with a model choice. Make-vs-buy, hybrid deterministic + LLM routing, RAG boundaries, cost per request, GDPR posture. The architecture is the deliverable — code is the consequence.",
+      "tags": [
+        "Solution design",
+        "Azure",
+        "RAG & agents"
+      ]
     }
-  | { id: string; kind: "pipeline"; title: string; caption?: string; lanes: DiagramLane[] }
-  | {
-      id: string;
-      kind: "sequence";
-      title: string;
-      caption?: string;
-      actors: string[];
-      messages: DiagramMessage[];
-    };
-
-/* ------------------------------------------------------- case study body */
-
-export type TechGroup = { group: string; items: string[] };
-
-export type Stakeholder = {
-  role: string;
-  interest: string;
-  concern: string;
-  /**
-   * Why this stakeholder matters to the architecture, not their place on the
-   * org chart. Free text so it can name the actual gate: "Budget gate",
-   * "Compliance gate", "Veto power", "Adoption make-or-break".
-   */
-  influence: string;
+  ]
 };
 
-/** One stakeholder interview: what was asked, what came back. */
-export type DiscoveryGroup = {
-  audience: string;
-  goal: string;
-  questions: string[];
-  answers: string[];
-};
+export const services: Service[] = [
+  {
+    "t": "Enterprise AI Strategy",
+    "d": "Opportunity mapping, make-vs-buy evaluation, prioritised AI portfolio with a defensible business case.",
+    "tier": "Advisory"
+  },
+  {
+    "t": "AI Solution Architecture",
+    "d": "Target architecture, integration boundaries, security and cost model, HLD and ADRs.",
+    "tier": "Core"
+  },
+  {
+    "t": "RAG Solutions",
+    "d": "Retrieval design over your own documents: chunking, embeddings, vector store, citations, reindexing.",
+    "tier": "Core"
+  },
+  {
+    "t": "LLM Integration",
+    "d": "Model selection and routing, prompt architecture, guardrails, evaluation and observability.",
+    "tier": "Core"
+  },
+  {
+    "t": "Business Process Automation",
+    "d": "Process mapping, deterministic-first automation, human-in-the-loop design.",
+    "tier": "Delivery"
+  },
+  {
+    "t": "Workflow Automation",
+    "d": "n8n / Make / Power Platform orchestration connecting existing enterprise systems.",
+    "tier": "Delivery"
+  },
+  {
+    "t": "AI Consulting",
+    "d": "Discovery workshops, architecture review, risk and cost assessment of an existing AI initiative.",
+    "tier": "Advisory"
+  },
+  {
+    "t": "Digital Transformation",
+    "d": "ERP and data-platform adjacent programmes, phased rollout and change management.",
+    "tier": "Advisory"
+  }
+];
 
-export type CaseStudy = {
-  /* --- identity & metadata (required) --- */
-  slug: string;
-  order: number;
-  title: string;
-  subtitle: string;
-  industry: string;
-  domain: string;
-  status: Status;
-  architectureComplexity: Complexity;
-  shortSummary: string;
-  tags: string[];
-  featured: boolean;
+export const engagements: Engagement[] = [
+  {
+    "t": "Discovery Sprint",
+    "len": "1–2 weeks",
+    "d": "Stakeholder interviews, process and data assessment, AI viability verdict, scoped use cases.",
+    "out": [
+      "Discovery report",
+      "Prioritised use cases",
+      "Go / no-go recommendation"
+    ]
+  },
+  {
+    "t": "Architecture Package",
+    "len": "2–4 weeks",
+    "d": "Target architecture with technology selection, security posture, cost model and phased roadmap.",
+    "out": [
+      "Solution architecture diagram",
+      "HLD + ADRs",
+      "Cost & KPI model",
+      "Implementation roadmap"
+    ]
+  },
+  {
+    "t": "Proof of Value",
+    "len": "4–8 weeks",
+    "d": "Working thin-slice implementation against real data with measured KPIs.",
+    "out": [
+      "Working MVP",
+      "Evaluation harness",
+      "Pilot report"
+    ]
+  }
+];
 
-  /* --- optional metadata --- */
-  /** Marks the one case study used as the site's reference deliverable. */
-  flagship?: boolean;
-  client?: string;
-  clientNote?: string;
-  statusNote?: string;
-  complexityLabel?: string;
-  duration?: string;
-  role?: string;
-  githubUrl?: string;
-  liveDemoUrl?: string;
-  demoNote?: string;
-  /** One line of measurable outcome, shown on cards. */
-  impact?: string;
-  techGroups?: TechGroup[];
-
-  /* --- the 19 case-study sections --- */
-  executiveSummary?: { statement: string; highlights?: Fact[] };
-  businessContext?: {
-    narrative: string;
-    companyFacts?: Fact[];
-    drivers?: string[];
-    constraints?: string[];
-    existingStack?: string[];
-  };
-  stakeholders?: Stakeholder[];
-  discovery?: {
-    intro?: string;
-    groups: DiscoveryGroup[];
-    assumptions?: string[];
-    implications?: { finding: string; implication: string }[];
-    businessRisks?: string[];
-    technicalConstraints?: string[];
-  };
-  analysis?: {
-    aiNeeded?: { verdict: string; body: string };
-    automationAlternative?: {
-      verdict: string;
-      canAutomate?: string[];
-      cannotAutomate?: string[];
-      body?: string;
-    };
-    valueAreas?: string[];
-    outOfScope?: string[];
-    conclusion?: string;
-  };
-  solutionDesign?: { principles?: Point[]; flow?: string[] };
-  architecture?: {
-    overview?: string;
-    diagrams?: Diagram[];
-    layers?: { name: string; why: string }[];
-  };
-  technologySelection?: { layer: string; choice: string; why: string; alt: string }[];
-  security?: { posture?: string; controls?: Point[] };
-  scalability?: { body?: string; levers?: Point[] };
-  costOptimization?: { body?: string; levers?: NumberedPoint[]; model?: Fact[] };
-  risks?: {
-    n: string;
-    risk: string;
-    severity: "Low" | "Medium" | "High" | "Critical";
-    consequence: string;
-    mitigation: string;
-  }[];
-  kpis?: { category: string; kpi: string; baseline: string; target: string; why: string }[];
-  roadmap?: {
-    phase: string;
-    name: string;
-    duration: string;
-    goal: string;
-    activities?: string[];
-    deliverables?: string[];
-  }[];
-  implementationNotes?: {
-    body?: string;
-    decisions?: { id: string; t: string; d: string }[];
-    repoStructure?: string[];
-  };
-  lessonsLearned?: string[];
-  futureImprovements?: string[];
-};
-
-/* ----------------------------------------------------------- site content */
-
-export type Site = {
-  name: string;
-  brandShort: string;
-  role: string;
-  tagline: string;
-  positioning: string;
-  location: string;
-  email: string;
-  phone: string;
-  github: string;
-  linkedin: string;
-  availability: string;
-  heroStats: { value: string; label: string; note: string }[];
-};
-
-export type WhyMe = {
-  eyebrow: string;
-  title: string;
-  body: string;
-  pillars: { num: string; title: string; body: string; tags: string[] }[];
-};
-
-export type About = {
-  eyebrow: string;
-  title: string;
-  lede: string;
-  paragraphs: string[];
-  timeline: { period: string; role: string; org: string; body: string; tags: string[]; current?: boolean }[];
-  credentials: { label: string; org: string; note: string }[];
-  strengths: Point[];
-  philosophy: NumberedPoint[];
-  workingStyle: string[];
-};
-
-export type SkillState = "solid" | "building" | "next" | "later";
-
-export type Learning = {
-  eyebrow: string;
-  title: string;
-  lede: string;
-  totals: {
-    target: number;
-    scheduled: number;
-    remaining: number;
-    sprintWeeks: number;
-    hoursPerWeek: number;
-  };
-  sprint: { label: string; weeks: string[] };
-  skills: {
-    name: string;
-    target: number;
-    scheduled: number;
-    /** Hours planned per sprint week, aligned with `sprint.weeks`. */
-    weeks: string[];
-    group: string;
-    state: SkillState;
-  }[];
-  tracks: { t: string; state: string; items: string[] }[];
-  milestones: { q: string; t: string; d: string }[];
-};
-
-export type Service = { t: string; d: string; tier: string };
-
-/** Packaged engagement — the structure a price list can slot into later. */
-export type Engagement = { t: string; len: string; d: string; out: string[] };
-
-export type BlogPost = {
-  slug: string;
-  title: string;
-  excerpt: string;
-  date: string;
-  readingTime: string;
-  tags: string[];
-  category: string;
-  featured: boolean;
-  /** Body is optional: posts can be listed as "planned" before they are written. */
-  body?: { heading?: string; paragraphs?: string[]; bullets?: string[] }[];
-};
+export const nav = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/learning", label: "Learning Journey" },
+  { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact" },
+] as const;
