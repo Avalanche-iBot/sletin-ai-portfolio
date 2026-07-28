@@ -416,22 +416,27 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       {/* Cost Optimization ---------------------------------------------------------- */}
       {project.costOptimization && (
         <Section bare id="cost" eyebrow={sectionEyebrow("cost")} title="Keeping unit economics under control">
-          <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
-            <div>
-              {project.costOptimization.body && (
-                <div className="mb-8">
-                  <Prose text={project.costOptimization.body} />
-                </div>
-              )}
-              {project.costOptimization.levers && <PointList points={project.costOptimization.levers} numbered />}
+          {/* The model comes first and takes the full width. It is the argument;
+              the prose explains it and the levers act on it. In a narrow rail
+              every value wrapped over four lines and read as noise. */}
+          {project.costOptimization.model && (
+            <div className="frame mb-10 p-6 md:p-8">
+              <p className="eyebrow mb-1">Cost model</p>
+              <p className="mb-6 max-w-reading text-[0.8125rem] leading-relaxed text-ink-muted">
+                An estimate, not a measurement. The token counts are the durable part; the euro figures move
+                with provider pricing.
+              </p>
+              <FactGrid facts={project.costOptimization.model} />
             </div>
-            {project.costOptimization.model && (
-              <div className="frame h-fit p-6">
-                <p className="eyebrow mb-4">Cost model</p>
-                <FactGrid facts={project.costOptimization.model} />
-              </div>
-            )}
-          </div>
+          )}
+
+          {project.costOptimization.body && (
+            <div className="mb-10">
+              <Prose text={project.costOptimization.body} />
+            </div>
+          )}
+
+          {project.costOptimization.levers && <PointList points={project.costOptimization.levers} numbered />}
         </Section>
       )}
 

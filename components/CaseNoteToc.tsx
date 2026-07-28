@@ -145,15 +145,7 @@ export function CaseNoteToc({ entries }: { entries: TocEntry[] }) {
                       );
                     })}
                   </ol>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => setPinnedGroup(g.name)}
-                    className="mt-1 block pl-3 text-[0.75rem] text-ink-muted transition-colors hover:text-ink-soft"
-                  >
-                    {g.items.length} {g.items.length === 1 ? "section" : "sections"}
-                  </button>
-                )}
+                ) : null}
               </li>
             );
           })}
