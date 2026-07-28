@@ -725,61 +725,21 @@ const caseStudy: CaseStudy = {
         "lanes": [
           {
             "steps": [
-              {
-                "n": "1",
-                "t": "SharePoint change feed",
-                "d": "Detect new and modified documents; a named Knowledge Owner approves clinical content before it becomes eligible."
-              },
-              {
-                "n": "2",
-                "t": "Extract & OCR",
-                "d": "Azure Document Intelligence for scanned material; layout-aware extraction preserves tables and headings."
-              },
-              {
-                "n": "3",
-                "t": "Chunk",
-                "d": "Semantic chunking with heading-path metadata, locale tag and approval status. Chunks inherit document-level access labels."
-              },
-              {
-                "n": "4",
-                "t": "Embed",
-                "d": "text-embedding-3-large in batch on Service Bus queues. Cost per document is amortised, never on the user path."
-              },
-              {
-                "n": "5",
-                "t": "Index",
-                "d": "Azure AI Search — hybrid keyword + vector with semantic reranking. Versioned index allows atomic swap and rollback."
-              }
+              "1. SharePoint change feed: Detect new and modified documents; a named Knowledge Owner approves clinical content before it becomes eligible.",
+              "2. Extract & OCR: Azure Document Intelligence for scanned material; layout-aware extraction preserves tables and headings.",
+              "3. Chunk: Semantic chunking with heading-path metadata, locale tag and approval status. Chunks inherit document-level access labels.",
+              "4. Embed: text-embedding-3-large in batch on Service Bus queues. Cost per document is amortised, never on the user path.",
+              "5. Index: Azure AI Search — hybrid keyword + vector with semantic reranking. Versioned index allows atomic swap and rollback."
             ],
             "label": "Ingestion — asynchronous, nightly workers"
           },
           {
             "steps": [
-              {
-                "n": "6",
-                "t": "Query rewrite",
-                "d": "Conversation-aware rewrite plus locale filter, executed by the cheap model."
-              },
-              {
-                "n": "7",
-                "t": "Hybrid retrieve",
-                "d": "Top-k with metadata filters: approved content only, correct language, patient's access scope."
-              },
-              {
-                "n": "8",
-                "t": "Rerank & trim",
-                "d": "Semantic rerank, then trim to a strict token budget. Only the passages needed — never the whole document."
-              },
-              {
-                "n": "9",
-                "t": "Grounded generation",
-                "d": "GPT-4.1 with a system prompt that forbids answering outside the retrieved context and requires citation."
-              },
-              {
-                "n": "10",
-                "t": "Verify & gate",
-                "d": "Citation check, confidence score, forbidden-topic check. Fail any of the three and the conversation escalates."
-              }
+              "6. Query rewrite: Conversation-aware rewrite plus locale filter, executed by the cheap model.",
+              "7. Hybrid retrieve: Top-k with metadata filters: approved content only, correct language, patient's access scope.",
+              "8. Rerank & trim: Semantic rerank, then trim to a strict token budget. Only the passages needed — never the whole document.",
+              "9. Grounded generation: GPT-4.1 with a system prompt that forbids answering outside the retrieved context and requires citation.",
+              "10. Verify & gate: Citation check, confidence score, forbidden-topic check. Fail any of the three and the conversation escalates."
             ],
             "label": "Retrieval — synchronous, on the user path"
           }
