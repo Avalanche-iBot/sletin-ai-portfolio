@@ -741,30 +741,6 @@ const caseStudy: CaseStudy = {
       "mitigation": "Positioning AI as a routine message filter rather than a replacement; involving front-desk staff directly in workflow design."
     }
   ],
-  "kpi": {
-    "metrics": [
-      {
-        "name": "First Response Time",
-        "target": "< 30 seconds",
-        "baseline": "12 minutes"
-      },
-      {
-        "name": "Automation Rate",
-        "target": "≥ 70% of inbound requests",
-        "baseline": "0%"
-      },
-      {
-        "name": "AI Cost per Request",
-        "target": "< €0.03",
-        "baseline": "N/A"
-      },
-      {
-        "name": "Clinical Escalation Accuracy",
-        "target": "100% routing of low-confidence items",
-        "baseline": "N/A"
-      }
-    ]
-  },
   "roadmap": [
     {
       "phase": "Phase 1",
