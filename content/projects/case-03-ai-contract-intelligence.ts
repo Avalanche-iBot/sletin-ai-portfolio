@@ -646,26 +646,6 @@ const caseStudy: CaseStudy = {
       ]
     }
   ],
-  "implementationNotes": {
-    "body": "Two decisions carry most of the risk in this build: how clauses are chunked, and whether a citation can be proven. Both are settled before any interface work begins.",
-    "decisions": [
-      {
-        "id": "ADR-01",
-        "t": "Provenance is designed into ingestion",
-        "d": "Page and paragraph coordinates are captured at extraction time; they cannot be reconstructed later."
-      },
-      {
-        "id": "ADR-02",
-        "t": "Deterministic value ships first",
-        "d": "The renewal calendar earns trust and budget before extraction accuracy is on the line."
-      },
-      {
-        "id": "ADR-03",
-        "t": "The DMS remains the document authority",
-        "d": "Prevents the parallel-truth failure mode that Legal specifically warned about."
-      }
-    ]
-  },
   "lessonsLearned": [
     "Asking what happens after a flag is raised turned the product from a chatbot into a database.",
     "Provenance is an architectural property, not a UI feature — it has to be designed into ingestion.",

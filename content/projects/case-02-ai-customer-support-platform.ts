@@ -632,26 +632,6 @@ const caseStudy: CaseStudy = {
       ]
     }
   ],
-  "implementationNotes": {
-    "body": "The build order front-loads the parts that need no model. That is not caution for its own sake — it produces the labelled data the generative layer will be evaluated against.",
-    "decisions": [
-      {
-        "id": "ADR-01",
-        "t": "Deterministic layer ships before generation",
-        "d": "Delivers measurable value in phase 1 and produces the evaluation set."
-      },
-      {
-        "id": "ADR-02",
-        "t": "Autonomy is per intent, not global",
-        "d": "Makes the SLA guarantee defensible and contains the blast radius of any single failure mode."
-      },
-      {
-        "id": "ADR-03",
-        "t": "Redaction sits before the model call",
-        "d": "Prevents sensitive data entering prompts or logs, rather than removing it afterwards."
-      }
-    ]
-  },
   "lessonsLearned": [
     "The client's brief named the wrong bottleneck. Time was going into context assembly, and no model was needed to fix that.",
     "Designing the measurement before the feature changed which feature got built first.",

@@ -80,10 +80,8 @@ export function TechSelectionTable({ rows }: { rows: NonNullable<CaseStudy["tech
         <tbody>
           {rows.map((r, i) => (
             <tr key={i}>
-              <td className="whitespace-nowrap font-mono text-micro uppercase tracking-[0.08em] text-ink-muted">
-                {r.layer}
-              </td>
-              <td className="max-w-[14rem] font-medium text-ink">{r.choice}</td>
+              <td className="whitespace-nowrap font-medium text-ink">{r.layer}</td>
+              <td className="max-w-[14rem]">{r.choice}</td>
               <td className="max-w-[16rem]">{r.why}</td>
               <td className="max-w-[16rem] text-ink-muted">{r.alt}</td>
             </tr>

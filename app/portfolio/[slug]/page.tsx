@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { caseStudies, getCaseStudy, getAdjacentCaseStudies } from "@/content/projects";
-import { Section, Prose, BulletList, TagList, FactGrid, ComplexityMeter, PointList } from "@/components/Primitives";
+import type { CaseStudy } from "@/content/types";
+import { Section, Prose, BulletList, TagList, FactGrid, FactRows, ComplexityMeter, PointList } from "@/components/Primitives";
 import { DiagramView } from "@/components/diagrams/DiagramView";
 import { DiscoverySection } from "@/components/DiscoverySection";
 import { RoadmapTimeline } from "@/components/RoadmapTimeline";
 import { KpiTable, RiskTable, TechSelectionTable, StakeholderTable } from "@/components/DataTables";
 import { CaseNoteDisclaimer } from "@/components/Disclaimer";
+import { CaseNoteToc, type TocEntry } from "@/components/CaseNoteToc";
 import { cx, STATUS_TONE } from "@/lib/format";
 
 export function generateStaticParams() {
@@ -21,14 +23,56 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 }
 
 /**
- * Section numbers are counted at render time rather than written into each
- * eyebrow. Sections only appear when their content exists, so hard-coded
- * numbers left visible gaps (08 followed by 13) in any note that was not
- * complete. A counter cannot drift.
+ * The canonical section order for every case note.
+ *
+ * One list drives three things: the numbers in each eyebrow, the anchor ids,
+ * and the grouped table of contents. Numbers were previously written by hand
+ * into each eyebrow, which left visible gaps (08 followed by 13) whenever a
+ * note had no content for a section. Deriving them from the list that already
+ * knows which sections are present removes that class of mistake.
+ *
+ * `has` decides presence; the JSX below still guards its own data access, so a
+ * disagreement between the two shows up as a wrong number rather than a crash.
  */
-function sectionNumberer() {
-  let n = 0;
-  return (label: string) => `${String(++n).padStart(2, "0")} \u00b7 ${label}`;
+const SECTION_ORDER: { id: string; label: string; group: string; has: (p: CaseStudy) => boolean }[] = [
+  { id: "executive-summary", label: "Executive Summary", group: "Problem", has: (p) => !!p.executiveSummary },
+  { id: "business-context", label: "Business Context", group: "Problem", has: (p) => !!p.businessContext },
+  { id: "stakeholders", label: "Stakeholders", group: "Problem", has: (p) => !!p.stakeholders },
+  { id: "discovery", label: "Discovery Phase", group: "Analysis", has: (p) => !!p.discovery },
+  { id: "business-analysis", label: "Business Analysis", group: "Analysis", has: (p) => !!p.analysis },
+  { id: "solution-design", label: "Solution Design", group: "Design", has: (p) => !!p.solutionDesign },
+  { id: "approaches", label: "Approaches Considered", group: "Design", has: (p) => !!p.alternatives },
+  { id: "architecture", label: "Enterprise Architecture", group: "Design", has: (p) => !!p.architecture },
+  { id: "technology", label: "Technology Selection", group: "Design", has: (p) => !!p.technologySelection },
+  { id: "security", label: "Security", group: "Design", has: (p) => !!p.security },
+  { id: "scalability", label: "Scalability", group: "Design", has: (p) => !!p.scalability },
+  { id: "cost", label: "Cost Optimization", group: "Design", has: (p) => !!p.costOptimization },
+  { id: "risks", label: "Risks", group: "Design", has: (p) => !!p.risks },
+  { id: "kpis", label: "KPIs", group: "Design", has: (p) => !!p.kpis },
+  { id: "roadmap", label: "Implementation Roadmap", group: "Design", has: (p) => !!p.roadmap },
+  { id: "reflection", label: "Reflection", group: "Sensitivity", has: (p) => !!p.lessonsLearned },
+  { id: "future", label: "Future Improvements", group: "Sensitivity", has: (p) => !!p.futureImprovements },
+  { id: "tailoring", label: "If Your Situation Differs", group: "Sensitivity", has: (p) => !!p.tailoring },
+  { id: "open-questions", label: "Open Questions", group: "Sensitivity", has: (p) => !p.tailoring && !!p.openQuestions },
+];
+
+function buildSections(project: CaseStudy) {
+  const present = SECTION_ORDER.filter((s) => s.has(project));
+  const entries: TocEntry[] = present.map((s, i) => ({
+    id: s.id,
+    label: s.label,
+    group: s.group,
+    number: String(i + 1).padStart(2, "0"),
+  }));
+  const byId = new Map(entries.map((e) => [e.id, e]));
+  return {
+    entries,
+    /** "07 · Approaches Considered" for the eyebrow. */
+    eyebrow: (id: string) => {
+      const e = byId.get(id);
+      return e ? `${e.number} \u00b7 ${e.label}` : "";
+    },
+  };
 }
 
 export default function CaseStudyPage({ params }: { params: { slug: string } }) {
@@ -37,7 +81,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
   const { prev, next } = getAdjacentCaseStudies(project.slug);
 
-  const num = sectionNumberer();
+  const { entries: tocEntries, eyebrow: sectionEyebrow } = buildSections(project);
 
   return (
     <>
@@ -86,9 +130,17 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         </div>
       </header>
 
-      {/* 1. Executive Summary ------------------------------------------------ */}
+      {/* Contents rail and sections share one container, so the rail sits in the
+          page gutter rather than floating over the text. */}
+      <div className="shell grid gap-x-12 lg:grid-cols-[11rem_minmax(0,1fr)]">
+        <div className="lg:pt-14">
+          <CaseNoteToc entries={tocEntries} />
+        </div>
+
+        <div>
+      {/* Executive Summary ------------------------------------------------ */}
       {project.executiveSummary && (
-        <Section first eyebrow={num("Executive Summary")} title="The situation, in brief">
+        <Section bare first id="executive-summary" eyebrow={sectionEyebrow("executive-summary")} title="The situation, in brief">
           <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
             <Prose text={project.executiveSummary.statement} />
 
@@ -102,8 +154,8 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               )}
             {project.executiveSummary.highlights && (
               <div className="frame p-6">
-                <p className="eyebrow mb-4">At a glance</p>
-                <FactGrid facts={project.executiveSummary.highlights} />
+                <p className="eyebrow mb-4 border-b border-line pb-3">At a glance</p>
+                <FactRows facts={project.executiveSummary.highlights} />
               </div>
             )}
             </div>
@@ -111,9 +163,9 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         </Section>
       )}
 
-      {/* 2. Business Context -------------------------------------------------- */}
+      {/* Business Context -------------------------------------------------- */}
       {project.businessContext && (
-        <Section eyebrow={num("Business Context")} title="Why this landed on the roadmap">
+        <Section bare id="business-context" eyebrow={sectionEyebrow("business-context")} title="Why this landed on the roadmap">
           <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
             <div className="space-y-8">
               <Prose text={project.businessContext.narrative} />
@@ -148,22 +200,22 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         </Section>
       )}
 
-      {/* 3. Stakeholders -------------------------------------------------------- */}
+      {/* Stakeholders -------------------------------------------------------- */}
       {project.stakeholders && (
-        <Section eyebrow={num("Stakeholders")} title="Who has a stake in getting this right">
+        <Section bare id="stakeholders" eyebrow={sectionEyebrow("stakeholders")} title="Who has a stake in getting this right">
           <StakeholderTable rows={project.stakeholders} />
         </Section>
       )}
 
-      {/* 4 + 5. Discovery & Business Analysis ------------------------------------ */}
+      {/* Discovery & Business Analysis ------------------------------------ */}
       {project.discovery && (
-        <Section eyebrow={num("Discovery Phase")} title="The questions that shaped the architecture">
+        <Section bare id="discovery" eyebrow={sectionEyebrow("discovery")} title="The questions that shaped the architecture">
           <DiscoverySection discovery={project.discovery} />
         </Section>
       )}
 
       {project.analysis && (
-        <Section eyebrow={num("Business Analysis")} title="Is AI even the right tool here?" lede="Working through this before any design, on the assumption that the answer might be no.">
+        <Section bare id="business-analysis" eyebrow={sectionEyebrow("business-analysis")} title="Is AI even the right tool here?" lede="Working through this before any design, on the assumption that the answer might be no.">
           <div className="grid gap-8 lg:grid-cols-2">
             {project.analysis.aiNeeded && (
               <div className="frame p-6">
@@ -228,10 +280,10 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         </Section>
       )}
 
-      {/* 6. Solution Design ------------------------------------------------------- */}
+      {/* Solution Design ------------------------------------------------------- */}
       {project.solutionDesign && (
-        <Section
-          eyebrow={num("Solution Design")}
+        <Section bare
+          id="solution-design" eyebrow={sectionEyebrow("solution-design")}
           title="Design principles and the request path"
           lede="These are the principles I would argue for given the constraints above — positions rather than conclusions. Each carries a cost, and the next section sets out what holding them gives up."
         >
@@ -256,10 +308,10 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         </Section>
       )}
 
-      {/* 7. Approaches considered — a note must show what it rejected --------- */}
+      {/* Approaches considered — a note must show what it rejected --------- */}
       {project.alternatives && (
-        <Section
-          eyebrow={num("Approaches Considered")}
+        <Section bare
+          id="approaches" eyebrow={sectionEyebrow("approaches")}
           title="What else was on the table"
           lede="Broadly defensible directions, not straw men. Given the constraints in this note I would take one of them — but the case against it is real, and a different weighting of those constraints lands somewhere else."
         >
@@ -290,10 +342,10 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         </Section>
       )}
 
-      {/* 8 + 9. Enterprise Architecture & Technology Selection ---------------------- */}
+      {/* Enterprise Architecture & Technology Selection ---------------------- */}
       {project.architecture && (
-        <Section
-          eyebrow={num("Enterprise Architecture")}
+        <Section bare
+          id="architecture" eyebrow={sectionEyebrow("architecture")}
           title="One possible system design"
           lede="A design I would take into a review, not a specification. Several component choices could reasonably go the other way; where that is true, the technology table names the alternative."
         >
@@ -326,14 +378,14 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       )}
 
       {project.technologySelection && (
-        <Section eyebrow={num("Technology Selection")} title="What I would choose, and what I would set aside">
+        <Section bare id="technology" eyebrow={sectionEyebrow("technology")} title="What I would choose, and what I would set aside">
           <TechSelectionTable rows={project.technologySelection} />
         </Section>
       )}
 
-      {/* 9. Security ----------------------------------------------------------------- */}
+      {/* Security ----------------------------------------------------------------- */}
       {project.security && (
-        <Section eyebrow={num("Security")} title="Security posture">
+        <Section bare id="security" eyebrow={sectionEyebrow("security")} title="Security posture">
           {project.security.posture && (
             <div className="mb-8">
               <Prose text={project.security.posture} />
@@ -343,9 +395,9 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         </Section>
       )}
 
-      {/* 10. Scalability --------------------------------------------------------------- */}
+      {/* Scalability --------------------------------------------------------------- */}
       {project.scalability && (
-        <Section eyebrow={num("Scalability")} title="How the system holds up under load">
+        <Section bare id="scalability" eyebrow={sectionEyebrow("scalability")} title="How the system holds up under load">
           {project.scalability.body && (
             <div className="mb-8">
               <Prose text={project.scalability.body} />
@@ -355,9 +407,9 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         </Section>
       )}
 
-      {/* 11. Cost Optimization ---------------------------------------------------------- */}
+      {/* Cost Optimization ---------------------------------------------------------- */}
       {project.costOptimization && (
-        <Section eyebrow={num("Cost Optimization")} title="Keeping unit economics under control">
+        <Section bare id="cost" eyebrow={sectionEyebrow("cost")} title="Keeping unit economics under control">
           <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
             <div>
               {project.costOptimization.body && (
@@ -377,80 +429,45 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         </Section>
       )}
 
-      {/* 12. Risks ------------------------------------------------------------------------- */}
+      {/* Risks ------------------------------------------------------------------------- */}
       {project.risks && (
-        <Section eyebrow={num("Risks")} title="What could go wrong, and the mitigation for each">
+        <Section bare id="risks" eyebrow={sectionEyebrow("risks")} title="What could go wrong, and the mitigation for each">
           <RiskTable risks={project.risks} />
         </Section>
       )}
 
-      {/* 13. KPIs -------------------------------------------------------------------------- */}
+      {/* KPIs -------------------------------------------------------------------------- */}
       {project.kpis && (
-        <Section eyebrow={num("KPIs")} title="How success is measured">
+        <Section bare id="kpis" eyebrow={sectionEyebrow("kpis")} title="How success is measured">
           <KpiTable kpis={project.kpis} />
         </Section>
       )}
 
-      {/* 14. Implementation Roadmap ---------------------------------------------------------- */}
+      {/* Implementation Roadmap ---------------------------------------------------------- */}
       {project.roadmap && (
-        <Section eyebrow={num("Implementation Roadmap")} title="Phased delivery">
+        <Section bare id="roadmap" eyebrow={sectionEyebrow("roadmap")} title="Phased delivery">
           <RoadmapTimeline phases={project.roadmap} />
         </Section>
       )}
 
-      {/* 16. Implementation Notes -------------------------------------------------- */}
-      {project.implementationNotes && (
-        <Section eyebrow={num("Implementation Notes")} title="Notes on implementation">
-          {project.implementationNotes.body && (
-            <div className="mb-8">
-              <Prose text={project.implementationNotes.body} />
-            </div>
-          )}
-          <div className="grid gap-10 lg:grid-cols-2">
-            {project.implementationNotes.decisions && (
-              <div>
-                <p className="eyebrow mb-4">Architecture decision records</p>
-                <div className="space-y-4">
-                  {project.implementationNotes.decisions.map((d) => (
-                    <div key={d.id} className="border-l-2 border-line pl-4">
-                      <p className="font-mono text-micro text-ink-muted">{d.id}</p>
-                      <p className="mt-1 font-medium text-ink">{d.t}</p>
-                      <p className="mt-1 text-[0.875rem] leading-relaxed text-ink-soft">{d.d}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            {project.implementationNotes.repoStructure && (
-              <div>
-                <p className="eyebrow mb-4">Repository structure</p>
-                <pre className="frame overflow-x-auto p-5 font-mono text-[0.8125rem] leading-relaxed text-ink-soft">
-                  {project.implementationNotes.repoStructure.join("\n")}
-                </pre>
-              </div>
-            )}
-          </div>
-        </Section>
-      )}
-
-      {/* 17. Reflection ------------------------------------------------------------------- */}
+      {/* Reflection ------------------------------------------------------------------- */}
       {project.lessonsLearned && (
-        <Section eyebrow={num("Reflection")} title="Lessons learned">
+        <Section bare id="reflection" eyebrow={sectionEyebrow("reflection")} title="What this exercise changed in my thinking">
           <BulletList items={project.lessonsLearned} />
         </Section>
       )}
 
-      {/* 18. Future Improvements ----------------------------------------------------------------- */}
+      {/* Future Improvements ----------------------------------------------------------------- */}
       {project.futureImprovements && (
-        <Section eyebrow={num("Future Improvements")} title="What comes next">
+        <Section bare id="future" eyebrow={sectionEyebrow("future")} title="What comes next">
           <BulletList items={project.futureImprovements} />
         </Section>
       )}
 
       {/* Sensitivity — what this design becomes under different inputs ------ */}
       {project.tailoring && (
-        <Section
-          eyebrow={num("If Your Situation Differs")}
+        <Section bare
+          id="tailoring" eyebrow={sectionEyebrow("tailoring")}
           title="What changes the answer"
           lede="Every decision above is downstream of a handful of inputs. If yours differ, so should the architecture. This is where the note is most likely to be useful to someone solving the same class of problem under different conditions."
         >
@@ -504,7 +521,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* Legacy: notes that still carry an open-questions list ---------------- */}
       {!project.tailoring && project.openQuestions && (
-        <Section eyebrow={num("Open Questions")} title="What I have not resolved">
+        <Section bare id="open-questions" eyebrow={sectionEyebrow("open-questions")} title="What I have not resolved">
           <ol className="space-y-0">
             {project.openQuestions.map((q, i) => (
               <li key={i} className="grid gap-3 border-t border-line py-5 sm:grid-cols-[3rem_1fr]">
@@ -517,7 +534,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       )}
 
       {/* Discussion — the closing move of every note is an invitation to disagree */}
-      <Section eyebrow="Discussion" title="Where would you have decided differently?">
+      <Section bare eyebrow="Discussion" title="Where would you have decided differently?">
         <Prose text="This is one reading of the problem, not the only defensible one. Several decisions above rest on assumptions that discovery would need to confirm, and at least one of them is probably wrong. If your experience points somewhere else, I would rather hear it than not." />
         <div className="mt-7 flex flex-wrap items-center gap-6">
           <Link href="/contact" className="btn btn-ghost">
@@ -541,6 +558,9 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           )}
         </div>
       </Section>
+
+        </div>
+      </div>
 
       {/* Prev / next -------------------------------------------------------------------------------- */}
       <nav className="shell flex flex-col gap-4 border-t border-line py-10 sm:flex-row sm:items-center sm:justify-between">

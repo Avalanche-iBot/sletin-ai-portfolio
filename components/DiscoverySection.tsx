@@ -40,41 +40,77 @@ export function DiscoverySection({ discovery }: { discovery: NonNullable<CaseStu
 
       {discovery.implications && discovery.implications.length > 0 && (
         <div>
-          <p className="eyebrow mb-4">Findings → architectural implications</p>
-          <div className="space-y-3">
+          <p className="eyebrow mb-1">Findings, and what each one rules out</p>
+          <p className="mb-6 max-w-reading text-[0.9375rem] leading-relaxed text-ink-muted">
+            This is the part of discovery that does the work. Each finding on the left removed options
+            from the design space; the consequence on the right is what was left.
+          </p>
+
+          <ol className="space-y-0">
             {discovery.implications.map((im, i) => (
-              <div key={i} className="grid gap-2 border-t border-line py-4 sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-4">
-                <p className="text-[0.9375rem] text-ink-soft">{im.finding}</p>
-                <span className="hidden font-mono text-ink-muted sm:block" aria-hidden>
-                  →
-                </span>
-                <p className="text-[0.9375rem] font-medium text-ink">{im.implication}</p>
-              </div>
+              <li
+                key={i}
+                className="grid gap-3 border-t border-line py-6 lg:grid-cols-[2.5rem_1fr_1.4fr] lg:gap-6"
+              >
+                <span className="font-mono text-micro text-ink-muted">{String(i + 1).padStart(2, "0")}</span>
+
+                <p className="font-display text-base leading-snug text-ink">{im.finding}</p>
+
+                <div className="border-l-2 border-accent pl-4">
+                  <p className="eyebrow mb-1.5">Therefore</p>
+                  <p className="text-[0.9375rem] leading-relaxed text-ink-soft">{im.implication}</p>
+                </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       )}
 
-      <div className="grid gap-8 sm:grid-cols-2">
-        {discovery.assumptions && discovery.assumptions.length > 0 && (
-          <div>
-            <p className="eyebrow mb-3">Working assumptions</p>
-            <BulletList items={discovery.assumptions} />
+      {/* Assumptions, risks and constraints are the evidence of architectural
+          thinking, not an appendix to it. Given equal weight and a frame each,
+          rather than three unlabelled bullet lists at the foot of the section. */}
+      {(discovery.assumptions?.length || discovery.businessRisks?.length || discovery.technicalConstraints?.length) && (
+        <div>
+          <p className="eyebrow mb-1">What discovery established</p>
+          <p className="mb-6 max-w-reading text-[0.9375rem] leading-relaxed text-ink-muted">
+            Three different kinds of output, deliberately kept apart. An assumption is something I chose
+            to believe and would test. A risk is a business consequence somebody has to accept. A
+            constraint is not negotiable and narrows the design before it starts.
+          </p>
+
+          <div className="grid gap-6 lg:grid-cols-3">
+            {discovery.assumptions && discovery.assumptions.length > 0 && (
+              <section className="frame border-t-2 border-t-accent p-6">
+                <p className="eyebrow mb-1">Working assumptions</p>
+                <p className="mb-4 text-[0.75rem] leading-snug text-ink-muted">
+                  Believed, not verified — each one is a test waiting to be run
+                </p>
+                <BulletList items={discovery.assumptions} />
+              </section>
+            )}
+
+            {discovery.businessRisks && discovery.businessRisks.length > 0 && (
+              <section className="frame border-t-2 border-t-line-strong p-6">
+                <p className="eyebrow mb-1">Business risks surfaced</p>
+                <p className="mb-4 text-[0.75rem] leading-snug text-ink-muted">
+                  Consequences the business has to own, whatever the design
+                </p>
+                <BulletList items={discovery.businessRisks} />
+              </section>
+            )}
+
+            {discovery.technicalConstraints && discovery.technicalConstraints.length > 0 && (
+              <section className="frame border-t-2 border-t-line-strong p-6">
+                <p className="eyebrow mb-1">Technical constraints revealed</p>
+                <p className="mb-4 text-[0.75rem] leading-snug text-ink-muted">
+                  Not negotiable — these decide what the architecture may be
+                </p>
+                <BulletList items={discovery.technicalConstraints} />
+              </section>
+            )}
           </div>
-        )}
-        {discovery.businessRisks && discovery.businessRisks.length > 0 && (
-          <div>
-            <p className="eyebrow mb-3">Business risks surfaced</p>
-            <BulletList items={discovery.businessRisks} />
-          </div>
-        )}
-        {discovery.technicalConstraints && discovery.technicalConstraints.length > 0 && (
-          <div className="sm:col-span-2">
-            <p className="eyebrow mb-3">Technical constraints revealed</p>
-            <BulletList items={discovery.technicalConstraints} />
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

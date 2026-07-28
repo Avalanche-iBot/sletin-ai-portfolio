@@ -223,11 +223,6 @@ export type CaseStudy = {
     activities?: string[];
     deliverables?: string[];
   }[];
-  implementationNotes?: {
-    body?: string;
-    decisions?: { id: string; t: string; d: string }[];
-    repoStructure?: string[];
-  };
   lessonsLearned?: string[];
   futureImprovements?: string[];
 };

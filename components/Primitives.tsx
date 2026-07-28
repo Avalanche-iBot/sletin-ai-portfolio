@@ -9,6 +9,7 @@ export function Section({
   children,
   className,
   first,
+  bare,
 }: {
   id?: string;
   eyebrow?: string;
@@ -17,9 +18,23 @@ export function Section({
   children?: React.ReactNode;
   className?: string;
   first?: boolean;
+  /**
+   * Drop the built-in `shell` container. Used where a page supplies its own
+   * grid — a case note puts the contents rail and the sections in one shell,
+   * so the sections must not re-apply the gutter and max width.
+   */
+  bare?: boolean;
 }) {
   return (
-    <section id={id} className={cx("shell py-14 md:py-20 scroll-mt-24", !first && "border-t border-line", className)}>
+    <section
+      id={id}
+      className={cx(
+        !bare && "shell",
+        "py-14 md:py-20 scroll-mt-24",
+        !first && "border-t border-line",
+        className,
+      )}
+    >
       {(eyebrow || title) && (
         <div className="mb-8 max-w-3xl md:mb-10">
           {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
@@ -59,6 +74,27 @@ export function TagList({ tags, className }: { tags: string[]; className?: strin
         </li>
       ))}
     </ul>
+  );
+}
+
+/**
+ * Stacked label/value rows for a narrow column.
+ *
+ * `FactGrid` lays facts out 3-up, which works in a full-width block and breaks
+ * down in a sidebar rail — labels wrap, values collide. This variant keeps one
+ * fact per row with a hairline between, so the block stays readable at any
+ * column width and the labels remain scannable.
+ */
+export function FactRows({ facts }: { facts: Fact[] }) {
+  return (
+    <dl className="divide-y divide-line">
+      {facts.map((f, i) => (
+        <div key={f.k} className={i === 0 ? "pb-3" : "py-3 last:pb-0"}>
+          <dt className="font-mono text-micro uppercase tracking-[0.1em] text-ink-muted">{f.k}</dt>
+          <dd className="mt-1.5 text-[0.9375rem] leading-snug text-ink">{f.v}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }
 

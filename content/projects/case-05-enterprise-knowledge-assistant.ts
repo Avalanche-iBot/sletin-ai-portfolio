@@ -796,36 +796,6 @@ const caseStudy: CaseStudy = {
       ]
     }
   ],
-  "implementationNotes": {
-    "body": "The build order is deliberately unusual: a full retrieval product ships before generation is enabled. It delivers standalone value, produces the evaluation data the generative layer needs, and means a delay in generation quality never blocks the business case.",
-    "decisions": [
-      {
-        "id": "ADR-01",
-        "t": "Permissions enforced in the query, not the answer",
-        "d": "Rules out simpler designs and is the single most consequential decision in this case."
-      },
-      {
-        "id": "ADR-02",
-        "t": "The DMS remains the revision authority",
-        "d": "The assistant resolves and cites revision status; it never asserts its own."
-      },
-      {
-        "id": "ADR-03",
-        "t": "Ship retrieval before generation",
-        "d": "Sequencing choice that de-risks both the business case and the accuracy bar."
-      },
-      {
-        "id": "ADR-04",
-        "t": "Tables get their own pipeline and index",
-        "d": "Follows from the corpus, not from the reference architecture."
-      },
-      {
-        "id": "ADR-05",
-        "t": "Permission tests break the build",
-        "d": "Moves a security property from monitoring into CI."
-      }
-    ]
-  },
   "lessonsLearned": [
     "Working inside this domain taught me that the blocking constraint is rarely the model — it is the permission model and the revision discipline around the documents.",
     "Shipping retrieval before generation is the sequencing decision I would defend hardest in a design review.",
