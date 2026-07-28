@@ -148,6 +148,11 @@ export type CaseStudy = {
   }[];
   /** Kept short: the honesty about method, without it dominating the section. */
   assumptionsToTest?: string[];
+  /**
+   * Superseded by `tailoring` above. Still present on cases that have not been
+   * rewritten yet; the template renders this only when `tailoring` is absent.
+   */
+  openQuestions?: string[];
   techGroups?: TechGroup[];
 
   /* --- the 19 case-study sections --- */
