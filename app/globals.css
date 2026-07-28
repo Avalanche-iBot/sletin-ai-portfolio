@@ -172,11 +172,25 @@
   .text-pretty {
     text-wrap: pretty;
   }
-  /* Fine background grid, faded out toward the bottom of a section */
+  /* Fine background grid, faded out toward the bottom of a section.
+     The mask MUST live on a pseudo-element: applied to the section itself it
+     masks the text content as well, which made the hero copy fade to invisible. */
   .grid-field {
-    @apply bg-grid-fine bg-grid-fine;
+    position: relative;
+    isolation: isolate;
+  }
+  .grid-field::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    @apply bg-grid-fine;
     mask-image: linear-gradient(to bottom, black, transparent);
     -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+  }
+  .grid-field > * {
+    position: relative;
   }
   .hairline {
     @apply h-px w-full bg-line;
