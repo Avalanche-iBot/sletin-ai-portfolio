@@ -1,146 +1,138 @@
-# Aleksandr Sletin — AI Architecture Portfolio
+# aleksandrsletin.com
 
-A premium, CMS-driven portfolio site positioning Aleksandr Sletin as an
-Enterprise AI Solutions Architect. Built with Next.js 14 (App Router),
-TypeScript, Tailwind CSS and Framer Motion.
+Source for an independent notebook on enterprise AI architecture.
 
-## Status
+The site publishes case notes: written analyses that take an operational
+problem apart — context, discovery, constraints, the approaches considered,
+the trade-offs behind each decision, and the questions left unresolved. The
+reasoning is the artefact. Code, where it exists, is a consequence of it.
 
-**5 of 10 planned case studies are live**, per current instructions:
+Live at **https://aleksandrsletin.com**
 
-1. AI Patient Communication Platform (flagship, built from the uploaded Excel)
-2. AI Customer Support Platform
-3. AI Contract Intelligence
-4. AI Meeting Assistant
-5. Enterprise Knowledge Assistant
+---
 
-The remaining five (Invoice Processing, Predictive Maintenance, Recruitment
-Assistant, Supply Chain Optimizer, Executive Dashboard) are listed as
-"planned" on the Portfolio page rather than hidden, so the site never
-overclaims what exists.
+## Notice
 
-## Getting started
+The case notes published here are educational analyses built from general
+industry knowledge and personal reasoning applied to hypothetical scenarios.
+They do not describe the internal systems, data or processes of any
+organisation. Any resemblance to a real organisation is coincidental. Nothing
+here is consulting advice, and none of it represents the position of any
+employer.
 
-Requires Node.js 18.18+ (Node 20 LTS recommended).
+---
+
+## Stack
+
+- Next.js 14 (App Router) · TypeScript
+- Tailwind CSS with token-based theming (CSS variables, light/dark)
+- Statically generated; deployed on Vercel
+
+## Running locally
+
+Requires Node.js 18.18 or later.
 
 ```bash
 npm install
-npm run dev
+npm run dev          # http://localhost:3000
 ```
-
-Open **http://localhost:3000**.
 
 ```bash
-npm run build   # production build
-npm run start   # serve the production build
-npm run typecheck
+npm run build        # production build
+npm run start        # serve the production build
+npm run typecheck    # tsc --noEmit
 ```
 
-## Project structure
+Environment variables are documented in `.env.example`. None are required for
+local development; without `CONTACT_FORWARD_EMAIL` the contact form logs
+submissions server-side instead of sending mail.
+
+## Layout
 
 ```
-app/                      Next.js App Router pages
-  page.tsx                Home
-  about/                  About
-  portfolio/              Portfolio index + [slug] case-study template
-  learning/               Learning Journey
-  blog/                   Blog index + [slug] post template
-  contact/                Contact (form + services)
-  api/contact/route.ts    Contact form submission handler
-  globals.css             Design tokens (CSS variables) + Tailwind layers
+app/                    Routes (App Router)
+  page.tsx              Home
+  about/                About
+  portfolio/            Case-note index + [slug] template
+  learning/             Learning roadmap
+  blog/                 Writing index + [slug] template
+  contact/              Contact form and services
+  api/contact/          Form handler
+  globals.css           Design tokens and Tailwind layers
 
-components/               Reusable UI
-  Primitives.tsx           Section, FactGrid, PointList, TagList, etc.
-  DataTables.tsx           KPI / risk / tech-selection / stakeholder tables
-  DiscoverySection.tsx     Stakeholder-interview renderer
-  RoadmapTimeline.tsx      Phased roadmap component
-  ProjectCard.tsx          Case-study card for grids
-  SiteHeader.tsx / SiteFooter.tsx
-  diagrams/DiagramView.tsx Renders layers / flow / pipeline / sequence diagrams
+components/             Shared UI
+  Primitives.tsx        Section, Prose, TagList, FactGrid, ComplexityMeter…
+  DataTables.tsx        KPI, risk, technology-selection, stakeholder tables
+  DiscoverySection.tsx  Stakeholder-interview renderer
+  RoadmapTimeline.tsx   Phased roadmap
+  Disclaimer.tsx        Notice shown before every case note
+  diagrams/             Diagram renderer
 
-content/                  THE CMS LAYER
-  types.ts                 The schema every case study and site section follows
-  site.ts, about.ts, learning.ts, blog.ts   Non-project site content
+content/                Content layer — everything readable lives here
+  types.ts              The schema
+  site.ts about.ts learning.ts blog.ts
   projects/
-    index.ts               Registry — add a new case study here
-    case-NN-slug.ts         One file per case study
+    index.ts            Registry
+    case-NN-slug.ts     One file per case note
 
-lib/format.ts             Small shared formatting helpers
+lib/format.ts           Formatting helpers
 ```
 
-## Adding a new case study
+## Content model
+
+Presentation and content are separated. Pages read from `content/`; adding a
+case note requires no change to any route or component.
+
+Every narrative section on `CaseStudy` is optional, and the template renders a
+section only if its content exists — so a note can be published partially
+written and filled in over time.
+
+### Adding a case note
 
 1. Create `content/projects/case-06-your-slug.ts`:
 
-   ```ts
-   import type { CaseStudy } from "../types";
+```ts
+import type { CaseStudy } from "../types";
 
-   const caseStudy: CaseStudy = {
-     slug: "your-slug",
-     order: 6,
-     title: "Your Case Study Title",
-     subtitle: "...",
-     industry: "...",
-     domain: "...",
-     status: "Discovery",
-     architectureComplexity: 3,
-     shortSummary: "...",
-     tags: ["..."],
-     featured: false,
-     // any of the 19 optional sections — add what you have, the page
-     // template only renders sections that exist.
-   };
+const caseStudy: CaseStudy = {
+  slug: "your-slug",
+  order: 6,
+  title: "…",
+  subtitle: "…",
+  industry: "…",
+  domain: "…",
+  status: "In analysis",
+  architectureComplexity: 3,
+  shortSummary: "…",
+  tags: ["…"],
+  featured: false,
+  // add whichever sections are written
+};
 
-   export default caseStudy;
-   ```
-
-2. Register it in `content/projects/index.ts`:
-   ```ts
-   import case06 from "./case-06-your-slug";
-   // add case06 to the array passed to caseStudies
-   ```
-3. Remove its entry from `plannedCaseStudies` in the same file.
-
-No page, route or component needs to change. The homepage, `/portfolio`,
-and the case-study template all read from this registry.
-
-## Design system
-
-- **Direction**: "engineering title block" — hairline rules, drafting
-  corner ticks, a fine background grid, mono data labels. One accent
-  colour (hi-vis amber) used sparingly.
-- **Type**: Fraunces (display/serif headlines) + Inter (body/UI) + IBM
-  Plex Mono (data, labels, eyebrows). All loaded via `next/font/google`.
-- **Tokens**: see `tailwind.config.ts` and the CSS variables in
-  `app/globals.css` — colour is fully semantic and swaps automatically
-  between light and dark via the `.dark` class.
-- **Diagrams**: architecture diagrams are typed data (see `Diagram` in
-  `content/types.ts`) rendered as React/CSS — not images — so they stay
-  editable and themeable. Four kinds: `layers`, `flow`, `pipeline`,
-  `sequence`.
-
-## Contact form
-
-`app/api/contact/route.ts` currently logs submissions server-side (visible
-in your hosting provider's function logs) rather than sending real email —
-no email provider is wired up yet. To send real email, add a provider
-(Resend, SES, SendGrid, etc.), set `CONTACT_FORWARD_EMAIL` in your
-environment, and replace the `console.log` block in that file with the
-provider's send call.
-
-## Deployment
-
-Designed for Vercel:
-
-```bash
-npm i -g vercel
-vercel
+export default caseStudy;
 ```
 
-Set `NEXT_PUBLIC_SITE_URL` (and `CONTACT_FORWARD_EMAIL` once email is wired
-up) as environment variables in the Vercel project settings — see
-`.env.example`.
+2. Register it in `content/projects/index.ts` and remove its placeholder from
+   `plannedCaseStudies`.
 
-## Known follow-ups
+`status` describes how finished the *analysis* is, not a product:
+`In analysis` · `Architecture note` · `Under revision` · `Open question`.
 
-See `PROJECT_STATUS.md` for the detailed backlog.
+## Diagrams
+
+Architecture diagrams are typed data (`Diagram` in `content/types.ts`) rendered
+as React and CSS rather than images, so they stay editable, searchable and
+theme-aware. Four kinds: `layers`, `flow`, `pipeline`, `sequence`.
+
+## Design
+
+One accent colour used sparingly, hairline rules, a fine background grid and
+mono labels — closer to a drafting title block than to a product landing page.
+Type: Fraunces for headlines, Inter for body, IBM Plex Mono for labels and
+data. Colour is fully semantic and defined as CSS variables in
+`app/globals.css`; dark mode swaps the token values via a `.dark` class.
+
+## Licence
+
+Code is available for reference. The written case notes and site copy are not
+licensed for reuse.
