@@ -13,12 +13,18 @@ export const COMPLEXITY_LABEL: Record<Complexity, string> = {
 };
 
 export const STATUS_TONE: Record<string, string> = {
-  Draft: "text-ink-muted border-line",
-  Discovery: "text-ink-soft border-line-strong",
-  "In design": "text-accent-deep border-accent/40",
-  "MVP in build": "text-accent-deep border-accent/40",
-  Live: "text-accent-deep border-accent",
-  Archived: "text-ink-muted border-line",
+  "In analysis": "text-ink-soft border-line-strong",
+  "Architecture note": "text-accent-deep border-accent",
+  "Under revision": "text-ink-soft border-line-strong",
+  "Open question": "text-ink-muted border-line",
+};
+
+/** One line of plain English shown under the badge, so the label is self-explaining. */
+export const STATUS_MEANING: Record<string, string> = {
+  "In analysis": "Reasoning still in progress",
+  "Architecture note": "Analysis written up",
+  "Under revision": "Revisiting earlier decisions",
+  "Open question": "Deliberately left unresolved",
 };
 
 export const SEVERITY_TONE: Record<string, string> = {
