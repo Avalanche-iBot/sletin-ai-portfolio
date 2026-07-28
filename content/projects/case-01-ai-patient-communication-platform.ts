@@ -839,7 +839,6 @@ const caseStudy: CaseStudy = {
     "roi": "Estimated payback period of 14 months based on avoided administrative headcount expansion across newly opened clinics."
   },
   "kpi": {
-    "intro": "Success is tracked across technical performance, operational efficiency, and clinical safety metrics.",
     "metrics": [
       {
         "name": "First Response Time",
@@ -863,25 +862,48 @@ const caseStudy: CaseStudy = {
       }
     ]
   },
-  "roadmap": {
-    "phases": [
-      {
-        "phase": "Phase 1: Discovery & Architecture",
-        "duration": "Months 1–2",
-        "details": "Stakeholder interviews, data mapping, security baseline, and target architecture validation."
-      },
-      {
-        "phase": "Phase 2: MVP Build & Integration",
-        "duration": "Months 3–4",
-        "details": "FastAPI orchestration layer, Dynamics 365 connectors, RAG pipeline setup, and pilot clinic deployment."
-      },
-      {
-        "phase": "Phase 3: Rollout & Optimisation",
-        "duration": "Months 5–6",
-        "details": "Scale across all 38 Italian clinics, fine-tune routing thresholds, and activate advanced analytics dashboard."
-      }
-    ]
-  }
+  "roadmap": [
+    {
+      "phase": "Phase 1",
+      "name": "Discovery & Architecture",
+      "duration": "Months 1–2",
+      "goal": "Stakeholder interviews, data mapping, security baseline, and target architecture validation.",
+      "activities": [
+        "Stakeholder interviews",
+        "Data mapping",
+        "Security baseline"
+      ],
+      "deliverables": [
+        "Architecture validation"
+      ]
+    },
+    {
+      "phase": "Phase 2",
+      "name": "MVP Build & Integration",
+      "duration": "Months 3–4",
+      "goal": "FastAPI orchestration layer, Dynamics 365 connectors, RAG pipeline setup, and pilot clinic deployment.",
+      "activities": [
+        "FastAPI build",
+        "Connectors setup"
+      ],
+      "deliverables": [
+        "Pilot deployment"
+      ]
+    },
+    {
+      "phase": "Phase 3",
+      "name": "Rollout & Optimisation",
+      "duration": "Months 5–6",
+      "goal": "Scale across all 38 Italian clinics, fine-tune routing thresholds, and activate advanced analytics dashboard.",
+      "activities": [
+        "Scale clinics",
+        "Tune routing"
+      ],
+      "deliverables": [
+        "Analytics dashboard"
+      ]
+    }
+  ]
 };
 
 export default caseStudy;
