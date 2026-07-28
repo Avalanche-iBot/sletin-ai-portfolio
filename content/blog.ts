@@ -74,7 +74,8 @@ export const posts: BlogPost[] = [
       "Adoption",
       "Lessons learned"
     ],
-    "category": "Delivery"
+    "category": "Delivery",
+    "featured": false
   },
   {
     "slug": "agent-orchestration-mcp-and-the-boring-parts",
@@ -87,6 +88,7 @@ export const posts: BlogPost[] = [
       "MCP",
       "Security"
     ],
-    "category": "Agents"
+    "category": "Agents",
+    "featured": false
   }
 ];
