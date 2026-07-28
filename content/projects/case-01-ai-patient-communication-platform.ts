@@ -195,7 +195,7 @@ const caseStudy: CaseStudy = {
     {
       "role": "CFO",
       "interest": "ROI in under two years; OPEX ceiling of €80k/year.",
-      "concern": "Unbounded LLM token spend that grows with patient volume.",
+      "concern": "Unbounded token spend that grows with patient volume.",
       "influence": "Budget gate"
     },
     {
@@ -684,24 +684,19 @@ const caseStudy: CaseStudy = {
         "caption": "The single most important diagram in this case. Roughly 70% of traffic terminates before it reaches a language model.",
         "steps": [
           {
-            "t": "Inbound message",
-            "sub": "WhatsApp / web / app"
+            "t": "Inbound message (WhatsApp / web / app)"
           },
           {
-            "t": "Identity resolution",
-            "sub": "CRM lookup + verification"
+            "t": "Identity resolution (CRM lookup + verification)"
           },
           {
-            "t": "Guardrails",
-            "sub": "injection & safety screen"
+            "t": "Guardrails (injection & safety screen)"
           },
           {
-            "t": "Intent classification",
-            "sub": "GPT-4o mini · cheap"
+            "t": "Intent classification (GPT-4o mini · cheap)"
           },
           {
-            "t": "Router decision",
-            "sub": "3 outcomes"
+            "t": "Router decision (3 outcomes)"
           }
         ],
         "branches": [
