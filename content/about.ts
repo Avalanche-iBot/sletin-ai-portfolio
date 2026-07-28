@@ -4,16 +4,17 @@ import type { About } from "./types";
 export const about: About = {
   "eyebrow": "About",
   "title": "From wells and cost reports to enterprise AI architecture.",
-  "lede": "I am Aleksandr Sletin — an engineer and project manager based in Savona, Italy, currently working inside Eni's Natural Resources organisation. Over the last two years I have deliberately re-pointed my career at one target: designing enterprise AI systems that a real company can afford, trust, audit and operate.",
+  "lede": "I am Aleksandr Sletin — an engineer and project manager based in Italy, working in industrial operations inside large international organisations. Over the last two years I have deliberately re-pointed my thinking at one question: how an enterprise AI system can be designed so that a real company can afford, trust, audit and operate it.",
   "paragraphs": [
     "My path has zig-zagged, and that turns out to be the point. Petroleum engineering gave me the domain. Project management gave me the delivery discipline and the vocabulary of the business. An AI startup gave me my first real exposure to what breaks in AI projects — which is almost never the model.",
-    "What I am not, yet, is a ten-year platform engineer. I am explicit about that on this site. What I am is someone who can run a Discovery workshop with a CFO, a CIO and a front-line operator in the same room, come out with a defensible architecture, and then build enough of it to prove the thing works."
+    "What I am not, yet, is a ten-year platform engineer. I am explicit about that on this site. What I am is someone who can sit a CFO, a CIO and a front-line operator in the same room, come out with a defensible architecture, and then build enough of it to find out where the reasoning was wrong.",
+    "This website is intended as a knowledge-sharing portfolio rather than consulting advice or a representation of any employer."
   ],
   "timeline": [
     {
       "period": "2019 — 2021",
       "role": "Petroleum Engineer",
-      "org": "Rosneft",
+      "org": "Energy sector",
       "body": "Field and technical engineering. Digitised a 2,300-pipeline asset database — my first real lesson in how much enterprise value is trapped in unstructured technical documents.",
       "tags": [
         "Asset data",
@@ -34,7 +35,7 @@ export const about: About = {
     {
       "period": "2022 — 2023",
       "role": "AI Project Manager",
-      "org": "Kellify (AI startup)",
+      "org": "AI company",
       "body": "Managed five AI projects end-to-end. Acted as the bridge between business stakeholders and the data-science team — requirements, feasibility, expectation management, delivery.",
       "tags": [
         "5 AI projects",
@@ -55,10 +56,10 @@ export const about: About = {
     {
       "period": "Feb 2024 — present",
       "role": "Industrial Operations Engineer / Cost Control",
-      "org": "Eni — Natural Resources (QAMM / WTA / WELLS)",
-      "body": "Via Capgemini Italia until May 2025, via ProEnergy since. Operational and cost-control work inside a complex international enterprise — standards, governance, stakeholder reality.",
+      "org": "Large international industrial organisation",
+      "body": "Operational and cost-control work inside a complex international enterprise — standards, governance, and the stakeholder reality that decides whether anything actually gets adopted.",
       "tags": [
-        "Eni",
+        "Industrial operations",
         "Enterprise context",
         "Excel/VBA · Power BI"
       ]
@@ -67,7 +68,7 @@ export const about: About = {
       "period": "2025 — 2026",
       "role": "Enterprise AI Solutions Architecture",
       "org": "Deliberate transition",
-      "body": "A 1,000-hour technical roadmap plus ten full enterprise case studies: Discovery → architecture → cost model → risks → KPIs → roadmap → working implementation.",
+      "body": "A structured technical roadmap plus a growing set of written case studies: discovery → architecture → cost model → risks → KPIs → roadmap → reflection.",
       "tags": [
         "Target role",
         "In progress"

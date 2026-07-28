@@ -7,45 +7,23 @@ export const site: Site = {
   "role": "AI Architecture Portfolio",
   "tagline": "Designing Enterprise AI Systems That Solve Real Business Problems",
   "positioning": "Engineering and project-delivery background in energy and industrial operations. PMP certified. Now designing enterprise AI architectures — where the hard part is not the model, but the questions you ask before you choose one.",
-  "location": "Savona, Liguria — Italy · Open to remote (US / EU)",
+  "location": "Milan, Italy",
   "email": "alexander.slyotin@gmail.com",
   "phone": "+39 371 469 0274",
-  "github": "https://github.com/",
+  "github": "https://github.com/Avalanche-iBot",
   "linkedin": "https://linkedin.com/in/aleksandrsletin1995",
-  "availability": "Building toward Enterprise AI Solutions Architect · 2026",
-  "heroStats": [
-    {
-      "value": "10",
-      "label": "Enterprise case studies",
-      "note": "Full architecture lifecycle"
-    },
-    {
-      "value": "PMP",
-      "label": "Certified since 2022",
-      "note": "PMI"
-    },
-    {
-      "value": "2.5 yr",
-      "label": "Inside Eni",
-      "note": "Natural Resources"
-    },
-    {
-      "value": "1,000 h",
-      "label": "Technical roadmap",
-      "note": "300 h scheduled"
-    }
-  ]
+  "availability": "Knowledge sharing, not consulting advice"
 };
 
 export const whyMe: WhyMe = {
   "eyebrow": "Why this background is unusual",
   "title": "Most AI architecture candidates have never sat in the room where the budget is decided.",
-  "body": "I did not come to AI from a computer-science degree. I came from wells, pipelines, cost reports and steering committees — which means I have spent years translating between people who own a technical system and people who own its budget. That translation layer is exactly where enterprise AI projects succeed or quietly die.",
+  "body": "I did not come to AI from a computer-science degree. I came from industrial operations, cost reports and steering committees — which means I have spent years translating between people who own a technical system and people who own its budget. That translation layer is exactly where enterprise AI projects succeed or quietly die.",
   "pillars": [
     {
       "num": "01",
       "title": "Industrial domain depth",
-      "body": "Petroleum engineering MSc, Rosneft field experience, 2.5 years inside Eni Natural Resources (QAMM / WTA / WELLS). I understand P&IDs, inspection reports, well data and why the engineer will not trust a system that cannot show its source.",
+      "body": "Petroleum engineering MSc, field engineering experience, and several years of operational work inside large international industrial organisations. I understand P&IDs, inspection reports and asset data — and why an engineer will not trust a system that cannot show its source.",
       "tags": [
         "Oil & Gas",
         "Industrial ops",
@@ -55,7 +33,7 @@ export const whyMe: WhyMe = {
     {
       "num": "02",
       "title": "Delivery discipline",
-      "body": "PMP certified. Five AI projects delivered end-to-end at Kellify as AI Project Manager, plus a full ERP rollout. Scope, budget, stakeholders, phased rollout — the unglamorous part that decides whether an architecture ever reaches production.",
+      "body": "PMP certified. Five AI projects managed end-to-end at an AI company, plus a full ERP rollout. Scope, budget, stakeholders, phased rollout — the unglamorous part that decides whether an architecture ever reaches production.",
       "tags": [
         "PMP",
         "Agile / Scrum",

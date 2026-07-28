@@ -5,8 +5,8 @@
  * `CaseStudy`, then registering it in content/projects/index.ts. No page,
  * route or component needs to change.
  *
- * Every narrative section is optional so a case study can be published in
- * "Draft" state with metadata only, and filled in section by section. The page
+ * Every narrative section is optional so a case study can be published with
+ * metadata only and filled in section by section. The page
  * template renders a section if and only if its content exists.
  */
 
@@ -21,7 +21,12 @@ export type Point = { t: string; d: string };
 /** Numbered title + description, where the order carries meaning. */
 export type NumberedPoint = { n: string; t: string; d: string };
 
-export type Status = "Draft" | "Discovery" | "In design" | "MVP in build" | "Live" | "Archived";
+/**
+ * Maturity of the *written analysis*, not of a product.
+ * This site documents reasoning; it does not ship software, so the vocabulary
+ * describes how finished the thinking is.
+ */
+export type Status = "In analysis" | "Architecture note" | "Under revision" | "Open question";
 
 /** 1–5. Drives the complexity meter on cards and the case header. */
 export type Complexity = 1 | 2 | 3 | 4 | 5;
@@ -206,7 +211,8 @@ export type Site = {
   github: string;
   linkedin: string;
   availability: string;
-  heroStats: { value: string; label: string; note: string }[];
+  /** Retired — the site no longer presents self-describing metrics. */
+  heroStats?: { value: string; label: string; note: string }[];
 };
 
 export type WhyMe = {
