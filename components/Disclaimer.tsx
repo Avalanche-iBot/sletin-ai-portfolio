@@ -28,13 +28,13 @@ export function NoticeLine({ children }: { children: React.ReactNode }) {
 export function CaseNoteDisclaimer({ compact = false }: { compact?: boolean }) {
   return (
     <aside
-      aria-label="Notice about these case notes"
+      aria-label="Notice about these case studies"
       className={compact ? "border border-line bg-raised/50 p-5" : "border border-line bg-raised/50 p-6 md:p-8"}
     >
       <p className="eyebrow mb-3">Notice</p>
       <div className="max-w-reading space-y-3 text-[0.9375rem] leading-relaxed text-ink-soft">
         <p>
-          These case notes are educational analyses. Each one is built from general industry
+          These case studies are educational analyses. Each one is built from general industry
           knowledge, publicly available material and personal reasoning applied to a hypothetical
           scenario. They do not describe, and are not derived from, the internal systems, data,
           processes or projects of any organisation I have worked with or for.

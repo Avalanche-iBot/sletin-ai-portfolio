@@ -140,7 +140,7 @@ export const engagements: Engagement[] = [
 export const nav = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/portfolio", label: "Case Notes" },
+  { href: "/portfolio", label: "Case Studies" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ] as const;

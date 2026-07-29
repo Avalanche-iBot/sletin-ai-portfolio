@@ -25,7 +25,7 @@ export default function HomePage() {
 
           <div className="mt-9 flex animate-rise-in flex-wrap gap-3" style={{ animationDelay: "220ms" }}>
             <Link href="/portfolio" className="btn btn-primary">
-              Read the case notes
+              Read the case studies
             </Link>
             <Link href="/contact" className="btn btn-ghost">
               Start a conversation
@@ -62,7 +62,7 @@ export default function HomePage() {
 
       {/* Featured projects ------------------------------------------------ */}
       <Section
-        eyebrow="Case notes"
+        eyebrow="Case studies"
         title="Recent analyses"
         lede={`${caseStudies.length} of ${totalPlannedCaseStudies} planned notes are written. Each follows the same structure — context, discovery, analysis, architecture, trade-offs, risks — so the reasoning can be compared across problems.`}
       >
@@ -73,7 +73,7 @@ export default function HomePage() {
         </div>
         <div className="mt-8">
           <Link href="/portfolio" className="btn btn-ghost">
-            See all case notes
+            See all case studies
           </Link>
         </div>
       </Section>

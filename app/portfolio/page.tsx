@@ -4,14 +4,14 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { Section } from "@/components/Primitives";
 import { CaseNoteDisclaimer } from "@/components/Disclaimer";
 
-export const metadata: Metadata = { title: "Case Notes" };
+export const metadata: Metadata = { title: "Case Studies" };
 
 export default function PortfolioPage() {
   return (
     <>
       <Section
         first
-        eyebrow="Case notes"
+        eyebrow="Case studies"
         title="Operational problems, taken apart in the open"
         lede={`Each note runs the same path — business context, discovery, analysis, architecture, security, cost, risk, KPIs, roadmap — and ends with what I would question if I came back to it. ${caseStudies.length} of ${totalPlannedCaseStudies} planned notes are written; the rest are listed below.`}
       >

@@ -89,7 +89,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       <header className="grid-field border-b border-line">
         <div className="shell py-14 md:py-20">
           <Link href="/portfolio" className="font-mono text-micro uppercase tracking-[0.1em] text-ink-muted hover:text-ink">
-            ← All case notes
+            ← All case studies
           </Link>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
