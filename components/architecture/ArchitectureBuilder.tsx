@@ -3,71 +3,138 @@
 import { useMemo, useState } from "react";
 import type { ArchitectureLayer } from "@/content/architecture";
 import { NECESSITY_LABEL } from "@/content/architecture";
-import { validate, PRESETS, type Selection } from "@/lib/builderRules";
+import { generateStackSvg, generateStackHtml, type Selection } from "@/lib/stackDiagram";
 import { cx } from "@/lib/format";
 
 /**
- * Pick blocks, get told what is inconsistent about the result.
+ * Assemble a stack, take the diagram away.
  *
- * Selection is plain toggles rather than drag-and-drop: dragging looks better
- * in a demo and is worse to use, especially on a phone, and the interesting
- * part was never the gesture. The findings panel is the actual content — see
- * lib/builderRules.ts, where every rule is a pure function with no model
- * behind it.
+ * This is a time-saver, not an oracle. It does not grade the selection or
+ * suggest what is missing — an architect using it already knows their own
+ * constraints, and the hour they want back is the one spent laying boxes out
+ * in Figma to show someone else.
+ *
+ * The preview is the exported file, rendered inline, so what appears on screen
+ * is literally what downloads. It stays on a white card in both themes for the
+ * same reason: the export has fixed colours, and previewing it in dark mode
+ * would be showing something the reader is not going to get.
  */
 
-const SEVERITY_STYLE = {
-  error: "border-l-2 border-accent-deep",
-  warning: "border-l-2 border-accent/60",
-  info: "border-l-2 border-line-strong",
-} as const;
+const PRESETS: { id: string; name: string; selection: Selection }[] = [
+  {
+    id: "rag",
+    name: "Document assistant",
+    selection: {
+      channel: ["channel.teams"],
+      identity: ["identity.entra"],
+      orchestration: ["orch.fastapi"],
+      objectStorage: ["storage.sharepoint"],
+      parsing: ["parse.docint"],
+      embeddings: ["emb.azure"],
+      vectorStore: ["vec.pgvector"],
+      retrieval: ["ret.hybrid", "ret.reranker"],
+      llm: ["llm.azureopenai"],
+      database: ["db.postgres"],
+      observability: ["obs.langfuse"],
+      infrastructure: ["infra.azureapp"],
+    },
+  },
+  {
+    id: "predictive",
+    name: "Predictive maintenance",
+    selection: {
+      channel: ["channel.teams"],
+      identity: ["identity.entra"],
+      orchestration: ["orch.fastapi"],
+      messaging: ["msg.kafka"],
+      database: ["db.timescale"],
+      llm: ["llm.azureopenai"],
+      observability: ["obs.otel"],
+      humanInLoop: ["hitl.confirm"],
+      infrastructure: ["infra.azureapp"],
+    },
+  },
+  {
+    id: "agentic",
+    name: "Async document pipeline",
+    selection: {
+      channel: ["channel.web"],
+      identity: ["identity.entra"],
+      orchestration: ["orch.temporal"],
+      agentFramework: ["agent.langgraph"],
+      messaging: ["msg.servicebus"],
+      objectStorage: ["storage.blob"],
+      parsing: ["parse.docling"],
+      embeddings: ["emb.azure"],
+      vectorStore: ["vec.qdrant"],
+      retrieval: ["ret.hybrid"],
+      llm: ["llm.anthropic"],
+      database: ["db.postgres"],
+      guardrails: ["guard.deterministic"],
+      observability: ["obs.langfuse"],
+      humanInLoop: ["hitl.edit"],
+      infrastructure: ["infra.azureapp"],
+      secrets: ["secrets.keyvault"],
+    },
+  },
+];
 
-const SEVERITY_LABEL = {
-  error: "Contradiction",
-  warning: "Worth deciding",
-  info: "Note",
-} as const;
+function download(content: string, filename: string, mime: string) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
 
 export function ArchitectureBuilder({ layers }: { layers: ArchitectureLayer[] }) {
   const [selection, setSelection] = useState<Selection>({});
   const [openLayer, setOpenLayer] = useState<string | null>(null);
+  const [title, setTitle] = useState("Untitled stack");
 
   const sorted = useMemo(() => [...layers].sort((a, b) => a.order - b.order), [layers]);
-  const findings = useMemo(() => validate(selection, sorted), [selection, sorted]);
-  const chosenCount = useMemo(() => Object.values(selection).flat().length, [selection]);
+  const count = useMemo(() => Object.values(selection).flat().length, [selection]);
+  const svg = useMemo(
+    () => (count > 0 ? generateStackSvg(sorted, selection, title || "Untitled stack") : null),
+    [sorted, selection, title, count],
+  );
 
   function toggle(layerId: string, blockId: string) {
     setSelection((prev) => {
       const current = prev[layerId] ?? [];
-      const next = current.includes(blockId)
-        ? current.filter((b) => b !== blockId)
-        : [...current, blockId];
+      const next = current.includes(blockId) ? current.filter((b) => b !== blockId) : [...current, blockId];
       const updated = { ...prev, [layerId]: next };
       if (next.length === 0) delete updated[layerId];
       return updated;
     });
   }
 
-  const errors = findings.filter((f) => f.severity === "error").length;
+  const slug = (title || "architecture-stack").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
-      {/* Layers ------------------------------------------------------- */}
+    <div className="grid gap-8 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)]">
+      {/* Selection ---------------------------------------------------- */}
       <div className="min-w-0">
-        <div className="mb-6 flex flex-wrap items-center gap-2">
+        <div className="mb-5 flex flex-wrap items-center gap-2">
           <span className="eyebrow mr-1">Start from</span>
           {PRESETS.map((p) => (
             <button
               key={p.id}
               type="button"
-              onClick={() => setSelection(p.selection)}
-              title={p.rationale}
+              onClick={() => {
+                setSelection(p.selection);
+                setTitle(p.name);
+              }}
               className="border border-line-strong bg-surface px-3 py-1.5 font-mono text-micro uppercase tracking-wide text-ink-soft transition-colors hover:border-accent hover:text-accent"
             >
               {p.name}
             </button>
           ))}
-          {chosenCount > 0 && (
+          {count > 0 && (
             <button
               type="button"
               onClick={() => setSelection({})}
@@ -88,7 +155,7 @@ export function ArchitectureBuilder({ layers }: { layers: ArchitectureLayer[] })
                   type="button"
                   onClick={() => setOpenLayer(open ? null : layer.id)}
                   aria-expanded={open}
-                  className="flex w-full items-baseline justify-between gap-4 p-4 text-left transition-colors hover:bg-raised"
+                  className="flex w-full items-baseline justify-between gap-3 p-4 text-left transition-colors hover:bg-raised"
                 >
                   <span className="min-w-0">
                     <span className="font-mono text-micro text-ink-muted">
@@ -97,21 +164,16 @@ export function ArchitectureBuilder({ layers }: { layers: ArchitectureLayer[] })
                     <span className="ml-3 font-display text-base text-ink">{layer.title}</span>
                     {picked.length > 0 && (
                       <span className="mt-1 block text-[0.8125rem] leading-snug text-accent-deep">
-                        {picked
-                          .map((id) => layer.blocks.find((b) => b.id === id)?.name)
-                          .filter(Boolean)
-                          .join(" · ")}
+                        {picked.map((id) => layer.blocks.find((b) => b.id === id)?.name).filter(Boolean).join(" · ")}
                       </span>
                     )}
                   </span>
-                  <span className="shrink-0 font-mono text-micro uppercase tracking-[0.08em] text-ink-muted">
-                    {picked.length > 0 ? `${picked.length} ▾` : layer.necessity === "required" ? "Required ▾" : "▾"}
-                  </span>
+                  <span className="shrink-0 font-mono text-micro text-ink-muted">{open ? "—" : "+"}</span>
                 </button>
 
                 {open && (
                   <div className="border-t border-line bg-canvas p-4">
-                    <p className="mb-4 max-w-reading text-[0.8125rem] leading-relaxed text-ink-muted">
+                    <p className="mb-4 text-[0.8125rem] leading-relaxed text-ink-muted">
                       {layer.question} · {NECESSITY_LABEL[layer.necessity]}
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -123,7 +185,6 @@ export function ArchitectureBuilder({ layers }: { layers: ArchitectureLayer[] })
                             type="button"
                             onClick={() => toggle(layer.id, b.id)}
                             aria-pressed={active}
-                            title={b.cons[0]}
                             className={cx(
                               "border px-3 py-1.5 text-[0.8125rem] transition-colors",
                               active
@@ -144,40 +205,67 @@ export function ArchitectureBuilder({ layers }: { layers: ArchitectureLayer[] })
         </ol>
       </div>
 
-      {/* Findings ----------------------------------------------------- */}
-      <aside className="lg:sticky lg:top-24 lg:self-start">
-        <div className="frame p-5">
-          <p className="eyebrow mb-1">What this says about the stack</p>
-          <p className="mb-5 text-[0.8125rem] leading-relaxed text-ink-muted">
-            {chosenCount === 0
-              ? "Pick blocks, or load one of the starting points above."
-              : `${chosenCount} block${chosenCount === 1 ? "" : "s"} selected · ${errors} contradiction${errors === 1 ? "" : "s"}`}
-          </p>
+      {/* Preview and export ------------------------------------------- */}
+      <div className="min-w-0">
+        <div className="lg:sticky lg:top-24">
+          <label className="mb-4 block">
+            <span className="eyebrow">Diagram title</span>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Untitled stack"
+              className="mt-2 w-full border border-line bg-surface px-3 py-2 text-[0.9375rem] text-ink placeholder:text-ink-muted focus:border-accent focus:outline-none"
+            />
+          </label>
 
-          {chosenCount > 0 && findings.length === 0 && (
-            <p className="border-l-2 border-accent pl-3 text-[0.875rem] leading-relaxed text-ink-soft">
-              Nothing inconsistent found. That is not the same as good — these rules catch mechanical
-              contradictions, not whether the design fits the problem.
-            </p>
+          {svg ? (
+            <>
+              <div
+                className="overflow-x-auto border border-line bg-white p-3"
+                /* The export has fixed colours; this is a true preview of it. */
+                dangerouslySetInnerHTML={{ __html: svg }}
+              />
+
+              <div className="mt-4 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => download(svg, `${slug}.svg`, "image/svg+xml")}
+                  className="border border-accent bg-accent/[0.08] px-4 py-2 font-mono text-micro uppercase tracking-wide text-accent-deep transition-colors hover:bg-accent/[0.14]"
+                >
+                  Download SVG &darr;
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    download(
+                      generateStackHtml(sorted, selection, title || "Untitled stack"),
+                      `${slug}.html`,
+                      "text/html",
+                    )
+                  }
+                  className="border border-line-strong bg-surface px-4 py-2 font-mono text-micro uppercase tracking-wide text-ink-soft transition-colors hover:border-accent hover:text-accent"
+                >
+                  Download page &darr;
+                </button>
+              </div>
+
+              <p className="mt-4 max-w-reading text-[0.8125rem] leading-relaxed text-ink-muted">
+                The SVG stays sharp at any size and opens in Figma, Illustrator or a browser. The page version
+                adds the same lists as text you can paste. Both carry the date and a link back, so the diagram
+                still explains itself once it is in someone else&rsquo;s deck.
+              </p>
+            </>
+          ) : (
+            <div className="frame flex min-h-[16rem] items-center justify-center p-8">
+              <p className="max-w-reading text-center text-[0.9375rem] leading-relaxed text-ink-muted">
+                Pick the blocks your system actually uses, or load one of the starting points. The diagram
+                appears here and downloads as SVG.
+              </p>
+            </div>
           )}
-
-          <ul className="space-y-4">
-            {findings.map((f) => (
-              <li key={f.id} className={cx("pl-3", SEVERITY_STYLE[f.severity])}>
-                <p className="font-mono text-[0.6875rem] uppercase tracking-[0.08em] text-ink-muted">
-                  {SEVERITY_LABEL[f.severity]}
-                </p>
-                <p className="mt-1 text-[0.875rem] leading-relaxed text-ink-soft">{f.message}</p>
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-6 border-t border-line pt-4 text-[0.75rem] leading-relaxed text-ink-muted">
-            Every check here is a plain function over the selection — no model is involved. Most of what a
-            reviewer catches on a first pass is mechanical, and this is an argument for saying so.
-          </p>
         </div>
-      </aside>
+      </div>
     </div>
   );
 }

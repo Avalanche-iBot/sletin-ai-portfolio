@@ -3,34 +3,69 @@
 import { useEffect, useState } from "react";
 
 /**
- * Return-to-top control, narrow screens only.
+ * Return-to-top control with a reading-progress ring.
  *
- * A case note runs to roughly 30,000px on a phone. Without this the only way
- * back to the contents is a long flick, so the control appears once the reader
- * is far enough in to have lost sight of the header, and stays out of the way
- * until then.
+ * The ring is not decoration for its own sake: it answers "how much of this is
+ * left", which on a note that runs to 30,000px on a phone is a real question.
+ * Making the same element carry both the answer and the way out is the reason
+ * it earns a fixed position at all.
  *
- * Hidden from assistive technology: a screen reader already has heading and
- * landmark navigation, so this would be a redundant control rather than a
- * useful one. It also respects reduced-motion, since a smooth scroll across a
- * page this tall is exactly the kind of movement that setting exists for.
+ * The motion is deliberately small — a short rise and fade, no bounce, no
+ * spring. This site's visual language is drafting film and instrument panels,
+ * and a control that springs would read as borrowed from somewhere else.
+ *
+ * Hidden from assistive technology: heading and landmark navigation already
+ * cover both jobs, so exposing this would add a redundant control rather than
+ * a useful one.
  */
 export function BackToTop() {
+  const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 1200);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    /*
+     * Scrollable height is cached rather than measured per event.
+     *
+     * `scrollHeight` forces a layout, and a case note is long enough that
+     * reading it on every scroll event is the one part of this that could
+     * actually cost something. A ResizeObserver catches the cases a resize
+     * listener misses — a disclosure opening, a font landing, an image
+     * settling — so the scroll path only has to read `scrollY`, which is free.
+     */
+    let scrollable = 0;
 
-  if (!visible) return null;
+    const measureHeight = () => {
+      scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      update();
+    };
+
+    const update = () => {
+      const y = window.scrollY;
+      setProgress(scrollable > 0 ? Math.min(1, Math.max(0, y / scrollable)) : 0);
+      setVisible(y > 800);
+    };
+
+    measureHeight();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", measureHeight, { passive: true });
+
+    const observer = new ResizeObserver(measureHeight);
+    observer.observe(document.documentElement);
+
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", measureHeight);
+      observer.disconnect();
+    };
+  }, []);
 
   function toTop() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
   }
+
+  const R = 19;
+  const circumference = 2 * Math.PI * R;
 
   return (
     <button
@@ -38,10 +73,31 @@ export function BackToTop() {
       onClick={toTop}
       aria-hidden
       tabIndex={-1}
-      className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center border border-line bg-canvas/90 text-ink-soft shadow-sm backdrop-blur transition-colors hover:border-ink hover:text-ink lg:hidden"
+      data-visible={visible ? "true" : "false"}
+      className="group fixed bottom-6 right-6 z-40 grid h-11 w-11 place-items-center rounded-full border border-line bg-canvas/85 backdrop-blur transition-[opacity,transform,border-color] duration-300 ease-precise hover:border-accent data-[visible=false]:pointer-events-none data-[visible=false]:translate-y-2 data-[visible=false]:opacity-0 data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 motion-reduce:transition-none"
     >
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M8 13V3M8 3L3.5 7.5M8 3l4.5 4.5" stroke="currentColor" strokeWidth="1.3" />
+      <svg viewBox="0 0 44 44" className="absolute inset-0 h-full w-full -rotate-90">
+        <circle cx="22" cy="22" r={R} fill="none" stroke="rgb(var(--line))" strokeWidth="1.5" />
+        <circle
+          cx="22"
+          cy="22"
+          r={R}
+          fill="none"
+          stroke="rgb(var(--accent))"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={circumference * (1 - progress)}
+        />
+      </svg>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 16 16"
+        fill="none"
+        className="relative text-ink-soft transition-transform duration-300 ease-precise group-hover:-translate-y-0.5 group-hover:text-accent-deep motion-reduce:transition-none"
+      >
+        <path d="M8 12.5V4M8 4L4 8M8 4l4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
       </svg>
     </button>
   );

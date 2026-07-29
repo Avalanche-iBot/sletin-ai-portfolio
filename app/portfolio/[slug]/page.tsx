@@ -10,7 +10,6 @@ import { RoadmapTimeline } from "@/components/RoadmapTimeline";
 import { KpiTable, RiskTable, TechSelectionTable, StakeholderTable } from "@/components/DataTables";
 import { CaseNoteDisclaimer } from "@/components/Disclaimer";
 import { CaseNoteToc, CaseNoteTocMobile, type TocEntry } from "@/components/CaseNoteToc";
-import { BackToTop } from "@/components/BackToTop";
 import { MaterialsSection } from "@/components/MaterialsSection";
 import { cx, STATUS_TONE } from "@/lib/format";
 import { availableMaterials } from "@/lib/materials";
@@ -622,8 +621,6 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           <span />
         )}
       </nav>
-
-      <BackToTop />
     </>
   );
 }

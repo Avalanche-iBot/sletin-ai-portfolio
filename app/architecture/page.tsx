@@ -19,19 +19,49 @@ export default function ArchitecturePage() {
         <p className="mt-4 font-prose text-lg leading-relaxed text-ink-soft">{architectureIntro.dek}</p>
       </header>
 
-      <div className="mt-12">
+      {/*
+       * Open, not a disclosure. The page carries three separate tools now, and
+       * the two most useful sit a long way down — a reader who cannot see that
+       * the builder exists will never scroll to find it.
+       */}
+      <nav aria-label="On this page" className="mt-10 border-y border-line py-4">
+        <p className="eyebrow mb-3">On this page</p>
+        <ol className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:gap-x-8">
+          {[
+            { href: "#catalogue", n: "01", label: "The layer catalogue", note: "21 layers, with the options at each" },
+            { href: "#builder", n: "02", label: "Stack builder", note: "Assemble yours, download the diagram" },
+            { href: "#cost-model", n: "03", label: "Cost model", note: "What actually moves cost per request" },
+          ].map((item) => (
+            <li key={item.href}>
+              <a href={item.href} className="group flex items-baseline gap-3">
+                <span className="font-mono text-micro text-accent-deep">{item.n}</span>
+                <span>
+                  <span className="text-[0.9375rem] text-ink-soft group-hover:text-ink">{item.label}</span>
+                  <span className="ml-2 hidden text-[0.8125rem] text-ink-muted lg:inline">{item.note}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
+      <div id="catalogue" className="mt-12 scroll-mt-24">
         <ArchitectureExplorer layers={architectureLayers} />
       </div>
 
-      {/* Builder — the catalogue above, made selectable and checked. */}
+      {/* Builder — the catalogue made selectable, and exportable. */}
       <section id="builder" className="mt-24 border-t border-line pt-16 scroll-mt-24">
         <header className="mb-10 max-w-reading">
-          <p className="eyebrow mb-4">Try it against your own stack</p>
-          <h2 className="font-display text-display-sm text-ink">Assemble a stack, see what contradicts</h2>
+          <p className="eyebrow mb-4">Use it on your own stack</p>
+          <h2 className="font-display text-display-sm text-ink">Assemble a stack, take the diagram away</h2>
           <p className="mt-4 font-prose leading-relaxed text-ink-soft">
-            The same catalogue, made selectable. Every check behind it is a plain function over the
-            selection with no model involved — the claim being that a good deal of what a reviewer catches
-            on a first pass is mechanical, and worth automating rather than admiring.
+            Pick what your system actually uses and download the result as a diagram — for a slide, a
+            handover document, or a conversation with someone who needs to see the shape of it. It is an
+            hour of laying out boxes that you do not have to spend.
+          </p>
+          <p className="mt-3 font-prose text-[0.9375rem] leading-relaxed text-ink-muted">
+            What it draws is the composition of a stack, not the path a request takes through it. Arrows
+            would imply a call order the selection does not contain.
           </p>
         </header>
 
