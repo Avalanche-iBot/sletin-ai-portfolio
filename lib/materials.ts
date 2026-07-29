@@ -16,22 +16,43 @@ import { site } from "@/content/site";
  * rest of the site — see `materialParams` below.
  */
 
+/*
+ * Two formats, chosen for who has to open them.
+ *
+ * The dossier is the one most readers can use: double-click, it opens in a
+ * browser, Ctrl+P gives a PDF, and its tables paste into a spreadsheet or a
+ * document with the columns intact. The CSVs are for the smaller group who
+ * want the rows as data.
+ *
+ * Markdown was here and is not any more. It renders beautifully on GitHub and
+ * opens in Notepad everywhere else, which made it a format that only helped
+ * readers who already knew what to do with it. Its content is in the dossier.
+ */
 export type MaterialKind =
+  | "dossier"
   | "risk-register"
   | "kpi-scorecard"
-  | "technology-selection"
-  | "discovery-questions"
-  | "decision-records";
+  | "technology-selection";
 
 export interface MaterialMeta {
   kind: MaterialKind;
   label: string;
   description: string;
-  ext: "csv" | "md";
+  ext: "csv" | "html";
   mime: string;
+  /** Shown first and styled as the primary download. */
+  primary?: boolean;
 }
 
 const MATERIAL_META: Record<MaterialKind, Omit<MaterialMeta, "kind">> = {
+  dossier: {
+    label: "Everything, as one document",
+    description:
+      "All five sets in a single self-contained page. Opens in any browser, prints to PDF, and the tables paste straight into a spreadsheet or a document.",
+    ext: "html",
+    mime: "text/html",
+    primary: true,
+  },
   "risk-register": {
     label: "Risk register",
     description: "Every risk in the note, with severity, consequence and mitigation.",
@@ -50,26 +71,14 @@ const MATERIAL_META: Record<MaterialKind, Omit<MaterialMeta, "kind">> = {
     ext: "csv",
     mime: "text/csv",
   },
-  "discovery-questions": {
-    label: "Discovery question bank",
-    description: "The questions put to each stakeholder group, and what they returned.",
-    ext: "md",
-    mime: "text/markdown",
-  },
-  "decision-records": {
-    label: "Decision records",
-    description: "Every option that was on the table, written up as one ADR each.",
-    ext: "md",
-    mime: "text/markdown",
-  },
 };
 
 const HAS_DATA: Record<MaterialKind, (p: CaseStudy) => boolean> = {
+  dossier: (p) =>
+    !!(p.risks?.length || p.kpis?.length || p.technologySelection?.length || p.discovery?.groups?.length || p.alternatives?.length),
   "risk-register": (p) => !!p.risks?.length,
   "kpi-scorecard": (p) => !!p.kpis?.length,
   "technology-selection": (p) => !!p.technologySelection?.length,
-  "discovery-questions": (p) => !!p.discovery?.groups?.length,
-  "decision-records": (p) => !!p.alternatives?.length,
 };
 
 /** Which materials this case study actually has data for, in a fixed order. */
@@ -140,72 +149,137 @@ function technologySelectionCsv(project: CaseStudy): string {
   return out;
 }
 
-function discoveryQuestionsMd(project: CaseStudy): string {
-  const d = project.discovery;
-  const lines: string[] = [`# Discovery question bank — ${project.title}`, "", banner(project, "Discovery question bank").split("\n").slice(1).join("  \n"), ""];
+const esc = (s: string) =>
+  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-  if (d?.intro) lines.push(d.intro, "");
+/**
+ * The whole set as one self-contained page.
+ *
+ * This is the format most readers can actually use: it opens on a double
+ * click with no tooling, prints to PDF through the browser, and its tables
+ * paste into Excel, Word or Confluence with the columns intact — which a CSV
+ * does not do without an import step. Styles are inlined and there are no
+ * external references, so it keeps working offline and forever.
+ */
+function dossierHtml(project: CaseStudy): string {
+  const url = `https://aleksandrsletin.com/portfolio/${project.slug}`;
+  const parts: string[] = [];
 
-  for (const g of d?.groups ?? []) {
-    lines.push(`## ${g.audience}`, "", `**Goal:** ${g.goal}`, "");
-    g.questions.forEach((q, i) => {
-      lines.push(`**Q — ${q}**`);
-      if (g.answers[i]) lines.push(`A — ${g.answers[i]}`);
-      lines.push("");
+  const table = (heading: string, headers: string[], rows: string[][]) => {
+    if (rows.length === 0) return;
+    parts.push(`<h2>${esc(heading)}</h2>`);
+    parts.push("<table><thead><tr>");
+    parts.push(headers.map((h) => `<th>${esc(h)}</th>`).join(""));
+    parts.push("</tr></thead><tbody>");
+    for (const r of rows) {
+      parts.push("<tr>" + r.map((c) => `<td>${esc(c)}</td>`).join("") + "</tr>");
+    }
+    parts.push("</tbody></table>");
+  };
+
+  table(
+    "Risk register",
+    ["#", "Risk", "Severity", "Consequence", "Mitigation"],
+    (project.risks ?? []).map((r) => [r.n, r.risk, r.severity, r.consequence, r.mitigation]),
+  );
+
+  table(
+    "KPI scorecard",
+    ["Category", "KPI", "Baseline", "Target", "Why this metric"],
+    (project.kpis ?? []).map((k) => [k.category, k.kpi, k.baseline, k.target, k.why]),
+  );
+
+  table(
+    "Technology selection",
+    ["Layer", "Choice", "Why", "Alternative considered"],
+    (project.technologySelection ?? []).map((t) => [t.layer, t.choice, t.why, t.alt]),
+  );
+
+  if (project.discovery?.groups?.length) {
+    parts.push("<h2>Discovery question bank</h2>");
+    for (const g of project.discovery.groups) {
+      parts.push(`<h3>${esc(g.audience)}</h3>`);
+      parts.push(`<p class="goal">${esc(g.goal)}</p>`);
+      parts.push("<dl>");
+      g.questions.forEach((q, i) => {
+        parts.push(`<dt>${esc(q)}</dt>`);
+        if (g.answers[i]) parts.push(`<dd>${esc(g.answers[i])}</dd>`);
+      });
+      parts.push("</dl>");
+    }
+  }
+
+  if (project.alternatives?.length) {
+    parts.push("<h2>Decision records</h2>");
+    project.alternatives.forEach((a, i) => {
+      parts.push(`<h3>ADR-${String(i + 1).padStart(3, "0")} · ${esc(a.option)}</h3>`);
+      parts.push(`<p><strong>Case for.</strong> ${esc(a.caseFor)}</p>`);
+      parts.push(`<p><strong>Case against.</strong> ${esc(a.caseAgainst)}</p>`);
+      if (a.verdict) parts.push(`<p><strong>Verdict.</strong> ${esc(a.verdict)}</p>`);
     });
   }
 
-  if (d?.implications?.length) {
-    lines.push("## Findings and their architectural implications", "");
-    for (const f of d.implications) {
-      lines.push(`- **${f.finding}** → ${f.implication}`);
-    }
-    lines.push("");
-  }
-
-  return lines.join("\n");
-}
-
-function decisionRecordsMd(project: CaseStudy): string {
-  const alts = project.alternatives ?? [];
-  const lines: string[] = [
-    `# Decision records — ${project.title}`,
-    "",
-    banner(project, "Decision records").split("\n").slice(1).join("  \n"),
-    "",
-    `${alts.length} option${alts.length === 1 ? "" : "s"} considered at architecture level.`,
-    "",
-  ];
-
-  alts.forEach((a, i) => {
-    const n = String(i + 1).padStart(3, "0");
-    lines.push(
-      `## ADR-${n}: ${a.option}`,
-      "",
-      `**Status:** ${a.verdict ? "Rejected" : "Considered"}`,
-      "",
-      "### Case for",
-      a.caseFor,
-      "",
-      "### Case against",
-      a.caseAgainst,
-      "",
-    );
-    if (a.verdict) lines.push("### Verdict", a.verdict, "");
-  });
-
-  return lines.join("\n");
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(project.title)} — working materials</title>
+<style>
+  :root { --ink:#0c121a; --soft:#3d4857; --muted:#74808f; --line:#d8dde4; }
+  * { box-sizing:border-box }
+  body { margin:0 auto; padding:3rem 1.5rem 6rem; max-width:60rem;
+         font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         color:var(--ink); background:#fff; }
+  header { border-bottom:2px solid var(--ink); padding-bottom:1.5rem; margin-bottom:2.5rem }
+  h1 { font-size:1.75rem; margin:0 0 .5rem; line-height:1.25 }
+  h2 { font-size:1.25rem; margin:3rem 0 1rem; padding-bottom:.4rem; border-bottom:1px solid var(--line) }
+  h3 { font-size:1rem; margin:2rem 0 .5rem }
+  p { margin:0 0 .75rem }
+  .sub { color:var(--soft); margin:0 }
+  .notice { margin:1.25rem 0 0; padding:.85rem 1rem; background:#faf7f0;
+            border-left:3px solid #c5800c; font-size:.875rem; color:var(--soft) }
+  .goal { color:var(--muted); font-size:.875rem; font-style:italic }
+  table { width:100%; border-collapse:collapse; margin:1rem 0 2rem; font-size:.875rem }
+  th,td { border:1px solid var(--line); padding:.55rem .7rem; text-align:left; vertical-align:top }
+  th { background:#f1f3f6; font-weight:600 }
+  dt { font-weight:600; margin-top:.9rem }
+  dd { margin:.25rem 0 0; color:var(--soft) }
+  footer { margin-top:4rem; padding-top:1.25rem; border-top:1px solid var(--line);
+           font-size:.8125rem; color:var(--muted) }
+  a { color:inherit }
+  @media print { body { padding:0 } .notice { background:none } h2 { break-after:avoid } table { break-inside:auto } tr { break-inside:avoid } }
+</style></head>
+<body>
+<header>
+  <h1>${esc(project.title)}</h1>
+  <p class="sub">${esc(project.subtitle)}</p>
+  <p class="notice"><strong>Educational analysis of a hypothetical scenario.</strong>
+  Not derived from, and not describing, the internal systems, data or projects of any organisation.
+  The figures and architectures are illustrative — they show how a class of problem is reasoned
+  about, not a validated implementation.</p>
+</header>
+${parts.join("\n")}
+<footer>
+  <p>Source note: <a href="${esc(url)}">${esc(url)}</a></p>
+  <p>Licensed CC BY 4.0 — reuse and adapt freely, with attribution to ${esc(site.name)} and the source note above.</p>
+  <p>Generated ${new Date().toISOString().slice(0, 10)}.</p>
+</footer>
+</body></html>`;
 }
 
 const GENERATORS: Record<MaterialKind, (p: CaseStudy) => string> = {
+  dossier: dossierHtml,
   "risk-register": riskRegisterCsv,
   "kpi-scorecard": kpiScorecardCsv,
   "technology-selection": technologySelectionCsv,
-  "discovery-questions": discoveryQuestionsMd,
-  "decision-records": decisionRecordsMd,
 };
 
-export function generateMaterial(project: CaseStudy, kind: MaterialKind): { body: string; meta: MaterialMeta } | null {
-  if (!HAS_DATA[kind](project)) return null;
-  return { body: GENERATORS[kind](project), meta: { kind, ...MATERIAL_META[kind] } };
+/**
+ * `kind` arrives as an unvalidated URL segment, so an unknown value has to be
+ * a null rather than a lookup on a map that does not contain it.
+ */
+export function generateMaterial(project: CaseStudy, kind: string): { body: string; meta: MaterialMeta } | null {
+  if (!Object.prototype.hasOwnProperty.call(MATERIAL_META, kind)) return null;
+  const known = kind as MaterialKind;
+  if (!HAS_DATA[known](project)) return null;
+  return { body: GENERATORS[known](project), meta: { kind: known, ...MATERIAL_META[known] } };
 }

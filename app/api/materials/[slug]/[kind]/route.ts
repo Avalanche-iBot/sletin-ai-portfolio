@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { caseStudies, getCaseStudy } from "@/content/projects";
-import { generateMaterial, materialParams, type MaterialKind } from "@/lib/materials";
+import { generateMaterial, materialParams } from "@/lib/materials";
 
 /** Pre-renders every (slug, kind) pair with data, same as the rest of the site. */
 export function generateStaticParams() {
@@ -11,7 +11,7 @@ export function GET(_request: Request, { params }: { params: { slug: string; kin
   const project = getCaseStudy(params.slug);
   if (!project) return NextResponse.json({ ok: false, error: "Unknown case study" }, { status: 404 });
 
-  const result = generateMaterial(project, params.kind as MaterialKind);
+  const result = generateMaterial(project, params.kind);
   if (!result) return NextResponse.json({ ok: false, error: "Unknown or unavailable material" }, { status: 404 });
 
   const filename = `${project.slug}-${result.meta.kind}.${result.meta.ext}`;
