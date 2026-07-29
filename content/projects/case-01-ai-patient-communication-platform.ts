@@ -26,7 +26,7 @@ const caseStudy: CaseStudy = {
   "liveDemoUrl": "",
   "demoNote": "No public demo — this case study documents the architecture, not a product",
   "shortSummary": "A regulated, GDPR-compliant patient communication platform for a fast-growing Italian dental group. The architectural core is a hybrid router: deterministic automation handles the 70% of requests that are genuinely deterministic, and a RAG-grounded LLM handles only free-text clinical-adjacent questions — with a hard rule that it never gives medical advice and escalates on low confidence.",
-  "impact": "12 min → <30 s response time · ≥70% requests automated · ~€0.008 blended AI cost per message",
+  "impact": "12 min → <30 s response time · ≥70% requests automated · ~€0.006 blended AI cost per message",
   "tags": [
     "RAG",
     "Hybrid routing",
@@ -410,7 +410,7 @@ const caseStudy: CaseStudy = {
       },
       {
         "finding": "OPEX ceiling €80k/year",
-        "implication": "Cost becomes a hard non-functional requirement rather than a reporting line — on the order of €0.03 per model-path request at these volumes, which is what drives model routing, caching and prompt-length discipline. The cost section shows the formula behind that figure and the range it sits in."
+        "implication": "Cost becomes a hard non-functional requirement rather than a reporting line: a ceiling of €0.03 per model-path request at these volumes, which is what drives model routing, caching and prompt-length discipline. The cost section derives the expected figure — closer to €0.02 — and shows why the ceiling deliberately sits above it."
       },
       {
         "finding": "France expansion planned",
@@ -780,7 +780,7 @@ const caseStudy: CaseStudy = {
     ]
   },
   "costOptimization": {
-    "body": "The cost ceiling only holds because most requests never reach a model. That is the whole economic argument, and it is worth separating two numbers that get conflated.\n\nCost per model-path request is the figure quoted below: roughly €0.03. Cost per inbound message is far lower, because only the free-text remainder — on the order of a quarter of volume — takes that path at all. Blended across everything arriving, the expected figure is closer to €0.008.\n\nThe €0.03 is a point estimate inside a range, not a measurement. It moves with model tier, how much retrieved context is packed into the prompt, answer length, and language: Italian text is generally less token-efficient than English, which pushes the same answer up the range. Realistically the band is €0.012 to €0.075 per model-path request — the low end being a cheaper tier answering a short grounded question, the high end being the strongest tier with a long context and a detailed answer. Anything above that band means the prompt is carrying context nobody reads, and that is a design defect rather than a pricing problem.\n\nOne caution on the figure: it is anchored to hosted model pricing as it stood in mid-2026. Token prices have fallen consistently, so treat the formula and the token counts as the durable part and the euro figure as something to recompute.",
+    "body": "The cost ceiling only holds because most requests never reach a model. That is the whole economic argument, and it rests on separating three numbers that get conflated.\n\nThe first is the expected cost of a request that does reach a model: roughly €0.02, which is what the token counts and prices below multiply out to. The second is the cost per inbound message, which is far lower, because only the free-text remainder — on the order of a quarter of volume — takes that path at all. Blended across everything arriving, that is closer to €0.006.\n\nThe third is the budget: €0.03 per model-path request. That is deliberately above the expectation rather than equal to it, which is the point of a ceiling — it is what the system is held to, not what it is predicted to cost, and the gap is the room a design needs when an assumption turns out to be optimistic. It is also why the alert threshold sits at €0.045 rather than at the ceiling itself.\n\nNone of this is a measurement. The expected figure moves with model tier, how much retrieved context is packed into the prompt, answer length, and language: Italian text is generally less token-efficient than English, which pushes the same answer up the range. Realistically the band is €0.012 to €0.075 per model-path request — the low end being a cheaper tier answering a short grounded question, the high end being the strongest tier with a long context and a detailed answer. Anything above that band means the prompt is carrying context nobody reads, and that is a design defect rather than a pricing problem.\n\nOne caution: the two price lines below are assumptions anchored to hosted pricing as it stood in mid-2026, not a quote. Token prices have fallen consistently, so treat the formula and the token counts as the durable part and recompute the euro figures against whatever the chosen model actually costs on the day.",
     "model": [
       {
         "k": "How it is calculated",
@@ -799,8 +799,16 @@ const caseStudy: CaseStudy = {
         "v": "One hybrid query per request — roughly an order of magnitude cheaper than generation"
       },
       {
-        "k": "Point estimate",
-        "v": "~€0.03 per model-path request"
+        "k": "Input price, assumed",
+        "v": "€5 per million tokens — the stronger of the two tiers, which is the one the model path uses"
+      },
+      {
+        "k": "Output price, assumed",
+        "v": "€25 per million tokens — output runs about five times input across every tier"
+      },
+      {
+        "k": "Expected cost",
+        "v": "~€0.02 per model-path request, which is what the four lines above multiply out to"
       },
       {
         "k": "Plausible range",
@@ -808,11 +816,15 @@ const caseStudy: CaseStudy = {
       },
       {
         "k": "Blended per inbound message",
-        "v": "~€0.008, since ~75% never reach a model"
+        "v": "~€0.006, since ~75% never reach a model"
+      },
+      {
+        "k": "Budget ceiling",
+        "v": "€0.03 per model-path request — the constraint the design is held to, deliberately above the expectation"
       },
       {
         "k": "Price basis",
-        "v": "Hosted mid-tier model pricing as of mid-2026. Recompute rather than trust: token prices fall."
+        "v": "Hosted pricing as of mid-2026. Recompute rather than trust: token prices fall, and the two price lines above are the first thing to check."
       }
     ],
     "levers": [

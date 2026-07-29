@@ -39,22 +39,22 @@ interface Inputs {
 }
 
 /*
- * Defaults reproduce case 01's stated cost model: ~2,500 input tokens, ~350
- * output, one retrieval query, a quarter of traffic reaching a model. They land
- * on roughly €0.028 per model-path request and €0.007 blended, against the
- * ~€0.03 and ~€0.008 that note quotes.
+ * Defaults reproduce case 01's stated cost model exactly: ~2,500 input tokens,
+ * ~350 output, €5/€25 per million, one retrieval query, a quarter of traffic
+ * reaching a model. They land on ~€0.022 per model-path request and ~€0.006
+ * blended — the figures that note quotes.
  *
- * Prompt caching starts at zero because case 01's formula does not include it —
- * it is a lever the reader can turn on, not part of the baseline being
- * reproduced.
+ * Prompt caching and the infrastructure share both start at zero because case
+ * 01's formula is tokens plus retrieval and nothing else. Both are levers the
+ * reader can turn on; neither is part of the baseline being reproduced.
  */
 const DEFAULTS: Inputs = {
   inputTokens: 2500,
   outputTokens: 350,
-  inputPrice: 6,
-  outputPrice: 30,
+  inputPrice: 5,
+  outputPrice: 25,
   retrievalCost: 0.0008,
-  infraCost: 0.0015,
+  infraCost: 0,
   modelShare: 25,
   cacheHitRate: 0,
   volume: 40000,
