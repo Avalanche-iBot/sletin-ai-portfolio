@@ -2,19 +2,28 @@ import type { CaseStudy } from "@/content/types";
 import { cx } from "@/lib/format";
 
 /*
- * Columns follow the phase count rather than a fixed four.
+ * Columns follow the phase count, and only ever use a count that divides it.
  *
- * The hairline grid is drawn by `gap-px` over a `bg-line` container, which means
- * any column the phases do not fill renders as a visible empty panel — a
- * three-phase roadmap in a four-column grid left a grey cell that read as
- * missing content. Tailwind only emits classes it can see as literals, so the
- * mapping is spelled out instead of interpolated.
+ * The hairline grid is drawn by `gap-px` over a `bg-line` container, so any
+ * cell the phases do not fill renders as a solid panel in the line colour —
+ * it reads as missing content rather than as empty space. A layout is
+ * therefore only safe when every row comes out full.
+ *
+ * That has to hold at each breakpoint independently, which is the part worth
+ * spelling out: three phases in two columns leaves a gap in the second row
+ * just as surely as three phases in four columns does. So an odd count gets no
+ * two-column layout at all, and stacks until there is room for the full set.
+ *
+ * Tailwind only emits classes it can see written out, so the mapping is
+ * literal rather than interpolated.
  */
 const PHASE_COLUMNS: Record<number, string> = {
   1: "",
   2: "sm:grid-cols-2",
-  3: "sm:grid-cols-2 lg:grid-cols-3",
+  3: "lg:grid-cols-3",
   4: "sm:grid-cols-2 lg:grid-cols-4",
+  5: "lg:grid-cols-5",
+  6: "sm:grid-cols-2 lg:grid-cols-3",
 };
 
 /**
@@ -30,10 +39,11 @@ const PHASE_COLUMNS: Record<number, string> = {
  * on each panel would do.
  */
 export function RoadmapTimeline({ phases }: { phases: NonNullable<CaseStudy["roadmap"]> }) {
-  // Falls back to the four-column layout for any count beyond the table above,
-  // which wraps rather than leaving a gap — five phases fill four columns and
-  // then one, with no empty cell.
-  const columns = PHASE_COLUMNS[phases.length] ?? "sm:grid-cols-2 lg:grid-cols-4";
+  // Anything past six phases falls back to a single column, which is the one
+  // layout that cannot leave a gap at any width. A roadmap that long is a
+  // content problem rather than a layout one, and silently rendering it wrong
+  // would hide that.
+  const columns = PHASE_COLUMNS[phases.length] ?? "";
 
   return (
     <ol className={cx("grid gap-px overflow-hidden border border-line bg-line", columns)}>
