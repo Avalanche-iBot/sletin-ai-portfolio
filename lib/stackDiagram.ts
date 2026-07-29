@@ -1,5 +1,5 @@
 import type { ArchitectureLayer } from "@/content/architecture";
-import { site } from "@/content/site";
+import { site, siteUrl } from "@/content/site";
 
 /**
  * Turns a stack selection into a diagram worth showing someone else.
@@ -222,7 +222,7 @@ export function generateStackSvg(layers: ArchitectureLayer[], selection: Selecti
   }
 
   const today = new Date().toISOString().slice(0, 10);
-  const url = "https://aleksandrsletin.com/architecture";
+  const url = `${siteUrl}/architecture`;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${totalH}" width="${W}" height="${totalH}">
 <rect width="${W}" height="${totalH}" fill="${C.canvas}"/>
@@ -240,7 +240,7 @@ ${parts.join("\n")}
 export function generateStackHtml(layers: ArchitectureLayer[], selection: Selection, title: string): string {
   const { sequential, rail } = prepare(layers, selection);
   const today = new Date().toISOString().slice(0, 10);
-  const url = "https://aleksandrsletin.com/architecture";
+  const url = `${siteUrl}/architecture`;
   const svg = generateStackSvg(layers, selection, title);
 
   const rows = sequential

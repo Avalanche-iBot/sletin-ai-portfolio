@@ -1,6 +1,18 @@
 import Link from "next/link";
 import { nav, site } from "@/content/site";
 
+/**
+ * The site footer: identity, a repeat of the navigation, external links.
+ *
+ * Rendered once by `app/layout.tsx`, so it appears on every page. Unlike the
+ * header this is a Server Component — it has no state and handles no clicks —
+ * so it costs the browser no JavaScript at all.
+ *
+ * It reads the same `nav` array the header does, which is the reason a page
+ * added to `content/site.ts` shows up in both places at once. Everything else
+ * on display — name, tagline, contact details — comes from the `site` object
+ * in that file, so none of it is duplicated in markup here.
+ */
 export function SiteFooter() {
   return (
     <footer className="border-t border-line">
@@ -49,7 +61,13 @@ export function SiteFooter() {
       </div>
       <div className="hairline" />
       <div className="shell flex flex-col gap-2 py-6 font-mono text-micro uppercase tracking-[0.1em] text-ink-muted md:flex-row md:items-center md:justify-between">
-        <span>© {new Date().getFullYear()} {site.name}. Built with Next.js.</span>
+        {/* The year is computed at build time, not in the browser: this is a
+            statically generated page, so the value is baked into the HTML when
+            the site is deployed. A build early in January is the one case that
+            needs a rebuild to catch up. */}
+        <span>
+          © {new Date().getFullYear()} {site.name}. Built with Next.js.
+        </span>
         <span>{site.availability}</span>
       </div>
     </footer>

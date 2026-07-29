@@ -10,6 +10,17 @@ export const metadata: Metadata = {
     "A reference catalogue of the layers that recur across enterprise AI systems, and the tool options available at each one.",
 };
 
+/**
+ * The Architecture page, served at `/architecture`.
+ *
+ * A reference catalogue of the layers that recur across enterprise AI systems,
+ * plus two tools built on the same data: a stack builder and a cost model.
+ *
+ * The page itself is a static Server Component; all three children are marked
+ * "use client" because each is interactive. The catalogue they render comes
+ * from `content/architecture.ts`, so a new layer or tool option is added there
+ * and appears in all three at once.
+ */
 export default function ArchitecturePage() {
   return (
     <div className="shell py-16 sm:py-24">

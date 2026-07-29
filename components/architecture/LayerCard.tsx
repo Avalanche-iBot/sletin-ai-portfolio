@@ -1,19 +1,39 @@
 import type { ArchitectureLayer } from "@/content/architecture";
 import { NECESSITY_LABEL } from "@/content/architecture";
 
+/**
+ * Badge styling per necessity level.
+ *
+ * Only `required` carries the accent colour; the other two are neutral. That
+ * is the whole visual argument of the grid — a reader scanning it sees at once
+ * which layers are not optional, and the rest recede.
+ *
+ * Keying the record by `ArchitectureLayer["necessity"]` rather than by `string`
+ * ties it to the type: adding a fourth level to the catalogue becomes a
+ * compile error here, instead of an undefined lookup and an unstyled badge.
+ */
 const NECESSITY_STYLE: Record<ArchitectureLayer["necessity"], string> = {
   required: "border-accent/40 bg-accent/10 text-accent-deep",
   conditional: "border-line-strong bg-surface text-ink-soft",
   enterprise: "border-line-strong bg-raised text-ink-soft",
 };
 
-export function LayerCard({
-  layer,
-  onOpen,
-}: {
-  layer: ArchitectureLayer;
-  onOpen: () => void;
-}) {
+/**
+ * One layer of the architecture catalogue, as a card in the explorer grid.
+ *
+ * A real `<button>`, not a styled `<div>` with a click handler. That gives
+ * keyboard focus, Enter and Space activation, and the correct announcement to
+ * a screen reader for free — all of which a div would need re-implementing by
+ * hand, usually incompletely. `aria-haspopup="dialog"` warns in advance that
+ * activating it opens a modal rather than navigating.
+ *
+ * The component is presentational: it renders and reports the click upward.
+ * Which layer is open is state held by `ArchitectureExplorer`, so this file
+ * needs no "use client" of its own.
+ *
+ * @param onOpen Called when the card is activated; the parent opens the modal.
+ */
+export function LayerCard({ layer, onOpen }: { layer: ArchitectureLayer; onOpen: () => void }) {
   return (
     <button
       type="button"
@@ -41,6 +61,8 @@ export function LayerCard({
       </div>
 
       <div className="mt-5 flex items-center justify-between border-t border-line pt-3">
+        {/* Singular for exactly one option — "1 options" is the kind of small
+            wrongness that makes a page look unfinished. */}
         <span className="font-mono text-micro uppercase tracking-wide text-ink-muted">
           {layer.blocks.length} option{layer.blocks.length === 1 ? "" : "s"}
         </span>

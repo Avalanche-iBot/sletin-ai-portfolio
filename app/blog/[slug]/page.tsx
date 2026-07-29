@@ -4,6 +4,18 @@ import Link from "next/link";
 import { posts } from "@/content/blog";
 import { Section } from "@/components/Primitives";
 
+/**
+ * A single blog post, served at `/blog/<slug>`.
+ *
+ * Same dynamic-route mechanism as the case-study template: the `[slug]` folder
+ * makes one file serve every post, with the matched segment on `params.slug`.
+ *
+ * Planned posts are included deliberately. A post with no `body` still gets a
+ * page — showing its title and excerpt above a "not yet written" note — so a
+ * link to something announced but undrafted lands somewhere sensible instead
+ * of on a 404. Those slugs are kept out of `app/sitemap.ts`, since there is no
+ * reason for search engines to index them.
+ */
 export function generateStaticParams() {
   return posts.map((p) => ({ slug: p.slug }));
 }
@@ -16,6 +28,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = posts.find((p) => p.slug === params.slug);
+  // `notFound()` throws, which is what lets TypeScript treat `post` as defined
+  // below without an explicit return — the function never comes back from here.
   if (!post) notFound();
 
   return (
@@ -64,8 +78,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           <div className="frame max-w-reading p-8">
             <p className="font-mono text-micro uppercase tracking-[0.08em] text-ink-muted">Not yet published</p>
             <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink-soft">
-              This post is planned but not written yet. It's listed here — rather than hidden — so the publishing
-              queue stays honest about what exists and what's coming.
+              This post is planned but not written yet. It’s listed here — rather than hidden — so the publishing
+              queue stays honest about what exists and what’s coming.
             </p>
           </div>
         )}

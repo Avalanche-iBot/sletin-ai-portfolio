@@ -4,20 +4,40 @@ import { useState } from "react";
 import type { ArchitectureLayer } from "@/content/architecture";
 import { generateArchitectureStackSvg } from "@/lib/architectureStackSvg";
 
+/**
+ * Downloads the layer catalogue as an SVG the reader can open in Figma.
+ *
+ * The file is built in the browser rather than fetched, so there is no route
+ * behind this and nothing to keep in sync — the diagram is generated from the
+ * same `layers` data the page is already rendering.
+ */
 export function DownloadSvgButton({ layers }: { layers: ArchitectureLayer[] }) {
+  // Drives the brief "Downloaded" label. Without it the click has no visible
+  // result — the file lands in a folder the reader may not be looking at, and
+  // the button appears not to have worked.
   const [justDownloaded, setJustDownloaded] = useState(false);
 
   function handleDownload() {
     const svg = generateArchitectureStackSvg(layers);
+
+    // A Blob is the file's contents in memory; createObjectURL gives it a
+    // temporary `blob:` address the browser can treat like any other URL.
     const blob = new Blob([svg], { type: "image/svg+xml" });
     const url = URL.createObjectURL(blob);
 
+    // There is no browser API for "save this data as a file", so the standard
+    // workaround is a link with a `download` attribute, clicked in code. It
+    // must be in the document for the click to register in every browser,
+    // hence the append and immediate removal.
     const link = document.createElement("a");
     link.href = url;
     link.download = "architecture-layer-stack.svg";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    // The blob stays in memory until explicitly released. Skipping this would
+    // leak the full SVG on every click.
     URL.revokeObjectURL(url);
 
     setJustDownloaded(true);

@@ -4,7 +4,22 @@ import { caseStudies, totalPlannedCaseStudies } from "@/content/projects";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Section } from "@/components/Primitives";
 
+/**
+ * The homepage, served at `/`.
+ *
+ * In the App Router a folder becomes a URL and its `page.tsx` is what renders
+ * there — this file sits at the top of `app/`, so it is the site root. It
+ * exports no `metadata`, which means the defaults in `app/layout.tsx` apply
+ * unchanged.
+ *
+ * A Server Component, like most of the site: it runs only at build time, reads
+ * content directly rather than fetching it, and sends the browser finished HTML
+ * with no JavaScript attached.
+ */
 export default function HomePage() {
+  // Only studies flagged `featured` in their content file appear here, capped
+  // at three so the homepage stays a sample rather than a second index. The
+  // full set lives at /portfolio.
   const featured = caseStudies.filter((c) => c.featured).slice(0, 3);
 
   return (

@@ -3,8 +3,22 @@ import { about } from "@/content/about";
 import { Section, BulletList } from "@/components/Primitives";
 import { NoticeLine } from "@/components/Disclaimer";
 
+/**
+ * Page-level metadata, merged over the defaults in `app/layout.tsx`.
+ *
+ * Only the title is set. The layout's `template` expands it to
+ * "About — Aleksandr Sletin", so the site name is not repeated here, and the
+ * shared description carries over untouched.
+ */
 export const metadata: Metadata = { title: "About" };
 
+/**
+ * The About page, served at `/about`.
+ *
+ * Every word shown comes from `content/about.ts`; this file only decides the
+ * order of the sections and how each list is rendered. Rewriting the page is
+ * therefore a content edit, not a code change.
+ */
 export default function AboutPage() {
   return (
     <>

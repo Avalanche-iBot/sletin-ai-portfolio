@@ -6,6 +6,15 @@ import { NoticeLine } from "@/components/Disclaimer";
 
 export const metadata: Metadata = { title: "Contact" };
 
+/**
+ * The Contact page, served at `/contact`.
+ *
+ * A Server Component that embeds one interactive island: `<ContactForm />` is
+ * marked "use client" in its own file, so only that component ships JavaScript
+ * while the surrounding page stays static HTML. Mixing the two freely like this
+ * is the point of the App Router — the boundary is drawn per component, not per
+ * page.
+ */
 export default function ContactPage() {
   return (
     <>

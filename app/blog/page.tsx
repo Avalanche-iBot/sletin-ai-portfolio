@@ -5,6 +5,14 @@ import { Section } from "@/components/Primitives";
 
 export const metadata: Metadata = { title: "Blog" };
 
+/**
+ * The blog index, served at `/blog`.
+ *
+ * Lists every post, written or not. A post without a `body` is one that has
+ * been planned but not drafted, and it is shown as "Planned" rather than
+ * hidden — which is what keeps the queue honest instead of presenting only
+ * finished work.
+ */
 export default function BlogIndexPage() {
   return (
     <Section

@@ -14,10 +14,39 @@ import { MaterialsSection } from "@/components/MaterialsSection";
 import { cx, STATUS_TONE } from "@/lib/format";
 import { availableMaterials } from "@/lib/materials";
 
+/**
+ * The template every case study is rendered through, served at
+ * `/portfolio/<slug>`.
+ *
+ * The `[slug]` folder name makes this a dynamic route: one file produces a page
+ * for each entry in the registry, and the matched segment arrives as
+ * `params.slug`. Publishing a new study therefore touches no code — it is
+ * added to `content/projects/index.ts` and this template renders it.
+ *
+ * Every narrative section is optional, and each is guarded before it renders,
+ * so a note can go live half-written and be filled in over time without ever
+ * showing an empty heading.
+ */
+
+/**
+ * Lists the slugs to build pages for, so all of them become static HTML at
+ * deploy time rather than being rendered on request.
+ *
+ * It also closes the route: any slug not returned here has no page, which is
+ * why the `notFound()` below is a safety net rather than the usual path.
+ */
 export function generateStaticParams() {
   return caseStudies.map((c) => ({ slug: c.slug }));
 }
 
+/**
+ * Per-study title and description, resolved at build time.
+ *
+ * `generateMetadata` is the dynamic counterpart to the static `metadata`
+ * export other pages use — the values depend on which study is being rendered,
+ * so they cannot be written as a constant. Returning an empty object for an
+ * unknown slug lets the layout defaults stand while the page itself 404s.
+ */
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const project = getCaseStudy(params.slug);
   if (!project) return {};

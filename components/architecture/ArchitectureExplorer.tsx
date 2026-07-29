@@ -7,8 +7,16 @@ import { LayerCard } from "./LayerCard";
 import { LayerModal } from "./LayerModal";
 import { DownloadSvgButton } from "./DownloadSvgButton";
 
+/** Either a specific necessity level, or the unfiltered view. */
 type FilterValue = "all" | Necessity;
 
+/**
+ * The filter buttons, in display order.
+ *
+ * Labels are pulled from `NECESSITY_LABEL` rather than typed out again, so the
+ * buttons and the badges on the cards can never word the same category
+ * differently.
+ */
 const FILTERS: { value: FilterValue; label: string }[] = [
   { value: "all", label: "All layers" },
   { value: "required", label: NECESSITY_LABEL.required },
@@ -16,18 +24,37 @@ const FILTERS: { value: FilterValue; label: string }[] = [
   { value: "enterprise", label: NECESSITY_LABEL.enterprise },
 ];
 
+/**
+ * The filterable grid of architecture layers, with a dialog for each.
+ *
+ * This component owns both pieces of state — the active filter and the open
+ * layer — while `LayerCard` and `LayerModal` stay presentational. Keeping the
+ * state in one place is why the children can be simple: they render what they
+ * are given and report events upward.
+ *
+ * Note what the open layer is stored as: an id, not the layer object. Holding
+ * the object would keep a stale copy alive if the catalogue ever changed
+ * underneath; looking it up by id each render means the dialog always shows
+ * current data.
+ */
 export function ArchitectureExplorer({ layers }: { layers: ArchitectureLayer[] }) {
   const [filter, setFilter] = useState<FilterValue>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
+  // Copied before sorting, because sort mutates in place and `layers` is a prop
+  // — reordering it would be reaching into data this component does not own.
   const sorted = useMemo(() => [...layers].sort((a, b) => a.order - b.order), [layers]);
+
+  // `useMemo` keeps these from being recomputed on every render, so clicking a
+  // card does not re-sort and re-filter the whole catalogue. Each recomputes
+  // only when something in its dependency list actually changes.
   const visible = useMemo(
     () => (filter === "all" ? sorted : sorted.filter((l) => l.necessity === filter)),
-    [sorted, filter]
+    [sorted, filter],
   );
   const selectedLayer = useMemo(
     () => sorted.find((l) => l.id === selectedId) ?? null,
-    [sorted, selectedId]
+    [sorted, selectedId],
   );
 
   return (
@@ -70,7 +97,15 @@ export function ArchitectureExplorer({ layers }: { layers: ArchitectureLayer[] }
         <DownloadSvgButton layers={sorted} />
       </div>
 
-      {selectedLayer && <LayerModal layer={selectedLayer} onClose={() => setSelectedId(null)} />}
+      {/* Mounted only while a layer is selected, so the dialog's focus and
+          scroll-lock effects run on open and unwind on close. */}
+      {selectedLayer && (
+        <LayerModal
+          layer={selectedLayer}
+          total={sorted.length}
+          onClose={() => setSelectedId(null)}
+        />
+      )}
     </div>
   );
 }

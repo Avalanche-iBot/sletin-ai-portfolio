@@ -6,6 +6,13 @@ import { CaseNoteDisclaimer } from "@/components/Disclaimer";
 
 export const metadata: Metadata = { title: "Case Studies" };
 
+/**
+ * The case-study index, served at `/portfolio`.
+ *
+ * Shows the written studies as cards, then the planned ones as titles only.
+ * Both lists come from `content/projects/index.ts`, so the count in the
+ * introduction cannot fall out of step with what is actually on the page.
+ */
 export default function PortfolioPage() {
   return (
     <>

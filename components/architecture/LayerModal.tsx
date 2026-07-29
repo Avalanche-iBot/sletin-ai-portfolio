@@ -4,24 +4,50 @@ import { useEffect, useRef } from "react";
 import type { ArchitectureLayer } from "@/content/architecture";
 import { NECESSITY_LABEL } from "@/content/architecture";
 
+/**
+ * The dialog showing one layer's tool options in full.
+ *
+ * Opened from a `LayerCard`; which layer is open is decided by
+ * `ArchitectureExplorer`, so this component simply renders whatever it is
+ * handed and reports that it wants to close.
+ *
+ * Most of the work here is the behaviour a dialog has to get right rather than
+ * the markup — focus, the Escape key, and stopping the page behind from
+ * scrolling. See the effect below.
+ *
+ * @param total Number of layers in the catalogue, for the "03 / 21" counter.
+ *   Passed in rather than hard-coded, so adding a layer cannot leave the
+ *   denominator quietly wrong.
+ */
 export function LayerModal({
   layer,
+  total,
   onClose,
 }: {
   layer: ArchitectureLayer;
+  total: number;
   onClose: () => void;
 }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
+    // Move focus into the dialog on open. Without this, a keyboard user's focus
+    // stays on the page behind and tabbing walks the content underneath the
+    // overlay instead of the dialog itself.
     closeButtonRef.current?.focus();
 
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
     }
     document.addEventListener("keydown", handleKeyDown);
+
+    // Freeze the page behind, so scrolling inside the dialog does not carry on
+    // scrolling the article once the dialog reaches its end.
     document.body.style.overflow = "hidden";
 
+    // Runs when the dialog unmounts. The listener and the scroll lock are both
+    // global, so failing to undo them here would leave the page permanently
+    // unscrollable and stack a new listener on every open.
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
@@ -44,7 +70,7 @@ export function LayerModal({
           <div>
             <div className="mb-2 flex items-center gap-3">
               <span className="font-mono text-micro text-ink-muted">
-                {String(layer.order).padStart(2, "0")} / 21
+                {String(layer.order).padStart(2, "0")} / {total}
               </span>
               <span className="rounded-card border border-line-strong px-2 py-0.5 font-mono text-micro uppercase tracking-wide text-ink-soft">
                 {NECESSITY_LABEL[layer.necessity]}

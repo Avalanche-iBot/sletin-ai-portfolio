@@ -90,10 +90,25 @@ function ThemeToggle() {
   );
 }
 
+/**
+ * The site header: brand mark, primary navigation, theme toggle, mobile menu.
+ *
+ * Rendered once by `app/layout.tsx`, so it is present on every page. This is a
+ * Client Component — note the "use client" at the top of the file — because it
+ * needs three things a Server Component cannot do: read the current URL, hold
+ * open/closed state for the menu, and respond to clicks.
+ *
+ * The navigation itself is not written here. It comes from the `nav` array in
+ * `content/site.ts`, so adding a page to the menu is a one-line content change
+ * and the header and footer can never fall out of step about what exists.
+ */
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
+  // Close the mobile menu whenever the route changes. Next.js navigates
+  // client-side without unmounting the header, so without this the menu would
+  // stay open, covering the page the reader just asked for.
   useEffect(() => setOpen(false), [pathname]);
 
   return (
@@ -110,6 +125,10 @@ export function SiteHeader() {
          */}
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
           {nav.map((item) => {
+            // Home is matched exactly; every other entry matches by prefix, so
+            // that /portfolio/some-case still marks "Case Studies" as current.
+            // Prefix-matching home would light it up on every page, since every
+            // path starts with "/".
             const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
             return (
               <Link

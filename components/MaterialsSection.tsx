@@ -11,8 +11,14 @@ import { availableMaterials } from "@/lib/materials";
  */
 export function MaterialsSection({ project }: { project: CaseStudy }) {
   const materials = availableMaterials(project);
+  // An early note with none of the source fields written yet produces no
+  // downloads at all; returning null drops the whole section rather than
+  // leaving a heading over an empty box.
   if (materials.length === 0) return null;
 
+  // Split into one featured download and the rest. The primary material is the
+  // full write-up, given a card of its own in the accent colour; the others are
+  // single tables, which belong in the smaller grid below it.
   const primary = materials.find((m) => m.primary);
   const rest = materials.filter((m) => !m.primary);
 

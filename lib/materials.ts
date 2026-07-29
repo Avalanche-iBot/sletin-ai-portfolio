@@ -1,5 +1,5 @@
 import type { CaseStudy } from "@/content/types";
-import { site } from "@/content/site";
+import { site, siteUrl } from "@/content/site";
 
 /**
  * Downloadable materials, generated from case-study data.
@@ -108,7 +108,7 @@ function csvRow(cells: string[]): string {
  * only thing telling the reader it's illustrative, not a real audit.
  */
 function banner(project: CaseStudy, title: string): string {
-  const url = `https://aleksandrsletin.com/portfolio/${project.slug}`;
+  const url = `${siteUrl}/portfolio/${project.slug}`;
   return [
     `${title} — ${project.title}`,
     `Educational analysis of a hypothetical scenario. Not derived from any real organisation's systems or data.`,
@@ -162,7 +162,7 @@ const esc = (s: string) =>
  * external references, so it keeps working offline and forever.
  */
 function dossierHtml(project: CaseStudy): string {
-  const url = `https://aleksandrsletin.com/portfolio/${project.slug}`;
+  const url = `${siteUrl}/portfolio/${project.slug}`;
   const parts: string[] = [];
 
   const table = (heading: string, headers: string[], rows: string[][]) => {

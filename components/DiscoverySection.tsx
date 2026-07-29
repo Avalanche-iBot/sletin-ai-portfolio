@@ -1,7 +1,25 @@
 import type { CaseStudy } from "@/content/types";
 import { Prose, BulletList } from "@/components/Primitives";
 
-export function DiscoverySection({ discovery }: { discovery: NonNullable<CaseStudy["discovery"]> }) {
+/**
+ * The discovery section of a case study — interviews, findings, and the
+ * assumptions, risks and constraints they produced.
+ *
+ * The longest component on the site, because discovery has four distinct parts
+ * and each is shaped differently. Only the interview groups are required; the
+ * intro, the findings and the three closing lists each render only if written,
+ * so an early note can publish with interviews alone and grow from there.
+ *
+ * That pattern — `{x && x.length > 0 && <Block/>}` — repeats throughout. The
+ * explicit length check matters: `{arr.length && …}` would print a bare `0` on
+ * the page when the array is empty, since React renders the number zero rather
+ * than treating it as nothing.
+ */
+export function DiscoverySection({
+  discovery,
+}: {
+  discovery: NonNullable<CaseStudy["discovery"]>;
+}) {
   return (
     <div className="space-y-12">
       {discovery.intro && <Prose text={discovery.intro} />}
@@ -48,6 +66,11 @@ export function DiscoverySection({ discovery }: { discovery: NonNullable<CaseStu
 
           <ol className="space-y-0">
             {discovery.implications.map((im, i) => (
+              // Three columns on wide screens — number, finding, consequence —
+              // collapsing to a single stacked column below `lg`, where the
+              // side-by-side reading would leave each half too narrow. The
+              // consequence column is the wider of the two: it carries the
+              // reasoning, the finding is a label.
               <li
                 key={i}
                 className="grid gap-3 border-t border-line py-6 lg:grid-cols-[2.5rem_1fr_1.4fr] lg:gap-6"

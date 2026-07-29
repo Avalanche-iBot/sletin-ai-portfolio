@@ -1,5 +1,13 @@
-// Generated content module. Edit freely — this is the CMS layer.
 import type { Site, WhyMe, Service, Engagement } from "./types";
+
+/**
+ * Site-wide content: identity, contact details, navigation.
+ *
+ * This is the content layer, not code — everything here is meant to be edited
+ * directly. Components read from these exports rather than holding copy of
+ * their own, so a change here propagates everywhere the value appears and no
+ * two places can disagree about what the site says.
+ */
 
 export const site: Site = {
   "name": "Aleksandr Sletin",
@@ -12,8 +20,19 @@ export const site: Site = {
   "phone": "+39 371 469 0274",
   "github": "https://github.com/Avalanche-iBot",
   "linkedin": "https://linkedin.com/in/aleksandrsletin1995",
-  "availability": "Knowledge sharing, not consulting advice"
+  "availability": "Knowledge sharing, not consulting advice",
+  "url": "https://aleksandrsletin.com"
 };
+
+/**
+ * The site's public address for this build.
+ *
+ * Falls back to the canonical domain above, so a local or preview build still
+ * produces valid absolute URLs. Vercel preview deployments set
+ * `NEXT_PUBLIC_SITE_URL` to their own address, which stops a preview from
+ * advertising the production domain in its metadata and sitemap.
+ */
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? site.url;
 
 export const whyMe: WhyMe = {
   "eyebrow": "Where this thinking comes from",
@@ -137,6 +156,18 @@ export const engagements: Engagement[] = [
   }
 ];
 
+/**
+ * Primary navigation, used by both the header and the footer.
+ *
+ * Order is the order shown. Adding a page here puts it in both places at once —
+ * but a route must exist at that `href`, since nothing generates the page from
+ * this list. Remember `app/sitemap.ts` too, which keeps its own list of static
+ * routes for search engines.
+ *
+ * `as const` makes the array and its strings readonly, so an accidental
+ * `nav.push(…)` elsewhere in the codebase is a compile error rather than a
+ * menu that changes at runtime.
+ */
 export const nav = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },

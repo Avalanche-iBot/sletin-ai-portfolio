@@ -50,14 +50,17 @@ submissions server-side instead of sending mail.
 ## Layout
 
 ```
-app/                    Routes (App Router)
+app/                    Routes (App Router — a folder is a URL)
   page.tsx              Home
+  layout.tsx            Shared shell: fonts, header, footer, metadata
   about/                About
   portfolio/            Case-note index + [slug] template
-  learning/             Learning roadmap
+  architecture/         Layer catalogue, stack builder, cost model
   blog/                 Writing index + [slug] template
-  contact/              Contact form and services
+  contact/              Contact form
   api/contact/          Form handler
+  api/materials/        Generated downloads, per note and kind
+  robots.ts sitemap.ts  Generated robots.txt and sitemap.xml
   globals.css           Design tokens and Tailwind layers
 
 components/             Shared UI
@@ -66,22 +69,30 @@ components/             Shared UI
   DiscoverySection.tsx  Stakeholder-interview renderer
   RoadmapTimeline.tsx   Phased roadmap
   Disclaimer.tsx        Notice shown before every case note
+  CaseNoteToc.tsx       In-page contents rail
+  architecture/         Layer explorer, stack builder, cost model
   diagrams/             Diagram renderer
 
 content/                Content layer — everything readable lives here
   types.ts              The schema
-  site.ts about.ts learning.ts blog.ts
+  site.ts               Identity, navigation, canonical URL
+  about.ts blog.ts architecture.ts
   projects/
     index.ts            Registry
     case-NN-slug.ts     One file per case note
 
-lib/format.ts           Formatting helpers
+lib/
+  format.ts             Class-name helper and presentation lookup tables
+  materials.ts          Generates the downloadable files from case-note data
+  stackDiagram.ts       SVG/HTML export for the stack builder
+  architectureStackSvg.ts  SVG export for the layer catalogue
 ```
 
 ## Content model
 
 Presentation and content are separated. Pages read from `content/`; adding a
-case note requires no change to any route or component.
+case note requires no change to any route or component. Because the content is
+typed, a missing required field fails the build rather than rendering a gap.
 
 Every narrative section on `CaseStudy` is optional, and the template renders a
 section only if its content exists — so a note can be published partially
@@ -122,7 +133,15 @@ export default caseStudy;
 
 Architecture diagrams are typed data (`Diagram` in `content/types.ts`) rendered
 as React and CSS rather than images, so they stay editable, searchable and
-theme-aware. Four kinds: `layers`, `flow`, `pipeline`, `sequence`.
+theme-aware. Five kinds: `blocks`, `layers`, `flow`, `pipeline`, `sequence`.
+
+## Downloadable materials
+
+Each case note offers a set of files — a full dossier as HTML, plus the risk
+register, KPI scorecard and technology-selection matrix as CSV. None are
+authored separately: `lib/materials.ts` derives them from the same fields the
+page renders, so a material cannot state something the note does not. A note
+missing a field simply does not offer that file.
 
 ## Design
 

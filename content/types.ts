@@ -272,8 +272,15 @@ export type Site = {
   github: string;
   linkedin: string;
   availability: string;
-  /** Retired — the site no longer presents self-describing metrics. */
-  heroStats?: { value: string; label: string; note: string }[];
+  /**
+   * Canonical public address, without a trailing slash.
+   *
+   * The single source for anything that has to name the site absolutely —
+   * metadata, the sitemap, robots.txt, and the attribution line stamped into
+   * downloadable files. Kept here so the domain appears once rather than in
+   * every file that happens to need it.
+   */
+  url: string;
 };
 
 export type WhyMe = {

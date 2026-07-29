@@ -2,6 +2,24 @@ import { cx, SEVERITY_TONE } from "@/lib/format";
 import type { CaseStudy } from "@/content/types";
 
 /**
+ * The four data blocks a case study can carry: KPIs, risks, technology
+ * choices and stakeholders.
+ *
+ * They live together because they share one problem — dense tabular content on
+ * a phone — and one solution. Three of them are real `<table>` elements with a
+ * `min-w-*` inside an `overflow-x-auto` wrapper: the table keeps a width at
+ * which its columns stay readable, and the wrapper scrolls sideways instead of
+ * the whole page doing so. Squeezing the columns to fit instead would leave a
+ * table technically visible and practically unreadable.
+ *
+ * The exception is `KpiTable`, which abandoned the table form entirely — see
+ * its own note. Each component's prop type is derived from `CaseStudy` with
+ * `NonNullable<…>`, because these sections are optional on a case study: the
+ * page decides whether the data exists, and by the time a component is
+ * rendered the value is known to be present.
+ */
+
+/**
  * KPIs as grouped cards rather than a table.
  *
  * A five-column table forced the KPI name into a two-character-wide column and
@@ -9,6 +27,12 @@ import type { CaseStudy } from "@/content/types";
  * information. Grouping by category also removes the repetition of the category
  * on every row, and lets the reader take in one dimension of measurement at a
  * time.
+ *
+ * The grouping loop below folds *consecutive* rows sharing a category, rather
+ * than collecting every matching row wherever it sits. That is deliberate: it
+ * preserves the order the author wrote, and a category split across two places
+ * in the content file renders as two groups — visible in the page, and so
+ * fixable in the content, instead of being silently rearranged here.
  */
 export function KpiTable({ kpis }: { kpis: NonNullable<CaseStudy["kpis"]> }) {
   const groups: { name: string; items: typeof kpis }[] = [];
@@ -32,6 +56,9 @@ export function KpiTable({ kpis }: { kpis: NonNullable<CaseStudy["kpis"]> }) {
               <article key={i}>
                 <p className="font-display text-base leading-snug text-ink">{r.kpi}</p>
 
+                {/* Baseline → target. The arrow is decorative and hidden from
+                    screen readers, which would otherwise announce it as the
+                    word "right arrow" between two numbers. */}
                 <p className="mt-2 flex flex-wrap items-baseline gap-x-2 text-[0.8125rem]">
                   <span className="text-ink-muted">{r.baseline}</span>
                   <span aria-hidden className="text-ink-muted">
@@ -50,6 +77,18 @@ export function KpiTable({ kpis }: { kpis: NonNullable<CaseStudy["kpis"]> }) {
   );
 }
 
+/**
+ * Identified risks with severity, consequence and mitigation.
+ *
+ * Severity is rendered as a coloured mono label rather than a badge, so the
+ * column stays narrow; the colour comes from `SEVERITY_TONE` so the same word
+ * never appears in two different shades across the site.
+ *
+ * `max-w-*` on the prose cells is what makes the table readable — without it a
+ * single long mitigation sentence would stretch its column and crush the rest.
+ * Rows are keyed by `r.n`, the author-assigned risk number, which is stable and
+ * meaningful in a way an array index is not.
+ */
 export function RiskTable({ risks }: { risks: NonNullable<CaseStudy["risks"]> }) {
   return (
     <div className="overflow-x-auto">
@@ -69,7 +108,12 @@ export function RiskTable({ risks }: { risks: NonNullable<CaseStudy["risks"]> })
               <td className="font-mono text-spec text-ink-muted">{r.n}</td>
               <td className="max-w-[16rem] font-medium text-ink">{r.risk}</td>
               <td>
-                <span className={cx("font-mono text-micro uppercase tracking-[0.08em]", SEVERITY_TONE[r.severity])}>
+                <span
+                  className={cx(
+                    "font-mono text-micro uppercase tracking-[0.08em]",
+                    SEVERITY_TONE[r.severity],
+                  )}
+                >
                   {r.severity}
                 </span>
               </td>
@@ -83,7 +127,20 @@ export function RiskTable({ risks }: { risks: NonNullable<CaseStudy["risks"]> })
   );
 }
 
-export function TechSelectionTable({ rows }: { rows: NonNullable<CaseStudy["technologySelection"]> }) {
+/**
+ * What was chosen at each layer of the stack, why, and what lost out.
+ *
+ * The rejected alternative is set in muted ink: it belongs in the record — a
+ * decision without its discarded option is not a decision — but it should not
+ * compete with the choice that was actually made. The layer name takes
+ * `whitespace-nowrap` so short technical labels stay on one line and the eye
+ * can run down the column.
+ */
+export function TechSelectionTable({
+  rows,
+}: {
+  rows: NonNullable<CaseStudy["technologySelection"]>;
+}) {
   return (
     <div className="overflow-x-auto">
       <table className="spec-table min-w-[720px]">
@@ -110,6 +167,12 @@ export function TechSelectionTable({ rows }: { rows: NonNullable<CaseStudy["tech
   );
 }
 
+/**
+ * Who is affected by the system, what they want from it and what worries them.
+ *
+ * Narrower than the other tables because it carries four short columns rather
+ * than five prose ones, so it needs less room before scrolling starts.
+ */
 export function StakeholderTable({ rows }: { rows: NonNullable<CaseStudy["stakeholders"]> }) {
   return (
     <div className="overflow-x-auto">
