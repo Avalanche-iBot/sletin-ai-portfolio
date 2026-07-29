@@ -4,22 +4,33 @@ import { cx } from "@/lib/format";
 /*
  * Block diagram renderer.
  *
- * Two layers over one deterministic grid:
+ * One SVG over a deterministic pixel grid, carrying group containers,
+ * connectors, and the node boxes themselves.
  *
- *   - an SVG layer, behind, carrying group containers and connectors
- *   - an HTML layer, in front, carrying the node boxes
+ * The boxes are HTML inside `foreignObject` rather than SVG `<text>`. SVG has
+ * no text wrapping, so an all-SVG diagram means either measuring text or
+ * hand-breaking every label — both fragile as soon as content changes. HTML
+ * boxes wrap, inherit the site's type scale, and follow the theme without a
+ * second set of colour values.
  *
- * Nodes are HTML rather than SVG on purpose. SVG has no text wrapping, so an
- * all-SVG diagram means either measuring text or hand-breaking every label —
- * both fragile as soon as content changes. HTML boxes wrap, inherit the site's
- * type scale, and respond to the theme without a second set of colour values.
+ * Putting them inside the SVG is what makes the whole thing scale. The grid
+ * still has to be computed in pixels for the connector endpoints, but the
+ * viewBox maps that fixed geometry onto whatever width is available, so the
+ * diagram fits its frame seamlessly instead of scrolling inside it. It is
+ * capped at 1:1 so a wide column never blows the type up past its design size.
  *
- * The trade for that is fixed cell geometry: connector endpoints have to be
- * computed in pixels, so cells cannot be fluid. The container scrolls
- * horizontally on narrow screens instead.
+ * Scaling has a floor: below roughly 640px the labels would shrink past
+ * legibility, so narrow screens get the same structure as an ordered list
+ * instead — the same trade the other renderers in DiagramView make.
  */
 
 const CELL_W = 172;
+/*
+ * Note when editing node labels: `foreignObject` clips its content, where the
+ * old absolutely-positioned boxes let it spill. A two-line label plus its `sub`
+ * currently occupies 49 of these 78, so there is room for one more line before
+ * anything is lost — past that, raise this rather than let a label vanish.
+ */
 const CELL_H = 78;
 const GAP_X = 52;
 const GAP_Y = 40;
@@ -130,6 +141,46 @@ function groupBox(nodes: BlockNodeDef[]): Box {
   };
 }
 
+/**
+ * Node order for the narrow-screen list: follow the arrows, not the grid.
+ *
+ * Grid position is a layout decision, not a sequence. Case 01 parks "Recorded
+ * for audit" bottom-left because everything drains into it, which reading
+ * left-to-right would place *before* the escalation that feeds it. Sorting by
+ * dependency puts terminal nodes last; grid position only breaks ties, and a
+ * cycle just falls back to it.
+ */
+function flowOrder(
+  nodes: BlockNodeDef[],
+  edges: { fromNode: BlockNodeDef; toNode: BlockNodeDef }[],
+): BlockNodeDef[] {
+  const byGrid = [...nodes].sort((a, b) => a.row - b.row || a.col - b.col);
+  const incoming = new Map(nodes.map((n) => [n.id, 0]));
+  for (const e of edges) {
+    if (e.fromNode.id === e.toNode.id) continue;
+    incoming.set(e.toNode.id, (incoming.get(e.toNode.id) ?? 0) + 1);
+  }
+
+  const out: BlockNodeDef[] = [];
+  const placed = new Set<string>();
+
+  while (out.length < nodes.length) {
+    const next =
+      byGrid.find((n) => !placed.has(n.id) && (incoming.get(n.id) ?? 0) === 0) ??
+      byGrid.find((n) => !placed.has(n.id)); // cycle — fall back to grid order
+    if (!next) break;
+
+    out.push(next);
+    placed.add(next.id);
+    for (const e of edges) {
+      if (e.fromNode.id !== next.id || e.toNode.id === next.id) continue;
+      incoming.set(e.toNode.id, (incoming.get(e.toNode.id) ?? 1) - 1);
+    }
+  }
+
+  return out;
+}
+
 export function BlockDiagramView({ d }: { d: BlockDiagramData }) {
   const byId = new Map(d.nodes.map((n) => [n.id, n]));
 
@@ -147,17 +198,19 @@ export function BlockDiagramView({ d }: { d: BlockDiagramData }) {
     return [{ ...e, fromNode: from, toNode: to }];
   });
 
+  const ordered = flowOrder(d.nodes, edges);
+  const labelledEdges = edges.filter((e) => e.label);
+
   return (
-    <figure className="frame overflow-x-auto p-5 md:p-6">
-      <div
-        className="relative"
-        style={{ width: totalW, height: totalH, minWidth: totalW }}
-      >
-        {/* Groups and connectors sit behind the boxes. */}
+    <div className="frame p-5 md:p-6">
+      {/*
+       * width:100% with the viewBox does the scaling; maxWidth pins the ceiling
+       * at the design size so a wide column renders 1:1 rather than enlarged.
+       */}
+      <div className="hidden sm:block">
         <svg
-          className="absolute inset-0"
-          width={totalW}
-          height={totalH}
+          className="block h-auto w-full"
+          style={{ maxWidth: totalW }}
           viewBox={`0 0 ${totalW} ${totalH}`}
           aria-hidden
         >
@@ -230,40 +283,102 @@ export function BlockDiagramView({ d }: { d: BlockDiagramData }) {
               </g>
             );
           })}
-        </svg>
 
-        {/* Node boxes. */}
-        {d.nodes.map((n) => {
-          const b = boxOf(n);
-          return (
-            <div
-              key={n.id}
-              className={cx(
-                "absolute flex flex-col justify-center border px-3",
-                n.accent
-                  ? "border-accent/60 bg-accent/[0.07]"
-                  : n.muted
-                  ? "border-dashed border-line bg-canvas"
-                  : "border-line bg-raised",
-              )}
-              style={{ left: b.x, top: b.y, width: b.w, height: b.h }}
-            >
-              <p
-                className={cx(
-                  "text-[0.8125rem] font-medium leading-tight",
-                  n.muted ? "text-ink-muted" : "text-ink",
-                )}
-              >
-                {n.t}
-              </p>
-              {n.sub && <p className="mt-1 font-mono text-[0.625rem] leading-tight text-ink-muted">{n.sub}</p>}
-            </div>
-          );
-        })}
+          {/* Node boxes, last so they sit over the connectors. */}
+          {d.nodes.map((n) => {
+            const b = boxOf(n);
+            return (
+              <foreignObject key={n.id} x={b.x} y={b.y} width={b.w} height={b.h}>
+                <div
+                  className={cx(
+                    "flex h-full flex-col justify-center border px-3",
+                    n.accent
+                      ? "border-accent/60 bg-accent/[0.07]"
+                      : n.muted
+                      ? "border-dashed border-line bg-canvas"
+                      : "border-line bg-raised",
+                  )}
+                >
+                  <p
+                    className={cx(
+                      "text-[0.8125rem] font-medium leading-tight",
+                      n.muted ? "text-ink-muted" : "text-ink",
+                    )}
+                  >
+                    {n.t}
+                  </p>
+                  {n.sub && (
+                    <p className="mt-1 font-mono text-[0.625rem] leading-tight text-ink-muted">{n.sub}</p>
+                  )}
+                </div>
+              </foreignObject>
+            );
+          })}
+        </svg>
       </div>
 
-      {/* Text equivalent — the diagram is decorative to a screen reader. */}
-      <figcaption className="sr-only">
+      {/*
+       * Narrow screens: the same nodes in reading order. Scaling the diagram
+       * this far down would leave the labels around 5px.
+       */}
+      <div className="sm:hidden" aria-hidden>
+        <ol className="space-y-2.5">
+          {ordered.map((n, i) => (
+            <li key={n.id} className="flex items-stretch gap-3">
+              <span
+                className={cx(
+                  "flex w-8 shrink-0 items-center justify-center border font-mono text-micro",
+                  n.accent ? "border-accent bg-accent/[0.08] text-accent-deep" : "border-line text-ink-muted",
+                )}
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div
+                className={cx(
+                  "flex-1 border px-4 py-3",
+                  n.accent
+                    ? "border-accent/50 bg-accent/[0.05]"
+                    : n.muted
+                    ? "border-dashed border-line bg-transparent"
+                    : "border-line bg-raised",
+                )}
+              >
+                <p
+                  className={cx(
+                    "text-[0.9375rem] font-medium leading-snug",
+                    n.muted ? "text-ink-muted" : "text-ink",
+                  )}
+                >
+                  {n.t}
+                </p>
+                {n.sub && (
+                  <p className="mt-1 font-mono text-[0.6875rem] leading-snug text-ink-muted">{n.sub}</p>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        {labelledEdges.length > 0 && (
+          <div className="mt-5 border-t border-line pt-4">
+            <p className="eyebrow mb-3">Split at the decision point</p>
+            <ul className="space-y-1.5">
+              {labelledEdges.map((e, i) => (
+                <li key={i} className="text-[0.8125rem] leading-snug text-ink-soft">
+                  <span className="font-mono text-[0.6875rem] text-accent-deep">{e.label}</span>{" "}
+                  {e.fromNode.t} &rarr; {e.toNode.t}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {/*
+       * Single text equivalent for both renderings — the visual layers above
+       * are hidden from assistive tech so this is not read out twice.
+       */}
+      <p className="sr-only">
         {d.title}. Nodes: {d.nodes.map((n) => n.t).join(", ")}. Connections:{" "}
         {d.edges
           .map((e) => {
@@ -273,7 +388,7 @@ export function BlockDiagramView({ d }: { d: BlockDiagramData }) {
           })
           .join("; ")}
         .
-      </figcaption>
-    </figure>
+      </p>
+    </div>
   );
 }
