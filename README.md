@@ -129,6 +129,12 @@ export default caseStudy;
 `status` describes how finished the *analysis* is, not a product:
 `In analysis` · `Architecture note` · `Under revision` · `Open question`.
 
+Writing conventions, the schema's finer points and the component constraints
+that content has to respect — a roadmap may not exceed four phases, diagram
+edge labels overflow past two words — are collected in [CLAUDE.md](CLAUDE.md).
+[PROJECT_BRIEF.md](PROJECT_BRIEF.md) is the same context in a form that can be
+pasted into a fresh conversation.
+
 ## Diagrams
 
 Architecture diagrams are typed data (`Diagram` in `content/types.ts`) rendered
