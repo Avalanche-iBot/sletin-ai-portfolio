@@ -174,25 +174,37 @@ function SequenceDiagram({ d }: { d: Extract<Diagram, { kind: "sequence" }> }) {
         {d.messages.map((m, i) => {
           const self = m.from === m.to;
           return (
-            <li key={i} className="grid gap-2 border-t border-line py-4 md:grid-cols-[2rem_11rem_1fr] md:gap-4">
+            <li key={i} className="grid gap-2 border-t border-line py-4 md:grid-cols-[2rem_1fr] md:gap-4">
               <span className="font-mono text-micro text-ink-muted">{String(i + 1).padStart(2, "0")}</span>
 
-              <p className="font-mono text-[0.6875rem] uppercase leading-snug tracking-[0.06em] text-ink-muted">
-                {self ? (
-                  <span className="text-accent-deep">{d.actors[m.from]} · decides</span>
-                ) : (
-                  <>
-                    {d.actors[m.from]}
-                    <span aria-hidden className="mx-1.5">
-                      &rarr;
-                    </span>
-                    {d.actors[m.to]}
-                  </>
-                )}
-              </p>
-
+              {/*
+               * Handoff label sits above the message rather than in its own
+               * column. A fixed column has to be wide enough for the longest
+               * pair of actor names, and any name added later silently
+               * overflows it into the message text — which is exactly what
+               * "Orchestrator → Administrator" did at 11rem.
+               */}
               <div className={self ? "border-l-2 border-accent pl-3" : undefined}>
-                <p className={cx("text-[0.9375rem] leading-snug", self ? "font-medium text-ink" : "text-ink-soft")}>
+                <p className="font-mono text-[0.6875rem] uppercase leading-snug tracking-[0.06em] text-ink-muted">
+                  {self ? (
+                    <span className="text-accent-deep">{d.actors[m.from]} · decides</span>
+                  ) : (
+                    <>
+                      {d.actors[m.from]}
+                      <span aria-hidden className="mx-1.5">
+                        &rarr;
+                      </span>
+                      {d.actors[m.to]}
+                    </>
+                  )}
+                </p>
+
+                <p
+                  className={cx(
+                    "mt-1.5 text-[0.9375rem] leading-snug",
+                    self ? "font-medium text-ink" : "text-ink-soft",
+                  )}
+                >
                   {m.t}
                 </p>
                 {m.note && <p className="mt-1 text-[0.8125rem] leading-relaxed text-ink-muted">{m.note}</p>}

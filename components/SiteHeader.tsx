@@ -86,7 +86,12 @@ export function SiteHeader() {
           <BrandMark />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+        {/*
+         * Inline nav starts at lg, not md. Six items plus the wordmark leave no
+         * gap at all at 768px — the nav butts straight against the monogram.
+         * The burger covers the tablet range instead.
+         */}
+        <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
           {nav.map((item) => {
             const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
             return (
@@ -107,7 +112,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-3">
           <ThemeToggle />
           <button
-            className="flex h-8 w-8 items-center justify-center border border-line md:hidden"
+            className="flex h-8 w-8 items-center justify-center border border-line lg:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
@@ -124,7 +129,7 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <nav className="border-t border-line bg-canvas md:hidden" aria-label="Primary mobile">
+        <nav className="border-t border-line bg-canvas lg:hidden" aria-label="Primary mobile">
           <div className="shell flex flex-col py-2">
             {nav.map((item) => (
               <Link

@@ -30,40 +30,89 @@ const x0 = (col: number) => col * (CELL_W + GAP_X);
 const y0 = (row: number) => row * (CELL_H + GAP_Y) + GROUP_LABEL_H;
 const w = (span = 1) => span * CELL_W + (span - 1) * GAP_X;
 
+/** Centre line of the empty band between `row` and the row below it. */
+const gutterY = (row: number) => y0(row) + CELL_H + GAP_Y / 2;
+
 type Box = { x: number; y: number; w: number; h: number };
 
 function boxOf(n: BlockNodeDef): Box {
   return { x: x0(n.col), y: y0(n.row), w: w(n.span), h: CELL_H };
 }
 
-/** Orthogonal connector between two boxes, with at most one bend. */
-function connector(a: Box, b: Box): { d: string; mid: { x: number; y: number } } {
+const cellKey = (row: number, col: number) => `${row}:${col}`;
+
+/** Every grid cell covered by a node, so connectors can route around them. */
+function occupancy(nodes: BlockNodeDef[]): Set<string> {
+  const cells = new Set<string>();
+  for (const n of nodes) {
+    for (let c = n.col; c < n.col + (n.span ?? 1); c += 1) cells.add(cellKey(n.row, c));
+  }
+  return cells;
+}
+
+/**
+ * Orthogonal connector that stays out of the cells it does not belong to.
+ *
+ * The obvious route — leave vertically, turn at the target's centre line,
+ * arrive horizontally — runs its horizontal leg straight through whatever
+ * occupies the target's row. On case 01 that sent the "~75%" branch line and
+ * its label through the middle of the "Answered from approved knowledge" box,
+ * where the opaque node background then hid the line entirely.
+ *
+ * So the horizontal leg is placed in the gutter between two rows instead. That
+ * band is empty by construction, which also gives the edge label somewhere
+ * legible to sit. Connectors spanning more than one row still assume the
+ * columns they pass through are clear — worth revisiting if a diagram ever
+ * needs one.
+ */
+function connector(
+  from: BlockNodeDef,
+  to: BlockNodeDef,
+  occupied: Set<string>,
+): { d: string; mid: { x: number; y: number } } {
+  const a = boxOf(from);
+  const b = boxOf(to);
   const aCx = a.x + a.w / 2;
   const bCx = b.x + b.w / 2;
   const aCy = a.y + a.h / 2;
-  const bCy = b.y + b.h / 2;
 
-  // Same row — straight horizontal.
-  if (Math.abs(aCy - bCy) < 2) {
-    const fromX = bCx > aCx ? a.x + a.w : a.x;
-    const toX = bCx > aCx ? b.x : b.x + b.w;
-    return { d: `M ${fromX} ${aCy} L ${toX} ${aCy}`, mid: { x: (fromX + toX) / 2, y: aCy } };
+  if (from.row === to.row) {
+    // Straight across, but only when no node sits between the two.
+    const gapStart = Math.min(from.col + (from.span ?? 1), to.col + (to.span ?? 1));
+    const gapEnd = Math.max(from.col, to.col);
+    let clear = true;
+    for (let c = gapStart; c < gapEnd; c += 1) {
+      if (occupied.has(cellKey(from.row, c))) clear = false;
+    }
+
+    if (clear) {
+      const fromX = bCx > aCx ? a.x + a.w : a.x;
+      const toX = bCx > aCx ? b.x : b.x + b.w;
+      return { d: `M ${fromX} ${aCy} L ${toX} ${aCy}`, mid: { x: (fromX + toX) / 2, y: aCy } };
+    }
+
+    // Blocked — dip into the gutter below and come back up.
+    const gy = gutterY(from.row);
+    return {
+      d: `M ${aCx} ${a.y + a.h} L ${aCx} ${gy} L ${bCx} ${gy} L ${bCx} ${b.y + b.h}`,
+      mid: { x: (aCx + bCx) / 2, y: gy },
+    };
   }
+
+  const down = to.row > from.row;
+  const fromY = down ? a.y + a.h : a.y;
+  const toY = down ? b.y : b.y + b.h;
 
   // Same column — straight vertical.
   if (Math.abs(aCx - bCx) < 2) {
-    const fromY = bCy > aCy ? a.y + a.h : a.y;
-    const toY = bCy > aCy ? b.y : b.y + b.h;
     return { d: `M ${aCx} ${fromY} L ${aCx} ${toY}`, mid: { x: aCx, y: (fromY + toY) / 2 } };
   }
 
-  // Otherwise leave vertically, turn once, arrive horizontally.
-  const fromY = bCy > aCy ? a.y + a.h : a.y;
-  const turnY = bCy;
-  const toX = bCx > aCx ? b.x : b.x + b.w;
+  // Otherwise: out of the source, along the adjacent gutter, into the target.
+  const gy = gutterY(down ? from.row : from.row - 1);
   return {
-    d: `M ${aCx} ${fromY} L ${aCx} ${turnY} L ${toX} ${turnY}`,
-    mid: { x: aCx, y: (fromY + turnY) / 2 },
+    d: `M ${aCx} ${fromY} L ${aCx} ${gy} L ${bCx} ${gy} L ${bCx} ${toY}`,
+    mid: { x: (aCx + bCx) / 2, y: gy },
   };
 }
 
@@ -89,11 +138,13 @@ export function BlockDiagramView({ d }: { d: BlockDiagramData }) {
   const totalW = cols * CELL_W + (cols - 1) * GAP_X;
   const totalH = y0(rows - 1) + CELL_H + GROUP_PAD;
 
-  const edges: (BlockEdge & { a: Box; b: Box })[] = d.edges.flatMap((e) => {
+  const occupied = occupancy(d.nodes);
+
+  const edges: (BlockEdge & { fromNode: BlockNodeDef; toNode: BlockNodeDef })[] = d.edges.flatMap((e) => {
     const from = byId.get(e.from);
     const to = byId.get(e.to);
     if (!from || !to) return [];
-    return [{ ...e, a: boxOf(from), b: boxOf(to) }];
+    return [{ ...e, fromNode: from, toNode: to }];
   });
 
   return (
@@ -152,7 +203,7 @@ export function BlockDiagramView({ d }: { d: BlockDiagramData }) {
           })}
 
           {edges.map((e, i) => {
-            const { d: path, mid } = connector(e.a, e.b);
+            const { d: path, mid } = connector(e.fromNode, e.toNode, occupied);
             return (
               <g key={i}>
                 <path

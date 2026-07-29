@@ -1,8 +1,27 @@
 import type { CaseStudy } from "@/content/types";
+import { cx } from "@/lib/format";
+
+/*
+ * Columns follow the phase count rather than a fixed four.
+ *
+ * The hairline grid is drawn by `gap-px` over a `bg-line` container, which means
+ * any column the phases do not fill renders as a visible empty panel — a
+ * three-phase roadmap in a four-column grid left a grey cell that read as
+ * missing content. Tailwind only emits classes it can see as literals, so the
+ * mapping is spelled out instead of interpolated.
+ */
+const PHASE_COLUMNS: Record<number, string> = {
+  1: "",
+  2: "sm:grid-cols-2",
+  3: "sm:grid-cols-2 lg:grid-cols-3",
+  4: "sm:grid-cols-2 lg:grid-cols-4",
+};
 
 export function RoadmapTimeline({ phases }: { phases: NonNullable<CaseStudy["roadmap"]> }) {
+  const columns = PHASE_COLUMNS[phases.length] ?? "sm:grid-cols-2 lg:grid-cols-4";
+
   return (
-    <ol className="grid gap-px overflow-hidden border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+    <ol className={cx("grid gap-px overflow-hidden border border-line bg-line", columns)}>
       {phases.map((p) => (
         <li key={p.phase} className="flex flex-col bg-surface p-5">
           <div className="mb-3 flex items-baseline justify-between">
