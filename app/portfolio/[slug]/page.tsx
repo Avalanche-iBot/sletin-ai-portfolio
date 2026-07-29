@@ -84,7 +84,6 @@ const SECTION_ORDER: { id: string; label: string; group: string; has: (p: CaseSt
   { id: "reflection", label: "Reflection", group: "Transfer & Limits", has: (p) => !!p.lessonsLearned },
   { id: "future", label: "Future Improvements", group: "Transfer & Limits", has: (p) => !!p.futureImprovements },
   { id: "tailoring", label: "If Your Situation Differs", group: "Transfer & Limits", has: (p) => !!p.tailoring },
-  { id: "open-questions", label: "Open Questions", group: "Transfer & Limits", has: (p) => !p.tailoring && !!p.openQuestions },
   { id: "materials", label: "Materials", group: "Transfer & Limits", has: (p) => availableMaterials(p).length > 0 },
 ];
 
@@ -572,20 +571,6 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               </ol>
             </div>
           )}
-        </Section>
-      )}
-
-      {/* Legacy: notes that still carry an open-questions list ---------------- */}
-      {!project.tailoring && project.openQuestions && (
-        <Section bare id="open-questions" eyebrow={sectionEyebrow("open-questions")} title="What I have not resolved">
-          <ol className="space-y-0">
-            {project.openQuestions.map((q, i) => (
-              <li key={i} className="grid gap-3 border-t border-line py-5 sm:grid-cols-[3rem_1fr]">
-                <span className="font-mono text-micro text-accent-deep">{String(i + 1).padStart(2, "0")}</span>
-                <p className="max-w-reading text-[0.9375rem] leading-relaxed text-ink-soft">{q}</p>
-              </li>
-            ))}
-          </ol>
         </Section>
       )}
 

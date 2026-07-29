@@ -1,11 +1,15 @@
-// content/architecture.ts
-//
-// Content source for the "Architecture" tab — a reference catalogue of the
-// layers that make up an enterprise AI system, and the tool options available
-// at each layer. This is a reference/teaching artifact, not a claim that any
-// single project uses all 21 layers.
-//
-// Pure content, no presentation logic. The page and components read this file.
+/**
+ * Content source for the Architecture tab — a reference catalogue of the
+ * layers an enterprise AI system is assembled from, with the tool options
+ * available at each.
+ *
+ * It is a teaching artefact, not a description of any one system. No project
+ * uses all of these layers, and a design that reached for every one of them
+ * would be a warning sign rather than a thorough job.
+ *
+ * Pure content: the page and its components read from here and hold no copy of
+ * their own.
+ */
 
 export type Necessity = "required" | "conditional" | "enterprise";
 

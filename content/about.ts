@@ -1,6 +1,17 @@
-// Content module — the CMS layer. Edit freely.
 import type { About } from "./types";
 
+/**
+ * The About page.
+ *
+ * Deliberately not a biography — the employment timeline and organisation
+ * names were removed on purpose. Those answer "where has he worked", which is
+ * a question a CV answers and this site does not need to. What replaces them
+ * answers "how does he think", which is the only thing a reader of an
+ * architecture notebook can actually use.
+ *
+ * `background` is the single concession to context, and it stays generic by
+ * design: sector and function, never an employer.
+ */
 export const about: About = {
   eyebrow: "About",
   title: "I optimise business processes before I optimise prompts.",
