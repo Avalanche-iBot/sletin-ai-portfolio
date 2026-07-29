@@ -10,7 +10,9 @@ import { RoadmapTimeline } from "@/components/RoadmapTimeline";
 import { KpiTable, RiskTable, TechSelectionTable, StakeholderTable } from "@/components/DataTables";
 import { CaseNoteDisclaimer } from "@/components/Disclaimer";
 import { CaseNoteToc, type TocEntry } from "@/components/CaseNoteToc";
+import { MaterialsSection } from "@/components/MaterialsSection";
 import { cx, STATUS_TONE } from "@/lib/format";
+import { availableMaterials } from "@/lib/materials";
 
 export function generateStaticParams() {
   return caseStudies.map((c) => ({ slug: c.slug }));
@@ -54,6 +56,7 @@ const SECTION_ORDER: { id: string; label: string; group: string; has: (p: CaseSt
   { id: "future", label: "Future Improvements", group: "Transfer & Limits", has: (p) => !!p.futureImprovements },
   { id: "tailoring", label: "If Your Situation Differs", group: "Transfer & Limits", has: (p) => !!p.tailoring },
   { id: "open-questions", label: "Open Questions", group: "Transfer & Limits", has: (p) => !p.tailoring && !!p.openQuestions },
+  { id: "materials", label: "Materials", group: "Transfer & Limits", has: (p) => availableMaterials(p).length > 0 },
 ];
 
 function buildSections(project: CaseStudy) {
@@ -541,6 +544,19 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
               </li>
             ))}
           </ol>
+        </Section>
+      )}
+
+      {/* Materials — downloads generated from the data above, plus the colophon */}
+      {availableMaterials(project).length > 0 && (
+        <Section
+          bare
+          id="materials"
+          eyebrow={sectionEyebrow("materials")}
+          title="Take this with you"
+          lede="The tables and records above, as files — generated from the same data, not written separately."
+        >
+          <MaterialsSection project={project} />
         </Section>
       )}
 
