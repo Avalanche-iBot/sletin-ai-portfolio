@@ -5,9 +5,61 @@ import { useEffect, useState } from "react";
 export type TocEntry = { id: string; label: string; group: string; number: string };
 
 /**
- * Table of contents for a case note.
+ * Table of contents for a case note, in two separate components.
  *
- * Eighteen flat links stop being navigation and become a wall, so entries are
+ * They were one component rendering both layouts, which forced the mobile
+ * disclosure to sit wherever the desktop rail sits — at the top of the content
+ * column, below a header that runs to roughly 1,700px on a narrow screen. The
+ * reader met the contents long after they needed them. Split apart, the mobile
+ * list can be placed high in the header while the rail stays in the page
+ * gutter.
+ *
+ * The mobile list is deliberately plain: a flat set of links, no scroll
+ * tracking. Highlighting the current section matters in a rail that stays on
+ * screen; it is invisible in a panel the reader closes on the way out.
+ */
+
+/** Flat disclosure, placed near the top of the note on narrow screens. */
+export function CaseNoteTocMobile({ entries }: { entries: TocEntry[] }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="lg:hidden">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex w-full items-center justify-between border-y border-line py-3 text-left"
+      >
+        <span className="eyebrow">Contents · {entries.length} sections</span>
+        <span aria-hidden className="font-mono text-micro text-ink-muted">
+          {open ? "—" : "+"}
+        </span>
+      </button>
+      {open && (
+        <ol className="mt-4 space-y-2">
+          {entries.map((e) => (
+            <li key={e.id}>
+              <a
+                href={`#${e.id}`}
+                onClick={() => setOpen(false)}
+                className="flex gap-3 text-[0.875rem] text-ink-soft hover:text-ink"
+              >
+                <span className="font-mono text-micro text-ink-muted">{e.number}</span>
+                {e.label}
+              </a>
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Sticky rail for wide screens, current group expanded.
+ *
+ * Seventeen flat links stop being navigation and become a wall, so entries are
  * grouped and only the group containing the reader's current position is
  * expanded. The grouping does a second job: it shows the shape of the argument
  * — problem, then analysis, then design, then how sensitive the design is to
@@ -19,7 +71,6 @@ export type TocEntry = { id: string; label: string; group: string; number: strin
  */
 export function CaseNoteToc({ entries }: { entries: TocEntry[] }) {
   const [activeId, setActiveId] = useState<string | null>(entries[0]?.id ?? null);
-  const [openOnMobile, setOpenOnMobile] = useState(false);
   /**
    * A group the reader opened by hand. Scroll position decides which group is
    * open by default, but an explicit click has to win — otherwise the panel
@@ -66,91 +117,57 @@ export function CaseNoteToc({ entries }: { entries: TocEntry[] }) {
   const activeGroup = pinnedGroup ?? scrolledGroup;
 
   return (
-    <>
-      {/* Mobile: a disclosure above the content, closed by default. */}
-      <div className="mb-10 lg:hidden">
-        <button
-          type="button"
-          onClick={() => setOpenOnMobile((v) => !v)}
-          aria-expanded={openOnMobile}
-          className="flex w-full items-center justify-between border-y border-line py-3 text-left"
-        >
-          <span className="eyebrow">Contents · {entries.length} sections</span>
-          <span aria-hidden className="font-mono text-micro text-ink-muted">
-            {openOnMobile ? "—" : "+"}
-          </span>
-        </button>
-        {openOnMobile && (
-          <ol className="mt-4 space-y-2">
-            {entries.map((e) => (
-              <li key={e.id}>
-                <a
-                  href={`#${e.id}`}
-                  onClick={() => setOpenOnMobile(false)}
-                  className="flex gap-3 text-[0.875rem] text-ink-soft hover:text-ink"
-                >
-                  <span className="font-mono text-micro text-ink-muted">{e.number}</span>
-                  {e.label}
-                </a>
-              </li>
-            ))}
-          </ol>
-        )}
-      </div>
+    <nav aria-label="Contents" className="sticky top-24 hidden max-h-[calc(100vh-8rem)] overflow-y-auto lg:block">
+      <p className="eyebrow mb-4">Contents</p>
+      <ol className="space-y-4">
+        {groups.map((g) => {
+          const open = g.name === activeGroup;
+          return (
+            <li key={g.name}>
+              <button
+                type="button"
+                onClick={() => setPinnedGroup(open ? null : g.name)}
+                aria-expanded={open}
+                className={
+                  open
+                    ? "w-full text-left font-mono text-micro uppercase tracking-[0.1em] text-accent-deep"
+                    : "w-full text-left font-mono text-micro uppercase tracking-[0.1em] text-ink-muted transition-colors hover:text-ink-soft"
+                }
+              >
+                {g.name}
+              </button>
 
-      {/* Desktop: sticky rail, current group expanded. */}
-      <nav aria-label="Contents" className="sticky top-24 hidden max-h-[calc(100vh-8rem)] overflow-y-auto lg:block">
-        <p className="eyebrow mb-4">Contents</p>
-        <ol className="space-y-4">
-          {groups.map((g) => {
-            const open = g.name === activeGroup;
-            return (
-              <li key={g.name}>
-                <button
-                  type="button"
-                  onClick={() => setPinnedGroup(open ? null : g.name)}
-                  aria-expanded={open}
-                  className={
-                    open
-                      ? "w-full text-left font-mono text-micro uppercase tracking-[0.1em] text-accent-deep"
-                      : "w-full text-left font-mono text-micro uppercase tracking-[0.1em] text-ink-muted transition-colors hover:text-ink-soft"
-                  }
-                >
-                  {g.name}
-                </button>
-
-                {open ? (
-                  <ol className="mt-2 space-y-1.5 border-l border-line pl-3">
-                    {g.items.map((e) => {
-                      const current = e.id === activeId;
-                      return (
-                        <li key={e.id}>
-                          <a
-                            href={`#${e.id}`}
-                            aria-current={current ? "true" : undefined}
-                            className={
-                              current
-                                ? "block text-[0.8125rem] leading-snug text-ink"
-                                : "block text-[0.8125rem] leading-snug text-ink-muted hover:text-ink-soft"
-                            }
-                          >
-                            {current && (
-                              <span aria-hidden className="mr-1.5 text-accent">
-                                ·
-                              </span>
-                            )}
-                            {e.label}
-                          </a>
-                        </li>
-                      );
-                    })}
-                  </ol>
-                ) : null}
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
-    </>
+              {open ? (
+                <ol className="mt-2 space-y-1.5 border-l border-line pl-3">
+                  {g.items.map((e) => {
+                    const current = e.id === activeId;
+                    return (
+                      <li key={e.id}>
+                        <a
+                          href={`#${e.id}`}
+                          aria-current={current ? "true" : undefined}
+                          className={
+                            current
+                              ? "block text-[0.8125rem] leading-snug text-ink"
+                              : "block text-[0.8125rem] leading-snug text-ink-muted hover:text-ink-soft"
+                          }
+                        >
+                          {current && (
+                            <span aria-hidden className="mr-1.5 text-accent">
+                              ·
+                            </span>
+                          )}
+                          {e.label}
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ol>
+              ) : null}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
   );
 }

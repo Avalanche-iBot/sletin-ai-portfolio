@@ -9,7 +9,8 @@ import { DiscoverySection } from "@/components/DiscoverySection";
 import { RoadmapTimeline } from "@/components/RoadmapTimeline";
 import { KpiTable, RiskTable, TechSelectionTable, StakeholderTable } from "@/components/DataTables";
 import { CaseNoteDisclaimer } from "@/components/Disclaimer";
-import { CaseNoteToc, type TocEntry } from "@/components/CaseNoteToc";
+import { CaseNoteToc, CaseNoteTocMobile, type TocEntry } from "@/components/CaseNoteToc";
+import { BackToTop } from "@/components/BackToTop";
 import { MaterialsSection } from "@/components/MaterialsSection";
 import { cx, STATUS_TONE } from "@/lib/format";
 import { availableMaterials } from "@/lib/materials";
@@ -120,6 +121,11 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             <CaseNoteDisclaimer compact />
           </div>
 
+          {/* Contents sit high on a phone; the rail below only exists from lg up. */}
+          <div className="mt-10">
+            <CaseNoteTocMobile entries={tocEntries} />
+          </div>
+
           {project.techGroups && (
             <div className="mt-10 grid gap-6 border-t border-line pt-8 sm:grid-cols-2 lg:grid-cols-3">
               {project.techGroups.map((g) => (
@@ -135,12 +141,20 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* Contents rail and sections share one container, so the rail sits in the
           page gutter rather than floating over the text. */}
-      <div className="shell grid gap-x-12 lg:grid-cols-[11rem_minmax(0,1fr)]">
-        <div className="lg:pt-14">
+      {/*
+       * grid-cols-[minmax(0,1fr)] on the base breakpoint is load-bearing, not
+       * decoration. An implicit grid track is sized `auto`, whose minimum is
+       * min-content — so one wide descendant (a data table, a long unbroken
+       * string) stretches the track past the viewport and the whole page
+       * scrolls sideways. The lg track already guarded against this; the
+       * single-column case below lg did not.
+       */}
+      <div className="shell grid grid-cols-[minmax(0,1fr)] gap-x-12 lg:grid-cols-[11rem_minmax(0,1fr)]">
+        <div className="hidden min-w-0 lg:block lg:pt-14">
           <CaseNoteToc entries={tocEntries} />
         </div>
 
-        <div>
+        <div className="min-w-0">
       {/* Executive Summary ------------------------------------------------ */}
       {project.executiveSummary && (
         <Section bare first id="executive-summary" eyebrow={sectionEyebrow("executive-summary")} title="The situation, in brief">
@@ -608,6 +622,8 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           <span />
         )}
       </nav>
+
+      <BackToTop />
     </>
   );
 }

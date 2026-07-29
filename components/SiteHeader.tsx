@@ -28,22 +28,39 @@ function BrandMark() {
   );
 }
 
+/**
+ * Theme toggle, with nothing persisted.
+ *
+ * The stylesheet already paints the system preference on first load, so this
+ * only has to handle an explicit override, and it holds that override in React
+ * state for the session. Reading it back from `localStorage` would be the
+ * conventional move, but browser storage is deliberately not used anywhere on
+ * this site; a reload returning to the system preference is a fair trade for
+ * that, and is arguably the better default anyway.
+ *
+ * State starts as `null` — following the system — and the effect only reads
+ * the media query so the button can name the theme it would switch *to*.
+ */
 function ThemeToggle() {
-  const [dark, setDark] = useState(false);
+  const [override, setOverride] = useState<"light" | "dark" | null>(null);
+  const [systemDark, setSystemDark] = useState(false);
 
   useEffect(() => {
-    const stored = window.localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const shouldDark = stored ? stored === "dark" : prefersDark;
-    setDark(shouldDark);
-    document.documentElement.classList.toggle("dark", shouldDark);
+    const query = window.matchMedia("(prefers-color-scheme: dark)");
+    const sync = () => setSystemDark(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
   }, []);
 
+  const dark = override ? override === "dark" : systemDark;
+
   function toggle() {
-    const next = !dark;
-    setDark(next);
-    document.documentElement.classList.toggle("dark", next);
-    window.localStorage.setItem("theme", next ? "dark" : "light");
+    const next = dark ? "light" : "dark";
+    setOverride(next);
+    const root = document.documentElement;
+    root.classList.toggle("dark", next === "dark");
+    root.classList.toggle("light", next === "light");
   }
 
   return (

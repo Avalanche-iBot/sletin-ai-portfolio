@@ -26,7 +26,7 @@ const caseStudy: CaseStudy = {
   "liveDemoUrl": "",
   "demoNote": "No public demo — this case study documents the architecture, not a product",
   "shortSummary": "A regulated, GDPR-compliant patient communication platform for a fast-growing Italian dental group. The architectural core is a hybrid router: deterministic automation handles the 70% of requests that are genuinely deterministic, and a RAG-grounded LLM handles only free-text clinical-adjacent questions — with a hard rule that it never gives medical advice and escalates on low confidence.",
-  "impact": "12 min → <30 s response time · ≥70% requests automated · <€0.03 AI cost per request",
+  "impact": "12 min → <30 s response time · ≥70% requests automated · ~€0.008 blended AI cost per message",
   "tags": [
     "RAG",
     "Hybrid routing",
@@ -410,7 +410,7 @@ const caseStudy: CaseStudy = {
       },
       {
         "finding": "OPEX ceiling €80k/year",
-        "implication": "Cost per request becomes a hard non-functional requirement (<€0.03), driving model routing, caching and prompt-length discipline."
+        "implication": "Cost becomes a hard non-functional requirement rather than a reporting line — on the order of €0.03 per model-path request at these volumes, which is what drives model routing, caching and prompt-length discipline. The cost section shows the formula behind that figure and the range it sits in."
       },
       {
         "finding": "France expansion planned",
@@ -494,7 +494,7 @@ const caseStudy: CaseStudy = {
       },
       {
         "t": "Cost as a contract",
-        "d": "€0.03 per request is a non-functional requirement enforced by routing, caching and prompt budgets."
+        "d": "The per-request ceiling is a designed constraint, not a measured outcome — held by routing, caching and prompt budgets, and stated as a formula with a range rather than one figure."
       },
       {
         "t": "Auditable by construction",

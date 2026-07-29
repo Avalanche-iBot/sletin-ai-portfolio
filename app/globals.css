@@ -14,6 +14,7 @@
 
 @layer base {
   :root {
+    color-scheme: light;
     --canvas: 246 247 249;
     --surface: 255 255 255;
     --raised: 241 243 246;
@@ -27,7 +28,37 @@
     --on-accent: 255 255 255;
   }
 
+  /*
+   * The dark palette is applied two ways, so it is written twice.
+   *
+   * The media query is the default: it means the correct theme is painted by
+   * the stylesheet on first paint, with no script and nothing stored. The
+   * previous arrangement had JavaScript add `.dark` on mount, which meant a
+   * reader on a dark OS got a flash of the light theme on every page load.
+   *
+   * The classes are the reader's explicit choice for the session, and they win
+   * over the system preference — `:root:not(.light)` is what lets a reader on a
+   * dark OS switch to light and have it hold.
+   */
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) {
+      color-scheme: dark;
+      --canvas: 8 11 16;
+      --surface: 14 18 25;
+      --raised: 20 25 34;
+      --line: 38 46 58;
+      --line-strong: 66 78 94;
+      --ink: 233 237 243;
+      --ink-soft: 176 186 199;
+      --ink-muted: 124 136 152;
+      --accent: 233 163 23;
+      --accent-deep: 250 190 70;
+      --on-accent: 12 18 26;
+    }
+  }
+
   .dark {
+    color-scheme: dark;
     --canvas: 8 11 16;
     --surface: 14 18 25;
     --raised: 20 25 34;
