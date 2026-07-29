@@ -1,7 +1,7 @@
 import type { CaseStudy } from "../types";
 
 import case01 from "./case-01-ai-patient-communication-platform";
-import case02 from "./case-02-ai-customer-support-platform";
+import case02 from "./case-02-real-time-payment-fraud-decisioning";
 import case03 from "./case-03-ai-contract-intelligence";
 import case04 from "./case-04-ai-meeting-assistant";
 import case05 from "./case-05-enterprise-knowledge-assistant";
