@@ -8,3 +8,10 @@ build
 .vercel
 next-env.d.ts
 tsconfig.tsbuildinfo
+
+# Working notes handed to an assistant, not project documentation.
+# These are kept locally and pasted into a conversation when needed; they
+# describe one-off tasks and go stale the moment the task is done.
+WIRING_INSTRUCTIONS.md
+*.local.md
+.claude/
