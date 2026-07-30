@@ -51,7 +51,7 @@ export const whyMe: WhyMe = {
     {
       num: "02",
       title: "Delivery constraints as design inputs",
-      body: "PMP certified. Five AI projects managed end-to-end at an AI company, plus a full ERP rollout. Scope, budget and phased rollout are not administrative afterthoughts — they are constraints that change what the architecture is allowed to be.",
+      body: "An MSc in Engineering Management on top of the petroleum one, PMP certification, five AI projects managed end-to-end at an AI company and a full ERP rollout. Scope, budget and phased rollout are not administrative afterthoughts — they are constraints that change what the architecture is allowed to be.",
       tags: [
         "PMP",
         "Agile / Scrum",

@@ -26,14 +26,15 @@ export const about: About = {
   ],
 
   background: [
-    { k: "Education", v: "Oil and gas engineering — BSc and MSc, transport and storage" },
+    { k: "First degree", v: "Oil and gas engineering — BSc and MSc in transport and storage" },
+    { k: "Second degree", v: "MSc in Engineering Management" },
     { k: "Engineering", v: "Field and operations work in the energy sector" },
     { k: "Delivery", v: "Project management and cost control on international programmes" },
     { k: "AI", v: "Five AI projects and a full ERP rollout, in a product company" },
   ],
 
   backgroundNote:
-    "A line rather than a zigzag. Operations taught me what actually breaks, delivery taught me which constraints are real, and architecture is where both get decided — so the earlier steps are not a detour from this one, they are the reason I notice what I notice. Organisations are left unnamed on purpose.",
+    "A line rather than a zigzag, and the second degree is where it turns: I went from building things to owning the scope and the money around them deliberately enough to go and study it, rather than by drift. Operations taught me what actually breaks, delivery taught me which constraints are real, and architecture is where both get decided — so the earlier steps are the reason I notice what I notice, not a detour from this one. Organisations are left unnamed on purpose.",
 
   certifications: [
     { label: "PMP®", org: "Project Management Institute" },
