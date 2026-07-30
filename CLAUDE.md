@@ -9,10 +9,12 @@ that is a choice rather than an oversight. The target is **1 January 2027**, and
 the two conditions are the Azure certifications being held and every published
 note being defensible by its author in conversation. The plan for getting there
 is **[ROADMAP.md](ROADMAP.md)** — read it alongside this file, because it
-governs what to work on next. So anything
-that can only be verified against a live site (structured data in Google's
-tester, link previews on a social platform, the edge-runtime preview images on
-real infrastructure) cannot be checked yet. Do not report those as working.
+governs what to work on next.
+
+Until then, anything that can only be verified against a live site (structured
+data in Google's tester, link previews on a social platform, the edge-runtime
+preview images on real infrastructure) cannot be checked. Do not report those as
+working.
 
 This file exists so a new session can be useful in its first ten minutes
 instead of its fortieth. Read it before touching `content/`.
