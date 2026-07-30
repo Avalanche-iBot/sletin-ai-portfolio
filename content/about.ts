@@ -56,11 +56,35 @@ export const about: About = {
     },
   ],
 
+  /**
+   * The Azure ladder, in the order it is being taken. All five are in progress
+   * as at July 2026 — none held yet, all named openly rather than implied.
+   */
   certificationsInProgress: [
     {
-      label: "Azure AI Engineer Associate (AI-102)",
-      org: "Microsoft · in preparation",
-      why: "Azure runs through every case note here. I have designed against Azure OpenAI, AI Search, Document Intelligence and Content Safety in writing, without ever being examined on any of them, and AI-102 covers exactly that surface. It comes before AZ-305 — the exam that carries the architect title — because AZ-305 is largely infrastructure and sits further from the work on this site.",
+      label: "Microsoft Certified: Azure Fundamentals",
+      org: "AZ-900 · Microsoft",
+      note: "Cloud concepts and how Azure prices, secures and governs them. The entry point, and worth doing rather than skipping.",
+    },
+    {
+      label: "Microsoft Certified: Azure Data Fundamentals",
+      org: "DP-900 · Microsoft",
+      note: "How data is stored, moved and queried on Azure — relational, non-relational and analytics.",
+    },
+    {
+      label: "Microsoft Certified: Azure AI Fundamentals",
+      org: "AI-900 · Microsoft",
+      note: "The concepts under every AI-adjacent Azure service: computer vision, language, and where responsible-AI obligations sit.",
+    },
+    {
+      label: "Microsoft Certified: Azure AI Apps and Agents Developer Associate",
+      org: "Microsoft",
+      note: "The one closest to what these case notes actually design — Azure OpenAI, AI Search, Document Intelligence, agent orchestration.",
+    },
+    {
+      label: "Microsoft Certified: Azure Solutions Architect Expert",
+      org: "Microsoft",
+      note: "The architecture-level exam, and the one that carries the title this site uses.",
     },
   ],
 
@@ -92,18 +116,18 @@ export const about: About = {
     },
   ],
 
+  /**
+   * Cut from six to four. Two of the original six restated `approach` in
+   * different words — "question assumptions" and "establish what actually
+   * happens" were the same point twice — and `strengths`, a separate list that
+   * overlapped this one almost entirely, was folded in rather than kept
+   * alongside it. What is left is the four that are not said anywhere else on
+   * the page.
+   */
   strengths: [
-    {
-      t: "Discovery and requirements",
-      d: "Turning a vague executive sentence into testable statements and a scoped problem.",
-    },
     {
       t: "Make-vs-buy judgement",
       d: "Knowing when not to reach for a model. Most cost overruns start with that decision.",
-    },
-    {
-      t: "Stakeholder translation",
-      d: "The same architecture explained three ways: to the board, to IT, to the people who will use it.",
     },
     {
       t: "Cost modelling",
@@ -122,31 +146,21 @@ export const about: About = {
   philosophy: [
     {
       n: "01",
-      t: "Optimise the process before automating it",
-      d: "Automating a badly designed process makes it faster and harder to fix. The first question is whether the work needs to happen at all, not how to make a model do it.",
-    },
-    {
-      n: "02",
-      t: "Question assumptions before introducing AI",
-      d: "Ten well-chosen stakeholder questions eliminate more risk than any model benchmark. Discovery is not a formality that precedes design — it is the design activity.",
-    },
-    {
-      n: "03",
       t: "Do not use a model where a rule will do",
       d: "Deterministic logic for deterministic questions; a model only where language understanding is genuinely required. Cheaper, faster and far easier to explain when it goes wrong.",
     },
     {
-      n: "04",
+      n: "02",
       t: "Grounding over training",
       d: "Most organisations do not need a fine-tuned model. They need retrieval they can audit, answers that cite their source, and a clean escalation path when confidence is low.",
     },
     {
-      n: "05",
+      n: "03",
       t: "Every architecture is a trade-off",
       d: "There is no design without a cost somewhere — latency, money, flexibility, operability. A proposal that appears to have no downside has an undiscovered one.",
     },
     {
-      n: "06",
+      n: "04",
       t: "Design for whoever inherits it",
       d: "If the organisation has no ML team, the architecture must not quietly assume one. Managed services, unremarkable infrastructure, documented runbooks.",
     },
@@ -154,9 +168,7 @@ export const about: About = {
 
   workingStyle: [
     "Written first — a decision lands in a short brief before it lands in code, so it can be argued with while changing it is still cheap.",
-    "Case-based learner. I build the realistic scenario, then learn whatever stack the scenario demands, rather than the other way round.",
     "Explicit about gaps. I would rather write 'not yet' than overclaim and lose the reader at the first technical question.",
-    "Comfortable being corrected in public. That is most of the reason this site exists in its current form.",
-    "I automate the check rather than promise to remember. The architecture diagrams in these notes are typed data rather than pictures, and a script checks each one against the geometry of the component that draws it — so a label that would be silently clipped fails the build instead of shipping. The reasoning behind that is written up in the blog, and the code is in the repository.",
+    "I automate the check rather than promise to remember — a script in the repository checks every diagram against the geometry of the component that renders it, so a label that would be silently clipped fails the build instead of shipping.",
   ],
 };

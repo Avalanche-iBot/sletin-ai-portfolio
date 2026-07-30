@@ -329,17 +329,37 @@ export type About = {
   paragraphs: string[];
   /** Generic context only: sector and function, never an organisation. */
   background: string[];
-  /** What each certification changed about the way I think — not the badge. */
-  certifications: { label: string; org: string; shaped: string; mindset: string }[];
+  /**
+   * What each certification changed about the way I think — not the badge.
+   *
+   * `verifyUrl` and `badge` are optional and currently unset. They exist so
+   * that adding a public verification link and an issuer badge later is a
+   * content edit rather than a schema change: the page renders them if they are
+   * there and says nothing if they are not.
+   */
+  certifications: {
+    label: string;
+    org: string;
+    shaped: string;
+    mindset: string;
+    /** Public verification page for this credential. */
+    verifyUrl?: string;
+    /** Badge image, served from `public/badges/`. */
+    badge?: string;
+  }[];
   /**
    * Qualifications being worked towards.
    *
    * Kept separate from `certifications` rather than folded in with a status
    * flag, because that list is about the habit a qualification left behind and
-   * something unfinished has left none. `why` says what it is being taken for,
-   * which is the only honest thing to say about a certificate nobody holds yet.
+   * something unfinished has left none. `note` is one short line on what the
+   * exam covers — deliberately not an essay, because there is nothing yet to
+   * say beyond what is being attempted.
+   *
+   * Array order is the order they are being taken, and the page numbers them,
+   * since this particular set is a ladder rather than a collection.
    */
-  certificationsInProgress?: { label: string; org: string; why: string }[];
+  certificationsInProgress?: { label: string; org: string; note: string }[];
   /** How I approach a business problem, as a sequence. */
   approach: NumberedPoint[];
   strengths: Point[];

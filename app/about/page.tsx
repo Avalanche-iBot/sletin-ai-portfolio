@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { about } from "@/content/about";
 import { Section, BulletList } from "@/components/Primitives";
 import { NoticeLine } from "@/components/Disclaimer";
@@ -38,6 +39,80 @@ export default function AboutPage() {
         </div>
       </Section>
 
+      {/*
+       * Certifications, moved up to second position.
+       *
+       * They used to sit fourth, after Approach — behind the queue a reader
+       * checking credibility actually takes. This is what a reader deciding
+       * whether to trust the rest of the site looks for first, so it goes
+       * where that reader will look first.
+       *
+       * Held credentials keep their "what this changed" framing: a badge
+       * without the habit it left is decoration. The in-progress ladder below
+       * is visually quieter and makes no such claim, because nothing unfinished
+       * has changed how anyone works yet — it says plainly what is being
+       * attempted and in what order.
+       */}
+      <Section
+        eyebrow="Certifications"
+        title="What each one actually changed"
+        lede="A certificate is only interesting for the habit it leaves behind. These are the habits, plus what is currently being attempted."
+      >
+        <div className="space-y-0">
+          {about.certifications.map((c) => (
+            <article key={c.label} className="grid gap-5 border-t border-line py-8 lg:grid-cols-[16rem_1fr]">
+              <div>
+                {c.badge && (
+                  <Image
+                    src={c.badge}
+                    alt=""
+                    width={72}
+                    height={72}
+                    className="mb-3"
+                  />
+                )}
+                <p className="font-display text-xl text-ink">
+                  {c.verifyUrl ? (
+                    <a href={c.verifyUrl} className="hover:text-accent-deep" target="_blank" rel="noreferrer">
+                      {c.label}
+                    </a>
+                  ) : (
+                    c.label
+                  )}
+                </p>
+                <p className="mt-1 font-mono text-micro uppercase tracking-[0.1em] text-ink-muted">{c.org}</p>
+                <p className="mt-4 border-l-2 border-accent pl-3 text-[0.875rem] font-medium leading-snug text-ink">
+                  {c.shaped}
+                </p>
+              </div>
+              <p className="max-w-reading text-[0.9375rem] leading-relaxed text-ink-soft">{c.mindset}</p>
+            </article>
+          ))}
+        </div>
+
+        {about.certificationsInProgress && about.certificationsInProgress.length > 0 && (
+          <div className="mt-10 border-t-2 border-accent pt-6">
+            <p className="eyebrow mb-1">Currently working towards</p>
+            <p className="mb-5 max-w-reading text-[0.8125rem] leading-relaxed text-ink-muted">
+              The Azure ladder, in the order it is being taken. None held yet — this list will move
+              entries above as they are earned, each with a date and a verification link.
+            </p>
+            <ol className="space-y-5">
+              {about.certificationsInProgress.map((c, i) => (
+                <li key={c.label} className="grid gap-4 sm:grid-cols-[2.5rem_10rem_1fr]">
+                  <span className="font-mono text-micro text-ink-muted">{String(i + 1).padStart(2, "0")}</span>
+                  <div>
+                    <p className="font-display text-base leading-snug text-ink">{c.label}</p>
+                    <p className="mt-1 font-mono text-micro uppercase tracking-[0.08em] text-ink-muted">{c.org}</p>
+                  </div>
+                  <p className="text-[0.875rem] leading-relaxed text-ink-soft">{c.note}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+      </Section>
+
       {/* How I approach a problem -------------------------------------------- */}
       <Section
         eyebrow="Approach"
@@ -55,48 +130,6 @@ export default function AboutPage() {
             </li>
           ))}
         </ol>
-      </Section>
-
-      {/* Certifications, as mindsets rather than badges ------------------------ */}
-      <Section
-        eyebrow="Certifications"
-        title="What each one actually changed"
-        lede="A certificate is only interesting for the habit it leaves behind. These are the habits."
-      >
-        <div className="space-y-0">
-          {about.certifications.map((c) => (
-            <article key={c.label} className="grid gap-5 border-t border-line py-8 lg:grid-cols-[16rem_1fr]">
-              <div>
-                <p className="font-display text-xl text-ink">{c.label}</p>
-                <p className="mt-1 font-mono text-micro uppercase tracking-[0.1em] text-ink-muted">{c.org}</p>
-                <p className="mt-4 border-l-2 border-accent pl-3 text-[0.875rem] font-medium leading-snug text-ink">
-                  {c.shaped}
-                </p>
-              </div>
-              <p className="max-w-reading text-[0.9375rem] leading-relaxed text-ink-soft">{c.mindset}</p>
-            </article>
-          ))}
-        </div>
-
-        {/* Kept visually quieter than the list above, because an unfinished
-            qualification has not changed how anyone works yet and should not
-            be presented as though it had. */}
-        {about.certificationsInProgress && about.certificationsInProgress.length > 0 && (
-          <div className="mt-10 border-t-2 border-accent pt-6">
-            <p className="eyebrow mb-4">Currently working towards</p>
-            <div className="space-y-6">
-              {about.certificationsInProgress.map((c) => (
-                <div key={c.label} className="grid gap-5 lg:grid-cols-[16rem_1fr]">
-                  <div>
-                    <p className="font-display text-base text-ink">{c.label}</p>
-                    <p className="mt-1 font-mono text-micro uppercase tracking-[0.1em] text-ink-muted">{c.org}</p>
-                  </div>
-                  <p className="max-w-reading text-[0.9375rem] leading-relaxed text-ink-soft">{c.why}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </Section>
 
       {/* Principles ------------------------------------------------------------ */}
