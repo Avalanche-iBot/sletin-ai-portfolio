@@ -143,8 +143,9 @@ references a slug, so renaming a case is those two files plus the filename.
   than measured, and which figure the whole case is most sensitive to.
 - **`counterpart`** points at one other note this one is in dialogue with, plus
   a sentence saying what the pairing teaches. Only worth setting where the two
-  genuinely disagree, or agree from opposite constraints. A slug with nothing
-  behind it renders nothing, so it is safe to point at unwritten work.
+  genuinely disagree, or agree from opposite constraints. It must name a
+  **published** slug — the template renders nothing for an unknown one, but
+  `npm run check:content` fails the build rather than let a link to a 404 ship.
 - `status` describes how finished the **analysis** is, never a product:
   `In analysis` · `Architecture note` · `Under revision` · `Open question`.
 - Content modules are ordinary TypeScript with unquoted keys. They were once
