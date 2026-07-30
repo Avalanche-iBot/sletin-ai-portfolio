@@ -41,10 +41,7 @@ const caseStudy: CaseStudy = {
   architectureComplexity: 5,
   complexityLabel:
     "Very high — writes to four systems of record with no distributed transaction, actions with no inverse, and one live window every four years",
-  duration: "Reference programme: 14 months across one turnaround cycle",
-  role: "Solution Architect (case study author)",
-  client: "Gas processing operator — turnaround organisation",
-  clientNote: "Single-train major shutdown",
+  duration: "Assumed programme length: 14 months across one turnaround cycle",
   githubUrl: "",
   liveDemoUrl: "",
   demoNote: "Architecture-first case study — no public demo",
@@ -77,7 +74,7 @@ const caseStudy: CaseStudy = {
 
   executiveSummary: {
     statement:
-      "A constructed scenario, used to reason through a class of problem rather than to describe a real engagement. The figures are assumptions chosen so the constraints bind; where one carries architectural weight, the section using it shows the derivation and says what changes if it is wrong.\n\nScenario: a gas processing plant, twelve days into a twenty-six-day major turnaround on Train 2, with roughly 1,100 contractor personnel on site from fourteen firms. Base scope is about 9,400 work orders. Somewhere between a tenth and a third of what a turnaround actually executes was not in the plan when it started — I have assumed 18%, which is about 1,700 emergent findings, or sixty-five a day. An inspector opens a line, finds through-wall pitting, and the plan is now wrong in four systems at once.\n\nEvery published note on this site has the system produce an answer that a person then acts on. This one has the system act: it raises requisitions, moves activities in the schedule, stands crews down and tells contractors. That single change moves where the difficulty sits. Accuracy stops being the interesting problem, because a plan that is ninety per cent right and applied cleanly is recoverable and a plan that is entirely right and applied halfway is not.\n\nSo the question the note is built around is what a chain of writes leaves behind when it stops in the middle. Four systems of record, no distributed transaction between them, and several steps with no inverse: a requisition released to a vendor who has begun cutting, a crew stood down who has gone to another site, and the one nobody classifies as a write at all — fourteen firms who have been told. The honest verdict is that the transactional design is the whole of the work here and the language model is the least difficult component in the system.\n\nThis is written in July 2026, and it is worth naming what agentic means at this moment, because the note is largely an argument against it. The frameworks available now are good at the loop — plan, call a tool, observe, continue — and close to silent on the part that decides whether any of this is allowed near a shutdown: what the loop owes you when its fourth call times out and nobody knows whether a €210,000 requisition exists.",
+      "A constructed scenario, used to reason through a class of problem rather than to describe a real engagement. The figures are assumptions chosen so the constraints bind; where one carries architectural weight, the section using it shows the derivation and says what changes if it is wrong.\n\nScenario: a gas processing plant, twelve days into a twenty-six-day major turnaround on Train 2, with roughly 1,100 contractor personnel on site from fourteen firms. Base scope is about 9,400 work orders, and I have assumed 18% of what actually gets executed was not in the plan when it started — about 1,700 emergent findings, or sixty-five a day. An inspector opens a line, finds through-wall pitting, and the plan is now wrong in four systems at once.\n\nEvery published note on this site has the system produce an answer that a person then acts on. This one has the system act: it raises requisitions, moves activities in the schedule, stands crews down and tells contractors. That single change moves where the difficulty sits. Accuracy stops being the interesting problem, because a plan that is ninety per cent right and applied cleanly is recoverable and a plan that is entirely right and applied halfway is not.\n\nSo the question is what a chain of writes leaves behind when it stops in the middle. Four systems of record, no distributed transaction between them, and several steps with no inverse: a requisition released to a vendor who has begun cutting, a crew stood down who has gone to another site, and the one nobody classifies as a write at all — fourteen firms who have been told. The honest verdict is that the transactional design is the whole of the work and the language model is the least difficult component in it.\n\nThis is written in July 2026, and it is worth naming what agentic means at this moment, because the note is largely an argument against it. The frameworks available now are good at the loop — plan, call a tool, observe, continue — and close to silent on what that loop owes you when its fourth call times out and nobody knows whether a €210,000 requisition exists.",
     verdict:
       "Reversibility, not confidence, decides what needs a human — and the plan is ordered so the steps with no undo happen last.",
     highlights: [
@@ -100,12 +97,11 @@ const caseStudy: CaseStudy = {
 
   businessContext: {
     narrative:
-      "A major turnaround is the largest controllable cost event in a plant's calendar and the one most thoroughly picked over afterwards. Scope is frozen months in advance, materials are staged, crews are contracted to a day-by-day plan, and then the plant is opened up and reality disagrees. That disagreement — emergent or discovery scope — is not a failure of planning. It is what inspection is for.\n\nTwo numbers carry the architectural weight here and the business case conflates them constantly, so they are worth separating.\n\nThe first is volume. 18% emergent scope against 9,400 base work orders is about 1,700 findings across twenty-six days, so sixty-five a day — and they arrive in bursts after each opening milestone rather than evenly. A planning cell of four people cannot triage sixty-five findings a day at any depth. That is why the process today batches them into the 06:00 and 18:00 coordination meetings, and why the median wait from finding to decision is around five hours and worse overnight.\n\nThe second is what that wait costs, and the arithmetic flatters itself unless it is done carefully. The operator's own figure for a day of extended shutdown on this train is €480,000, which is €20,000 an hour. But a five-hour wait only becomes five hours of extended shutdown if the finding sits on the critical path and the float is already spent — usually true in the back half of a turnaround, rarely true in the first week. I have assumed 15% of findings touch a critical-path activity, so about ten a day.\n\nAnd the saving does not sum. Ten delayed findings do not make ten delays, because concurrent waiting overlaps: two crews idle in the same three hours cost that three hours once. The honest bound is the number of distinct critical-path interruptions, which I have put at twenty to thirty across the event at an average of three avoidable hours each — sixty to ninety hours, so two to four days of a twenty-six-day shutdown. I would present that as a range and refuse to defend the midpoint.\n\nOne more feature of this setting shapes the whole programme and has no equivalent in the other notes on this site: the event happens once every four years. There is no control group, no second run, and the next turnaround will have different scope, different contractors and a partly different plant. Nothing here can be shipped and then learned from in production, because production occurs for twenty-six days and then not again for a presidential term.",
+      "Scope is frozen months in advance, materials are staged, crews are contracted to a day-by-day plan, and then the plant is opened up and reality disagrees. That disagreement — emergent scope — is not a failure of planning. It is what inspection is for.\n\nTwo numbers carry the architectural weight and the business case conflates them. The first is volume: 18% emergent scope against 9,400 base work orders is about 1,700 findings across twenty-six days, so sixty-five a day, arriving in bursts after each opening milestone. A planning cell of four cannot triage that at any depth, which is why findings are batched into the 06:00 and 18:00 coordination meetings and why the median wait from finding to decision is around five hours, worse overnight.\n\nThe second is what the wait costs, and the arithmetic flatters itself unless it is done carefully. The operator's own figure for a day of extended shutdown is €480,000, or €20,000 an hour. But five hours of waiting only becomes five hours of shutdown if the finding sits on the critical path with its float already spent — usually true in the back half of a turnaround, rarely in the first week, so I have assumed 15% of findings qualify. And the saving does not sum: two crews idle in the same three hours cost that three hours once. The honest bound is the number of distinct critical-path interruptions, which I have put at twenty to thirty at an average of three avoidable hours each — two to four days of a twenty-six-day shutdown, offered as a range I would not defend at the midpoint.\n\nOne feature of this setting has no equivalent elsewhere on this site: the event happens once every four years. There is no control group and no second run, and the next turnaround will have different scope, contractors and plant. Nothing here can be shipped and then learned from in production, because production occurs for twenty-six days and then not again for a presidential term.",
     companyFacts: [
       { k: "Turnaround duration, planned", v: "26 days" },
       { k: "Base scope", v: "~9,400 work orders" },
-      { k: "Emergent scope, assumed", v: "~18% — about 1,700 findings" },
-      { k: "Findings per day", v: "~65, arriving in bursts after each opening milestone" },
+      { k: "Emergent scope, assumed", v: "~18% — about 1,700 findings, or ~65 a day in bursts" },
       { k: "Touching the critical path, assumed", v: "~15%, so about ten a day" },
       { k: "Contractor personnel at peak", v: "~1,100 across 14 firms" },
       { k: "Firms reachable programmatically", v: "4 of 14 — the rest by email to a named coordinator" },
@@ -118,7 +114,6 @@ const caseStudy: CaseStudy = {
       "Emergent scope decided in twice-daily batches, while the crews it affects are standing on the job now.",
       "Duplicate and orphaned commitments found in the post-turnaround reconciliation, months after the money left.",
       "Crews idle because a change reached their coordinator after their shift had started.",
-      "Four planners absorbing sixty-five findings a day, and doing the analysis badly because there is no time to do it well.",
       "The previous turnaround overran by nine days, and the review attributed most of that to how long emergent scope took to work through the plan rather than to the work itself.",
     ],
     constraints: [
@@ -276,7 +271,6 @@ const caseStudy: CaseStudy = {
         goal: "Find the boundary automation must not cross, and why.",
         questions: [
           "Which of these actions could affect an isolation?",
-          "What would you need to see before allowing any of it?",
           "Can a schedule change invalidate a permit that is already issued?",
           "Where should the line be?",
         ],
@@ -313,14 +307,9 @@ const caseStudy: CaseStudy = {
           "The obvious design — hold everything, do the reversible work, then confirm the lot — is unavailable, because the systems of record have no reservation primitive that costs nothing. Ordering the plan by increasing irreversibility is the substitute, and it is a weaker one.",
       },
       {
-        finding: "A superintendent has about twenty seconds and no appetite for steps",
+        finding: "A superintendent has twenty seconds, and any volume of approvals becomes reflexive tapping within a day",
         implication:
-          "One gate per finding, never per action, and the card shows consequence and price rather than reasoning. A design that needs several approvals for one hole in a pipe has already failed, whatever its safety case says.",
-      },
-      {
-        finding: "Any volume of approvals becomes reflexive tapping within a day",
-        implication:
-          "The gate has to be rare to be real, which makes the value ceiling that decides how many gates occur a capacity decision as much as a risk decision. It also makes fast approvals a monitored defect signal rather than a success metric.",
+          "One gate per finding, never per action, showing consequence and price rather than reasoning. The gate has to be rare to be real, which makes the value ceiling deciding how many occur a capacity decision as much as a risk one — and makes fast approvals a monitored defect signal rather than a success metric.",
       },
       {
         finding: "The schedule is edited continuously and has no lock",
@@ -335,7 +324,7 @@ const caseStudy: CaseStudy = {
       {
         finding: "A schedule change can invalidate an issued permit's prerequisites",
         implication:
-          "Permit and isolation checks are deterministic rules evaluated before the plan is shown to anyone, and the permit system is read-only to this system. A model reasoning about isolation boundaries is a slower rules engine with a worse audit trail.",
+          "Permit and isolation checks are deterministic rules evaluated before the plan is shown to anyone, and the permit system is read-only to this one.",
       },
       {
         finding: "A call that times out leaves an unknown, not a failure",
@@ -404,9 +393,9 @@ const caseStudy: CaseStudy = {
       option: "A human approves every action",
       verdict: "Set aside, and it is the one every safety case will ask for",
       caseFor:
-        "It needs no reversibility analysis at all, because the approver carries the judgement. It is trivially defensible in a post-event review, it is what the audit team would design, and it means a bad model proposal can never reach a system of record. For a first release into a safety-relevant environment that is a strong position and I would not dismiss it lightly.",
+        "It needs no reversibility analysis at all, because the approver carries the judgement. It is trivially defensible in a post-event review, it is what the audit team would design, and a bad model proposal can never reach a system of record. For a first release into a safety-relevant environment that is a strong position.",
       caseAgainst:
-        "It is unaffordable in time and, worse, it does not fail loudly. Sixty-five findings a day at perhaps four actions each is over two hundred approvals, landing on superintendents who have twenty seconds of attention. Discovery was unanimous and unprompted on what happens next: it becomes reflexive tapping within a day. That is not a weaker control than the design here, it is a fabricated one — it manufactures an audit trail of decisions nobody made, and the review after the event finds approvals timestamped four seconds apart.",
+        "It is unaffordable in time and, worse, it does not fail loudly. Sixty-five findings a day at perhaps four actions each is over two hundred approvals, landing on superintendents who have twenty seconds of attention. Discovery was unanimous and unprompted on what happens next: reflexive tapping within a day. That is not a weaker control than the design here, it is a fabricated one — it manufactures an audit trail of decisions nobody made, and the review afterwards finds approvals timestamped four seconds apart.",
     },
     {
       option: "Propose only — the agent drafts, a person executes",
@@ -422,15 +411,7 @@ const caseStudy: CaseStudy = {
       caseFor:
         "It is the textbook answer to exactly this shape of problem, the literature is mature, and it is correct wherever a compensation exists. Every step gets an inverse, failure triggers unwinding, and the system returns to a consistent state without anybody being asked anything.",
       caseAgainst:
-        "It assumes every action has an inverse, and here several do not. A vendor who has begun cutting material to size will not be uncutting it. A crew stood down has gone to another site and returns in three days with a remobilisation charge. Fourteen firms who have been told cannot be untold — a correction is a second message, not an undo. A saga framework that implies coverage it does not have is worse than no framework, because it produces the same half-applied state with the false comfort of a pattern name over it. It is adopted for the compensable class, and the real content of this design is the classification of what sits outside that class.",
-    },
-    {
-      option: "Solve the schedule end to end with a constraint solver",
-      verdict: "Set aside",
-      caseFor:
-        "The largest prize in a turnaround genuinely is a better schedule, solvers are good at this, and the data is all present. Sixty-five findings a day is a re-planning problem and treating it as one would be intellectually cleaner than a chain of writes.",
-      caseAgainst:
-        "It answers a question nobody in discovery asked. The planners' complaint was not that the schedule was suboptimal but that a decided change took five hours to exist anywhere, and that when it did exist it existed inconsistently. A better plan applied late and partially is worth less than an adequate plan applied in twenty minutes and completely. Choosing this would also have produced a note about optimisation methods, which the portfolio does not need and which would have quietly abandoned the only lesson this case owns.",
+        "It assumes every action has an inverse, and here several do not. A vendor who has begun cutting material to size will not be uncutting it. A crew stood down has gone to another site. Fourteen firms who have been told cannot be untold — a correction is a second message, not an undo. A framework implying coverage it does not have is worse than none, because it produces the same half-applied state with the comfort of a pattern name over it. Adopted for the compensable class; the real content of this design is the classification of what sits outside it.",
     },
     {
       option: "Typed actions, ordered by irreversibility, with gates placed by class",
@@ -453,10 +434,6 @@ const caseStudy: CaseStudy = {
         d: "A plan is executed in order of increasing irreversibility, so any failure mid-chain leaves only reversible work applied. This costs nothing and it is the single most valuable structural decision in the design.",
       },
       {
-        t: "Where a one-way door must come first, escalate the plan whole",
-        d: "Some plans cannot be ordered safely, because the irreversible step is a precondition for the rest. Those go to a person as one decision rather than being executed in pieces. Recognising the shape is the design's job; deciding it is not.",
-      },
-      {
         t: "The plan lives in a durable log, never in the model's context",
         d: "After a restart the system has to be able to say what it already did. A plan held in a conversation cannot answer that, which makes it unusable for anything that writes to a system of record.",
       },
@@ -466,7 +443,7 @@ const caseStudy: CaseStudy = {
       },
       {
         t: "A stuck plan is a state with an owner",
-        d: "When a chain halts, the output is a handover: what applied, what did not, what is now inconsistent and who resolves it. An unowned half-applied plan is the failure this design exists to prevent, and it is not an error condition — it is a designed outcome with a name on it.",
+        d: "When a chain halts, the output is a handover: what applied, what did not, and who resolves it. An unowned half-applied plan is the failure this design exists to prevent — it is not an error condition but a designed outcome with a name on it.",
       },
       {
         t: "The gate is placed by cost of undo, not by confidence",
@@ -507,7 +484,7 @@ const caseStudy: CaseStudy = {
 
   architecture: {
     overview:
-      "A finding intake, a planner that emits typed actions, deterministic constraint checks, a gate router, and a durable executor that applies actions in class order against four systems of record.\n\nThe component that does not appear in a conventional agent design is the reversibility register, and it is not software. It is a table mapping each action type, vendor and contract to what an undo costs and how long it remains possible, owned jointly by procurement, contracts and engineering. The executor reads it; the planner reads it; the gate router reads it. Without it the system has no basis for deciding what may be automatic, and the honest position is that the programme cannot start until it exists.\n\nThe second departure is that the model holds no credentials. It emits a plan — an ordered list of typed action objects — and the executor is the only component with write access. That inversion is what makes the blast radius enumerable: the worst a crafted or confused finding can produce is a plan made of declared action types, each of which already carries its class, its ceiling and its gate requirement. Tool-calling straight into SAP would have been faster to build and would have made the answer to what can this thing do depend on what the model tries next.\n\nThe third is negative. There is no resume. A plan carries the state versions it was computed against, and if the schedule has moved the plan expires and the finding is re-planned. Resuming a stale plan produces changes that are individually correct and jointly wrong, which is the hardest class of error to see afterwards.",
+      "A finding intake, a planner that emits typed actions, deterministic constraint checks, a gate router, and a durable executor that applies actions in class order against four systems of record.\n\nThe component that does not appear in a conventional agent design is the reversibility register, and it is not software. It is a table mapping each action type, vendor and contract to what an undo costs and how long it remains possible, owned jointly by procurement, contracts and engineering. Planner, gate router and executor all read it. Without it the system has no basis for deciding what may be automatic, and the honest position is that the programme cannot start until it exists.\n\nThe second departure is that the model holds no credentials. It emits a plan — an ordered list of typed action objects — and the executor is the only component with write access. That inversion is what makes the blast radius enumerable: the worst a crafted or confused finding can produce is a plan made of declared action types, each already carrying its class, its ceiling and its gate requirement. Tool-calling straight into SAP would have been faster to build and would have made the answer to what can this thing do depend on what the model tries next.\n\nThe third is negative. There is no resume. A plan carries the state versions it was computed against, and if the schedule has moved it expires and the finding is re-planned — because resuming a stale plan produces changes that are individually correct and jointly wrong, which is the hardest class of error to find afterwards.",
     diagrams: [
       {
         id: "system-overview",
@@ -663,50 +640,6 @@ const caseStudy: CaseStudy = {
           },
         ],
       },
-      {
-        id: "plan-lifecycle",
-        kind: "flow",
-        title: "The life of one plan",
-        caption:
-          "Three of the branches end without anything being written, and that is the point. The expiry branch is the least obvious and the most necessary: a plan is valid only against the state it was computed on, so the failure of a stale plan is to be recomputed rather than resumed.",
-        steps: [
-          { t: "Finding arrives", d: "Free text, with a location and a reporter." },
-          { t: "Context assembled", d: "Affected work orders, float, stock, contract terms, permit state." },
-          { t: "Plan proposed", d: "Typed actions, each with its class, ordered reversible first.", accent: true },
-          { t: "Constraints checked", d: "Permit prerequisites, isolation conflicts, stock, spend ceiling.", accent: true },
-          { t: "Gate routed by class", d: "One card per finding, showing consequence and price.", accent: true },
-          { t: "Applied in class order", d: "Each write idempotent, each intent logged before the call.", accent: true },
-          { t: "Contractors notified", d: "Only after every preceding write is confirmed." },
-          { t: "Reconciled", d: "Believed state compared against each system of record." },
-        ],
-        branches: [
-          {
-            at: "Plan proposed",
-            when: "an irreversible step is a precondition for the rest",
-            then: "The plan cannot be safely ordered, so it escalates whole as one human decision",
-          },
-          {
-            at: "Constraints checked",
-            when: "a permit prerequisite or isolation conflict is found",
-            then: "The plan is rejected before any person sees it, and the finding routes to the permit authority",
-          },
-          {
-            at: "Gate routed by class",
-            when: "no response inside the window, or the superintendent declines",
-            then: "Nothing is applied; the finding returns to the coordination queue with the analysis attached",
-          },
-          {
-            at: "Applied in class order",
-            when: "a state version has moved since the plan was computed",
-            then: "The plan expires and the finding is re-planned. Retry is not resume",
-          },
-          {
-            at: "Applied in class order",
-            when: "a write returns an ambiguous result",
-            then: "The chain halts, the outcome is resolved by search, and a handover goes to a named owner",
-          },
-        ],
-      },
     ],
     layers: [
       {
@@ -722,12 +655,8 @@ const caseStudy: CaseStudy = {
         why: "The one place where the reversibility class turns into a decision about who is asked. Placing this by class rather than by confidence is the note's central claim, and putting it in its own component is what stops it being quietly re-litigated in a prompt.",
       },
       {
-        name: "Durable execution",
-        why: "The plan log is the authority on what the system believes it did. Everything about recovering a half-applied chain depends on that record existing before the calls rather than after them.",
-      },
-      {
-        name: "Reconciliation",
-        why: "Belief and reality diverge continuously, because people are editing the same objects. Reconciliation is a permanent component rather than a phase, and its divergence count is the honest measure of whether any of this is working.",
+        name: "Durable execution and reconciliation",
+        why: "The plan log is the authority on what the system believes it did, and recovering a half-applied chain depends entirely on that record existing before the calls rather than after them. Reconciliation sits with it because belief and reality diverge continuously while people edit the same objects — its divergence count is the honest measure of whether any of this works.",
       },
       {
         name: "The reversibility register",
@@ -782,14 +711,14 @@ const caseStudy: CaseStudy = {
     {
       layer: "Evaluation",
       choice: "Replay of the previous turnaround's finding log",
-      why: "There is one live window every four years, so the alternative to replay is shipping untested into a once-in-four-years event. Roughly 1,700 historical findings give a real evaluation set, and the disagreements with what was actually done are the useful output.",
-      alt: "Pilot in production — the normal approach, and it does not exist here because production happens for twenty-six days.",
+      why: "There is one live window every four years, so the alternative to replay is shipping untested into it. Roughly 1,700 historical findings give a real evaluation set, and the disagreements with what was actually done are the useful output.",
+      alt: "Pilot in production — the normal approach, unavailable here because production happens for twenty-six days.",
     },
   ],
 
   security: {
     posture:
-      "The security question in this note is not confidentiality. Nothing here is especially sensitive; the exposure is authority — a non-human identity that can commit money, move a safety-relevant schedule and tell a thousand contractors something.\n\nThe first property is that the agent holds no authority a person does not. Every write executes under a workload identity whose permissions are scoped to the declared action vocabulary, and the executor rejects anything outside it. That is what makes the scope of possible harm a reviewable list rather than a question about the model.\n\nThe second is segregation of duties, and it is the one most easily lost by accident. An identity that can both raise a requisition and release it has collapsed a financial control that predates the system by decades — and the naive design does exactly that, silently, because both operations are just API calls to the same service. Raising is automated; releasing is a gated action carrying a named approver. The audit team will test this and should.\n\nThe third is that untrusted text reaches a planner. A finding is free prose from any of fourteen firms, and a language model turning prose into proposed actions is an obvious injection surface. The mitigation is structural rather than textual: the vocabulary bounds what can be proposed, the register decides what can be applied without asking, and per-plan spend ceilings bound the value. A crafted finding cannot invent an action type, and the worst it can reach is an action that already required a human.",
+      "The security question here is not confidentiality. Nothing in this system is especially sensitive; the exposure is authority — a non-human identity that can commit money, move a safety-relevant schedule and tell a thousand contractors something.\n\nThe agent holds no authority a person does not. Every write executes under a workload identity scoped to the declared action vocabulary, and the executor rejects anything outside it, which makes the scope of possible harm a reviewable list rather than a question about the model.\n\nSegregation of duties is the property most easily lost by accident. An identity that can both raise a requisition and release it has collapsed a financial control that predates the system by decades — and the naive design does exactly that, silently, because both operations are just API calls to the same service. Raising is automated; releasing is gated and carries a named approver. The audit team will test this and should.\n\nThe third property is that untrusted text reaches a planner. A finding is free prose from any of fourteen firms, and a model turning prose into proposed actions is an obvious injection surface. The mitigation is structural rather than textual: the vocabulary bounds what can be proposed, the register decides what applies without asking, and per-plan ceilings bound the value. A crafted finding cannot invent an action type, and the worst it reaches is an action that already required a human.",
     controls: [
       {
         t: "Bounded action vocabulary",
@@ -824,7 +753,7 @@ const caseStudy: CaseStudy = {
 
   scalability: {
     body:
-      "Throughput is not the problem and designing for it would be effort spent where nothing is threatened. Sixty-five findings a day is a trivial computational load.\n\nWhat does not scale is human attention at the gate, and that is a capacity constraint dressed as a risk decision. Findings arrive in bursts after each opening milestone, so the peak matters far more than the mean, and the queue that forms is a queue of superintendents' twenty-second windows. The value ceiling that decides how many actions require a gate is therefore a capacity parameter as much as a safety one, and it should be set with both in view rather than by risk appetite alone.\n\nThe second thing that scales badly is the reversibility register, because it is contractual and local. A second plant does not inherit it — it inherits the parts that follow framework agreements and has to rebuild the rest. That is the real cost of taking this design anywhere else, and it is not a software cost, which makes it easy to leave out of a plan.\n\nThe third is reconciliation. Divergence between believed and actual state grows with the number of concurrent human editors rather than with volume, and during a turnaround that number is at its highest exactly when the system is most active.",
+      "Throughput is not the problem, and designing for it would be effort spent where nothing is threatened. Sixty-five findings a day is a trivial computational load.\n\nWhat does not scale is human attention at the gate, and that is a capacity constraint dressed as a risk decision. Findings arrive in bursts after each opening milestone, so the peak matters far more than the mean, and the queue that forms is a queue of superintendents' twenty-second windows. The value ceiling deciding how many actions require a gate is therefore a capacity parameter as much as a safety one, and should be set with both in view.\n\nThe reversibility register scales badly for a different reason: it is contractual and local. A second plant inherits the parts that follow framework agreements and has to rebuild the rest. That is the real cost of taking this design anywhere else, and it is not a software cost, which makes it easy to leave out of a plan.\n\nReconciliation is the third. Divergence between believed and actual state grows with the number of concurrent human editors rather than with volume, and during a turnaround that number peaks exactly when the system is most active.",
     levers: [
       {
         t: "Gate queue routed by role and by criticality",
@@ -851,7 +780,7 @@ const caseStudy: CaseStudy = {
 
   costOptimization: {
     body:
-      "The model is not the cost, and putting the figure on the table early is the fastest way to end an argument that would otherwise run for a month.\n\nOne plan takes an assumed 12,000 input tokens — the finding, the affected work orders, the schedule window, stock positions and the relevant contract terms — and returns about 1,200 output tokens as a typed plan with a consequence summary. At an assumed €4 per million input and €18 per million output, that is €0.048 plus €0.022, so roughly €0.07 a plan. With revisions, re-planning after expiry and reconciliation reasoning, call it €0.20 per finding all in. Across about 1,700 findings that is roughly €340 for the entire turnaround.\n\nSet that against the operator's own €480,000 for a day of extended shutdown and the total model spend for twenty-six days is worth about one minute of the event it exists to protect. There is no cost optimisation problem here worth solving, and saying so is more useful than a lever list about model tiers.\n\nThe money goes somewhere else entirely: four integrations, an executor that cannot be demonstrated to anybody, a reconciliation service whose output is a number that should be zero, and seven weeks of procurement, contracts and engineering time producing a table. That last item is the highest-leverage spend in the programme and the hardest to defend in a budget conversation, because it produces nothing anybody can look at.\n\nOne caution on the two price lines: they are assumptions anchored to hosted pricing as it stood in mid-2026, not a quote. Token prices have fallen consistently, so the durable part is the token counts and the formula — recompute the euros against whatever the chosen model costs on the day.",
+      "The model is not the cost, and putting the figure on the table early is the fastest way to end an argument that would otherwise run for a month.\n\nOne plan takes an assumed 12,000 input tokens — the finding, the affected work orders, the schedule window, stock and the relevant contract terms — and returns about 1,200 output tokens. At an assumed €4 per million input and €18 per million output that is €0.048 plus €0.022, so roughly €0.07 a plan; with revisions, re-planning after expiry and reconciliation, call it €0.20 per finding all in. Across 1,700 findings that is about €340 for the entire turnaround.\n\nSet against the operator's own €480,000 for a day of extended shutdown, the total model spend for twenty-six days is worth about one minute of the event it protects. There is no cost optimisation problem here worth solving, and saying so is more useful than a lever list about model tiers.\n\nThe money goes elsewhere: four integrations, an executor that cannot be demonstrated to anybody, a reconciliation service whose output is a number that should be zero, and seven weeks of procurement, contracts and engineering time producing a table. That last item is the highest-leverage spend in the programme and the hardest to defend in a budget conversation, because it produces nothing anybody can look at.\n\nOne caution on the two price lines: they are assumptions anchored to hosted pricing as it stood in mid-2026, not a quote. The durable part is the token counts and the formula — recompute the euros against whatever the chosen model costs on the day.",
     levers: [
       {
         n: "01",
@@ -971,14 +900,6 @@ const caseStudy: CaseStudy = {
     },
     {
       n: "09",
-      risk: "A plausible plan that is wrong for a reason nobody sees",
-      severity: "Medium",
-      consequence: "A change applied cleanly that should not have been made at all",
-      mitigation:
-        "Deterministic checks on permits, isolations, stock and float before anything is shown; the card leads with consequence and price rather than with reasoning; near misses collected daily during execution.",
-    },
-    {
-      n: "10",
       risk: "No way to demonstrate the system helped",
       severity: "Medium",
       consequence: "A successful programme that cannot be funded a second time, or a failed one that cannot be identified",
@@ -1183,18 +1104,15 @@ const caseStudy: CaseStudy = {
     "The previous finding log is assumed complete enough to replay. In practice the findings handled informally never reached it, which biases the replay toward the ones that went through process — that is, toward the easy ones.",
     "That a superintendent will answer a gate on a phone within minutes during execution is assumed rather than observed. If the real response time is an hour, the value ceiling has to rise and the automated exposure rises with it.",
     "No claim is made that latency savings sum. Concurrent delays overlap and I have not modelled the overlap, so the schedule benefit stated is a range I would not defend at the midpoint.",
-    "Whether SAP's external-reference search is reliable enough under turnaround load to serve as the idempotency check. There is a race window and I have not sized it.",
-    "The whole approach cannot be validated the way a normal system can, because the event happens once every four years and the next one will differ in scope, contractors and plant. Replay is a substitute for a pilot and it is not an equivalent one.",
+    "The whole approach cannot be validated the way a normal system can, because the event happens once every four years and the next one will differ in scope, contractors and plant. Replay is a substitute for a pilot and it is not an equivalent one — and SAP's external-reference search, which the idempotency check depends on, has a race window I have not sized.",
   ],
 
   lessonsLearned: [
     "The question that reorganised the design was not whether the model could plan the work. It was which of these actions can be undone and what the undo costs — and nobody in the organisation owned the answer.",
     "Confidence is the wrong axis for placing a gate. A confident irreversible action still needs a person; a doubtful reversible one does not. Designs that gate on confidence end up guarding the cheap decisions.",
     "The failure mode is not a rejected write. It is an ambiguous one: the call timed out and nobody knows whether a €210,000 requisition exists. Everything about recovery follows from writing intent before the call rather than after it.",
-    "Ordering a plan by increasing irreversibility is free, and it is the most valuable structural decision here. It converts an unbounded class of partial failures into a bounded one.",
-    "A saga is a good answer to the half of the problem that has inverses. A framework implying it covers the other half is worse than no framework, because it produces the same wreckage with a pattern name over it.",
-    "Notification is a write. Once information has left the fence it cannot be recalled, which is why it goes last — and why a system that announces intentions is making a promise it cannot retract.",
-    "An event that occurs once every four years cannot be improved by iteration, which changes what shipping and learning is allowed to mean. Replay against history is the substitute and it should be budgeted as engineer-days spent reading disagreements, not as compute.",
+    "Ordering a plan by increasing irreversibility is free, and it is the most valuable structural decision here — it converts an unbounded class of partial failures into a bounded one. Notification goes last for the same reason, because information that has left the fence cannot be recalled.",
+    "An event that occurs once every four years cannot be improved by iteration, which changes what shipping and learning is allowed to mean. Replay against history is the substitute, and it should be budgeted as engineer-days spent reading disagreements rather than as compute.",
     "The most important deliverable in the programme is a table, owned by procurement, that produces nothing anybody can look at. That is a hard thing to get funded and the reason to name it in week one.",
   ],
 
@@ -1202,7 +1120,6 @@ const caseStudy: CaseStudy = {
     "Negotiate cancellation windows and priced holds as a design input rather than discovering them — a commercial change that would delete a large part of this architecture.",
     "Carry the finding log forward deliberately so the next turnaround starts with a real evaluation set instead of an archaeology project.",
     "Extend programmatic notification beyond the four firms that already support it, which is a procurement conversation with an architectural payoff.",
-    "Move reconciliation from polling to change feeds wherever the systems of record grow them, closing the window in which belief and reality can diverge unnoticed.",
     "Bring the reversibility register into the contract templates themselves, so a new vendor arrives already classified rather than being classified afterwards.",
   ],
 };
