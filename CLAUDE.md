@@ -198,9 +198,15 @@ Azure in the other four read as a choice rather than a default. Do not
 
 The five unwritten notes, what each is for and the specific way each could go
 wrong, are in **[CONTENT_PLAN.md](CONTENT_PLAN.md)**. Read it before starting
-one. It also records why the earlier titles were replaced: three of them would
-have collapsed into lessons already owned above, which is the failure this
-whole table exists to prevent.
+one.
+
+It also carries the coverage map the planned five were chosen against, which is
+the operational form of the rule above: across all ten notes, ten sectors, ten
+data types, and six where a language model does the central work against four
+where it is absent or peripheral. A proposed note that cannot add a new row to
+that table is probably not worth writing — and the second half of that ratio is
+deliberate, because a portfolio solving every problem with the same class of
+tool describes a preference rather than an architect.
 
 ---
 

@@ -78,19 +78,22 @@ difference between a note that describes a design and one worth arguing with.
 
 **Planned, not yet written**, each scoped around a lesson none of the five owns:
 
-| # | Note | The lesson it owns |
-|---|------|--------------------|
-| 06 | Agentic Order-to-Cash Operations | Reversibility — the agent writes to systems of record |
-| 07 | Enterprise AI Platform | The customer is internal: tenancy, chargeback, evaluation as shared infrastructure |
-| 08 | AI Recruitment Under the EU AI Act | A regulated decision about a person, with compliance as architecture |
-| 09 | Edge Inference for Industrial Inspection | Inference where you cannot observe it or easily update it |
-| 10 | AI-Assisted Legacy Modernisation | Verifying generated output against a running system |
+| # | Note | The lesson it owns | Sector · data · model |
+|---|------|--------------------|-----------------------|
+| 06 | Agentic Order-to-Cash Operations | Reversibility — the agent writes to systems of record, and some writes have no undo | Distribution · transactions · LLM agent |
+| 07 | AI Demand Planning | The decision is the product, not the prediction — and planner overrides are data, not disobedience | Retail · time series · no LLM |
+| 08 | Consumer Credit Under the EU AI Act | A regulated decision about a person — including how to monitor bias in an attribute you may not collect | Lending · tabular · scorecard + ML |
+| 09 | Edge Vision for Quality Inspection | Inference where you cannot observe it, cannot easily update it, and the line does not wait | Manufacturing · images · no LLM |
+| 10 | AI-Assisted Legacy Modernisation | Verifying generated output against a running system that is the ground truth | Telecoms · source code · LLM |
 
-These replaced an earlier list — invoice processing, predictive maintenance,
-supply chain, executive dashboard — because three of them would have collapsed
-into lessons already owned. `CONTENT_PLAN.md` in the repository has the full
-reasoning, the tension each note turns on, and the specific way each could go
-wrong in the writing.
+They are chosen against a coverage map rather than as interesting topics.
+Across all ten: ten sectors, ten data types, and six notes where a language
+model does the central work against four where it is absent or peripheral.
+That ratio is deliberate — a portfolio where every problem is solved with the
+same class of tool describes a preference rather than an architect.
+
+`CONTENT_PLAN.md` carries the full reasoning, including why the platform note
+was dropped for demand planning and why credit replaced recruitment.
 
 **Blog:** nine posts, all written, no placeholders — around 14,000 words in
 total, averaging 1,550 each. They live one per file in `content/posts/`, with
