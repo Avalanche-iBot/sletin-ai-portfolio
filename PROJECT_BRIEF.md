@@ -73,7 +73,7 @@ social platform. And the link-preview images have never run outside a local
 machine: they use the edge runtime and fetch fonts at request time, so their
 behaviour on a real deployment is genuinely unverified.
 
-**Five case notes written, five planned.** The portfolio index shows the
+**Six case notes written, four planned.** The portfolio index shows the
 planned ones as titles so the published count stays honest.
 
 | # | Case | The architectural lesson it owns | Shape |
@@ -83,25 +83,24 @@ planned ones as titles so the published count stays honest.
 | 03 | AI Contract Intelligence | Provenance proves the text and not the reading — and the gap is where the design lives | Document extraction · agreement as the unit of truth · Azure |
 | 04 | AI Meeting Assistant | Whether a remark was a commitment has no ground truth until its owner decides | Speech · consent as architecture · Azure |
 | 05 | Enterprise Knowledge Assistant | Permissions belong in the query, and "current" is a relation between document, asset and date | Permissioned RAG · applicability resolution · Azure |
+| 06 | Order Intake from Email | "The usual" is not in the email — it is in the account | Email intake · history before catalogue · **AWS** |
 
 Notes 03, 04 and 05 all turn on the same move: find where the obvious mechanism
 is necessary and insufficient, then build around the insufficiency. It is the
 difference between a note that describes a design and one worth arguing with.
 
-**Slot 06 is open.** It was written as "Agentic Turnaround Execution" and
-withdrawn after drafting — not for being wrong but for being unreadable: two
-specialist domains stacked on each other, a thesis that needed three moves to
-land, and no story anywhere in it. It also failed the set's own rule, that a
-note is only an asset if its author can defend it in conversation. Its
-replacement is deliberately the light one, and the first built on AWS.
-`CONTENT_PLAN.md` records the full reasoning and what the replacement has to
-clear.
+**06 is the light one and is meant to stay light** — 5,700 words against a set
+average of 7,700, complexity 2 where the rest are 4 or 5, and the only note built
+on AWS. It is the second occupant of that slot. The first, "Agentic Turnaround
+Execution", was withdrawn after drafting: not for being wrong but for being
+unreadable — two specialist domains stacked on each other, a thesis that needed
+three moves to land, and no story anywhere in it. `CONTENT_PLAN.md` records why,
+and the constraints the current note is built to.
 
-**Planned, not yet written**, each scoped around a lesson none of the five owns:
+**Planned, not yet written**, each scoped around a lesson none of the six owns:
 
 | # | Note | The lesson it owns | Setting · data · model |
 |---|------|--------------------|------------------------|
-| 06 | *Open* | The light one — legibility is the binding constraint | To be decided · **AWS** |
 | 07 | AI Spare Parts Planning | The decision is the product, not the prediction — and planner overrides are data, not disobedience | Industrial operations · time series · no LLM |
 | 08 | Fatigue Risk and Fitness for Duty | A regulated decision about a person, where the safety case and the privacy case point in opposite directions | Safety-critical operations · physiological data · no LLM |
 | 09 | Edge Vision for Asset Integrity | Inference where you cannot observe it, cannot easily update it, and nobody will tell you it was wrong | Remote assets · images · no LLM |
@@ -177,7 +176,7 @@ Long em-dashed sentences are the house style.
 
 - `tailoring` names a parameter, the value assumed here, a plausible
   alternative, what the architecture becomes at that value, and why. It answers
-  the reader's real question: *does this transfer to my situation?* All five
+  the reader's real question: *does this transfer to my situation?* All six
   notes carry it; the superseded `openQuestions` field is gone from the schema.
 - `assumptionsToTest` holds the honest doubt — what is assumed rather than
   measured, and which figure the case is most sensitive to.
@@ -254,13 +253,12 @@ resolve. Nothing that needs a live site — structured data in a validator, link
 previews on a social platform, the edge-runtime preview images on real
 infrastructure — can be verified yet, so do not report any of it as working.
 
-**Queue: 06 → 09 → 08 → 10 → 07.** Slot 06 is open and comes first: the light
-note, on AWS, chosen for legibility after the previous occupant was withdrawn.
-The rest of that order is reasoned rather than numerical; `CONTENT_PLAN.md`
+**Queue: 09 → 08 → 10 → 07.** 06 is written. That order is reasoned rather than
+numerical; `CONTENT_PLAN.md`
 explains it, and 09 is early on purpose. Before starting 08, re-verify the two
 regulatory dates its plan entry flags — they moved once already during drafting.
 
-No note currently owes the blog a post. It stands at nine posts against five
+No note currently owes the blog a post. It stands at nine posts against six
 notes.
 
 ---

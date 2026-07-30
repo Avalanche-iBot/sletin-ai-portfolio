@@ -137,7 +137,7 @@ references a slug, so renaming a case is those two files plus the filename.
 - **`tailoring` is required in practice.** It names a parameter, the value
   assumed here, a plausible alternative, what the architecture becomes at that
   value, and why. It answers the only question a reader really has — *does any
-  of this transfer to my situation?* All five notes carry it; the superseded
+  of this transfer to my situation?* All six notes carry it; the superseded
   `openQuestions` field has been removed from the schema entirely.
 - **`assumptionsToTest`** is where honest doubt goes: what is assumed rather
   than measured, and which figure the whole case is most sensitive to.
@@ -220,7 +220,7 @@ makes the whole set look templated. Check this table before starting one.
 | 03 | Contract intelligence | Provenance proves the text, not the reading | Document extraction, agreement as the unit of truth, Azure |
 | 04 | Meeting assistant | Whether it was a commitment has no ground truth until someone decides | Speech, consent as architecture, Azure |
 | 05 | Knowledge assistant | Permissions inside the query; "current" depends on which asset asks | Permissioned RAG, applicability resolution, Azure |
-| 06 | *Open* | Withdrawn after drafting — see below | To be decided, on AWS |
+| 06 | Order intake from email | "The usual" is not in the email — it is in the account | Email intake, customer history before catalogue, AWS |
 
 Notes 03, 04 and 05 each turn on the same move, and it is the one worth
 copying: find where the obvious mechanism is necessary and insufficient, then
@@ -229,11 +229,11 @@ and not the conclusion. An attribution that names a speaker and cannot say
 whether a commitment existed. A revision that is current globally and wrong for
 this asset.
 
-**Slot 06 was written and withdrawn, and the reason matters more than the
-note did.** It was "Agentic Turnaround Execution": an agent writing to four
-systems of record during a plant shutdown, built around reversibility deciding
-what needs a human. The reasoning held up. It was still the wrong note, for
-three faults worth not repeating:
+**06 is the light one, and it is light on purpose.** It is also the second note
+to occupy that slot. The first was "Agentic Turnaround Execution" — an agent
+writing to four systems of record during a plant shutdown — withdrawn after
+drafting. The reasoning in it held up; it was still the wrong note, for three
+faults worth not repeating:
 
 - **It stacked two specialist domains.** Industrial turnaround operations and
   distributed transaction design. Each needs prior exposure; the intersection
@@ -250,16 +250,17 @@ The test it failed is already written below: a note is only an asset if its
 author can defend it in conversation. This one could not be, by the person
 whose domain is closest to it.
 
-**So the bar for its replacement is legibility, not depth.** The set already
-has five demanding notes in a row. What is needed at 06 is one a reader can
-finish without effort — a situation they have personally been in, few actors,
-one clear decision, numbers small enough to hold in the head. It still has to
-own a lesson nothing else owns, but the lesson should be one sentence long.
+**So the bar for what replaced it was legibility, not depth**, and the note now
+in the slot is built to it: 5,700 words against a set average of 7,700, one
+model call, complexity 2 where every other note is 4 or 5, and a lesson that
+fits in eight words. **Keep it that way.** If 06 starts growing, the thing it
+was for is gone.
 
-Case 02 is deliberately the inverse of case 01. Case 06 will be the first built
-on AWS outright: five of five choosing Azure reads as a default however the
-prose frames it, and one note picking a different cloud for stated reasons is
-what makes the others read as a decision. Do not "harmonise" either.
+Case 02 is deliberately the inverse of case 01. Case 06 is the only one built on
+AWS, and its technology section states why rather than assuming it: that company
+has no Microsoft estate, so the argument that decided the other five is not
+available to it. Five of five choosing Azure read as a default however the prose
+framed it. Do not "harmonise" either.
 
 The four unwritten notes, what each is for and the specific way each could go
 wrong, are in **[CONTENT_PLAN.md](CONTENT_PLAN.md)**. Read it before starting
@@ -324,11 +325,7 @@ commits.
 
 ### What to work on next
 
-**Slot 06 is open and is the next thing to write** — a deliberately light note,
-on AWS, chosen for legibility rather than depth. See the portfolio map above for
-why its first occupant was withdrawn and what the replacement has to clear.
-
-After that the queue is **09 → 08 → 10 → 07.** The reasoning behind that
+06 is written. The queue, in order: **09 → 08 → 10 → 07.** The reasoning behind that
 sequence is in `CONTENT_PLAN.md` under *Writing order* — it is not simply the
 numbering, and 09 is deliberately early.
 

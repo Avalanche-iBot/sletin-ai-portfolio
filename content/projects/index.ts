@@ -5,6 +5,7 @@ import case02 from "./case-02-real-time-payment-fraud-decisioning";
 import case03 from "./case-03-ai-contract-intelligence";
 import case04 from "./case-04-ai-meeting-assistant";
 import case05 from "./case-05-enterprise-knowledge-assistant";
+import case06 from "./case-06-order-intake-from-email";
 
 /**
  * The case-study registry — this file is the site's content database.
@@ -31,7 +32,7 @@ import case05 from "./case-05-enterprise-knowledge-assistant";
  * them forgot to sort. `order` is used instead of array position so the
  * imports above can stay in any arrangement without changing what readers see.
  */
-export const caseStudies: CaseStudy[] = [case01, case02, case03, case04, case05].sort(
+export const caseStudies: CaseStudy[] = [case01, case02, case03, case04, case05, case06].sort(
   (a, b) => a.order - b.order
 );
 
@@ -39,11 +40,11 @@ export const caseStudies: CaseStudy[] = [case01, case02, case03, case04, case05]
  * Titles held for studies not yet written.
  *
  * These are shown on the portfolio index as planned work rather than being
- * quietly omitted, which keeps the published count honest: a reader sees five
- * of ten written instead of five presented as the whole set. They carry a
+ * quietly omitted, which keeps the published count honest: a reader sees six
+ * of ten written instead of six presented as the whole set. They carry a
  * title only — there is no page behind them and no route is generated.
  *
- * Each of the five is scoped around an architectural lesson none of the
+ * Each of the four is scoped around an architectural lesson none of the
  * published notes owns, because a case repeating another's thesis is worth
  * less than no case at all — it makes the set look templated. `CONTENT_PLAN.md`
  * records what each one is for and what it must avoid becoming.
@@ -73,7 +74,7 @@ export const plannedCaseStudies: { order: number; title: string }[] = [
  */
 export const startHereSlug = "real-time-payment-fraud-decisioning";
 
-/** Written plus planned — the denominator in "5 of 10" style progress copy. */
+/** Written plus planned — the denominator in "6 of 10" style progress copy. */
 export const totalPlannedCaseStudies = caseStudies.length + plannedCaseStudies.length;
 
 /**

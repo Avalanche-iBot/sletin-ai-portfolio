@@ -34,6 +34,7 @@ an "and also" to sound distinct, it is not distinct.
 | 03 | AI Contract Intelligence | Provenance proves the text, not the reading — the gap between them is the architecture | Document extraction · agreement as the unit of truth · Azure |
 | 04 | AI Meeting Assistant | Whether a remark was a commitment has no ground truth until someone decides — so confirmation creates the fact rather than checking it | Speech · consent as architecture · Azure |
 | 05 | Enterprise Knowledge Assistant | Permissions belong inside the query, and "current" is a relation between document, asset and date | Permissioned RAG · applicability resolution · Azure |
+| 06 | Order Intake from Email | "The usual" is not in the email — it is in the account | Email intake · customer history before catalogue · **AWS** |
 
 Each of 03, 04 and 05 was sharpened rather than re-scoped: the lesson each
 owns is the same one, taken one step further than the first draft took it. The
@@ -48,7 +49,7 @@ Cases 01 and 02 are deliberately opposed, and cases 03 and 05 approach the same
 principle from different sides. Those pairings are load-bearing — the site links
 them to each other for exactly that reason. Do not "harmonise" case 02 back onto
 Azure: it is the one published note that leaves it on part of its path, and 06
-is now planned as the first built on AWS outright.
+is the one built on AWS outright, for a reason it states.
 
 ---
 
@@ -82,9 +83,13 @@ distinct problems, and a spread of notes where a language model does the
 central work against four where it is absent or peripheral. Sector spread was
 never the point; it was a proxy for problem spread, and problem spread survives intact.
 
-### 06 · Open — the previous occupant was withdrawn
+### 06 · Written — read this before touching it
 
-**Slot 06 was written as "Agentic Turnaround Execution" and pulled after
+06 is now *Order Intake from Email*, and it is the light one. What follows is
+why the slot's first occupant was withdrawn, because those faults are easy to
+repeat and the constraints they produced are what the current note is built to.
+
+**Slot 06 was first written as "Agentic Turnaround Execution" and pulled after
 drafting.** The reasoning in it held up. It was still the wrong note, and the
 three faults are worth carrying forward because none of them is about accuracy.
 
@@ -113,13 +118,12 @@ and the industrial setting hid that rather than preventing it.
 **So the test is not which sector the scenario names. It is whether every
 number in the note can be defended by the person whose name is on it.**
 
-**What the replacement has to be.** The set has five demanding notes in a row,
-and the reader needs somewhere to rest. 06 should be the light one: a situation
-the reader has personally been in, few actors, one decision, figures small
-enough to hold in the head, and a lesson that fits in a sentence. It still has
-to earn a row in the coverage table — but legibility is the binding constraint
-here, not depth, and a note that is merely *correct* will fail the same way the
-last one did.
+**What the replacement had to be, and is.** Five demanding notes in a row is too
+many and the reader needs somewhere to rest. So 06 is a situation anyone has been
+in — an order arriving as a hurried email — with four actors, one decision per
+line, and figures small enough to check on paper. It runs 5,700 words against a
+set average of 7,700 and carries complexity 2 where everything else is 4 or 5.
+**Keep it short. If it grows, the reason it exists is gone.**
 
 **And it is built on AWS.** Five of five choosing Azure reads as a default
 however carefully the prose frames it as a decision. One note picking a
@@ -332,7 +336,7 @@ the verification harness; generation is the easy half.
 | 03 | Legal · procurement | Documents | Central | Batch |
 | 04 | Professional services | Audio | Central | Asynchronous |
 | 05 | Energy | Documents, tables, drawings | Thin layer | Seconds |
-| 06 | *Open* | *To be decided* | *To be decided* | *To be decided* |
+| 06 | Wholesale distribution | Inbound email and attachments | Central, reading only | Within the morning |
 | 07 | Industrial — spares | Consumption time series | None | Batch |
 | 08 | Heavy industry — workforce | Physiological and shift data | None | Shift boundary |
 | 09 | Energy — asset integrity | Images | None | Edge, intermittent |
@@ -347,7 +351,7 @@ worth writing.
 Ordered so that adjacent notes contrast rather than reinforce:
 
 ```
-01 conversational, human in the loop      06 open — the light one, on AWS
+01 conversational, human in the loop      06 email intake, the light one, AWS
 02 real-time, no human at all             07 batch forecast, decision is the product
 03 documents, provenance                  08 regulated decision about a person
 04 speech, attribution                    09 edge, physical constraint, no LLM
@@ -366,8 +370,7 @@ scenario looks.
 
 ## Writing order
 
-Not the same as reading order. **Slot 06 is open and comes first**, as the
-light note described above. Then 09, 08, 10, 07.
+Not the same as reading order. **06 is written. Next up: 09.** Then 08, 10, 07.
 
 1. **09** — write it next rather than last. It is the only note with no
    language model anywhere, and publishing it early is what stops the set
