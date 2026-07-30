@@ -231,3 +231,47 @@ that look like a code fault and are not.
 No environment variables are required for local development. Without
 `CONTACT_FORWARD_EMAIL` the contact form logs submissions server-side instead
 of sending mail.
+
+---
+
+## Working arrangement
+
+**Commit freely; never push.** The author pushes himself and deploys when he
+decides the site is ready, not when a branch goes green. Commits sitting
+unpushed on `main` are the normal resting state here.
+
+The repository is built for Vercel and is not deployed. The domain does not
+resolve. Nothing that needs a live site — structured data in a validator, link
+previews on a social platform, the edge-runtime preview images on real
+infrastructure — can be verified yet, so do not report any of it as working.
+
+**Queue: 06 → 09 → 08 → 10 → 07.** That order is reasoned rather than
+numerical; `CONTENT_PLAN.md` explains it, and 09 is early on purpose. Before
+starting 08, re-verify the two regulatory dates its plan entry flags — they
+moved once already during drafting.
+
+---
+
+## Notes are dated reasoning, not maintained documents
+
+Worth carrying into any session, because it governs everything that ages:
+regulation, model pricing, what a tool can do this quarter.
+
+Do not hedge a note into something evergreen. Date it instead — "as at July
+2026" — and state what was true then at the precision actually available. A
+note softened until it survives every future amendment says nothing.
+
+The reason is the site's premise. The artefact is the reasoning, and reasoning
+happens at a moment under the conditions of that moment. In ten years the
+regulation will have moved and the prices will look absurd, and the interesting
+thing will be precisely that: how somebody decided, with what was known then. A
+note that tried to be timeless will have nothing to show.
+
+So: do not retrofit an old note when the world changes — it is a record, and a
+superseded fact is information about the fact. And do not let a dated fact
+become the load-bearing spine; the lesson has to be how a constraint of that
+shape changes a design, illustrated by the constraint as it stood.
+
+Case 01's cost section is the model to copy: prices given as "assumptions
+anchored to hosted pricing as it stood in mid-2026, not a quote", with the
+formula written out so the figures can be recomputed later.

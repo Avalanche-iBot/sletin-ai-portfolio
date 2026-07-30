@@ -233,9 +233,21 @@ fully compliant one.
 
 **Verify before publishing, both of them.** The deferral dates are recent —
 check the Official Journal. And confirm the Article 5 application date has not
-itself moved, since the omnibus touched prohibitions too and I did not check
-that. The deferral is material to the note but must not be its spine, or the
-note expires at the next amendment. The Recital 18 boundary will not move.
+itself moved, since the omnibus touched prohibitions too and that was not
+checked. The Recital 18 boundary will not move; it is a definition rather than
+a date.
+
+**Then write them down and let them age.** This note should be explicitly dated
+— "as at July 2026", with the position stated at the precision available — and
+should not be hedged into something that survives every future amendment. It is
+a record of how a design decision was made under the conditions of a particular
+month, and that is the durable part. When the dates move again, leave it alone;
+a superseded fact tells the reader something about the fact.
+
+The distinction that keeps it useful: date the facts, build on the reasoning.
+The lesson is how a prohibition drawn through a continuous feature space
+changes what a model may be allowed to infer. The deferral dates are context
+that makes the decision legible, not the thing being argued.
 
 **Failure mode to avoid:** a compliance checklist, or a surveillance polemic.
 The note has to show the regulation changing the architecture, and it has to
@@ -338,7 +350,7 @@ scenario looks.
 
 ## Writing order
 
-Not the same as reading order. Suggested:
+Not the same as reading order. **Next up: 06.** Then 09, 08, 10, 07.
 
 1. **06** — the highest-demand topic in the set and the furthest from anything
    published. "Agentic" is also the term being searched for most heavily right

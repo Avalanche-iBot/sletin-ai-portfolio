@@ -56,6 +56,36 @@ writing anything. In short:
 
 Long em-dashed sentences are the house style. Match the surrounding prose.
 
+### Notes are dated reasoning, not maintained documents
+
+This one governs anything that will age: regulation, model pricing, vendor
+capability, what a tool can do this quarter.
+
+**Do not hedge to make a note evergreen.** Reach for the date instead. Write
+"as at July 2026" and state plainly what was true then, at the precision you
+actually have. A note softened until it survives every future amendment says
+nothing, and saying nothing carefully is still saying nothing.
+
+Case 01's cost section already does this — its prices are described as
+"assumptions anchored to hosted pricing as it stood in mid-2026, not a quote",
+with the formula given so the euros can be recomputed later. Copy that shape.
+
+The reason is the site's whole premise. The artefact is the reasoning, and
+reasoning happens at a moment, under the conditions of that moment. In ten
+years the regulation will have moved and the prices will be absurd, and the
+interesting thing will be exactly that: how somebody decided, with what was
+known then. A note that tried to be timeless will have nothing to show.
+
+Two consequences worth stating outright:
+
+- **Do not retrofit an old note when the world changes.** It is a record. If a
+  fact it rests on is superseded, that is information about the fact, not a
+  defect in the note. Write a new note if the change is interesting enough.
+- **A dated fact may not be the load-bearing spine.** The lesson has to be
+  "here is how a constraint of this shape changes a design", illustrated by the
+  constraint as it stood — not "the deadline is 2 December 2027". Date the
+  facts; build on the reasoning.
+
 ---
 
 ## Architecture: content and presentation are separate
@@ -241,4 +271,23 @@ The link-preview images run on the edge runtime deliberately. The Node build of
 the image library composes an invalid path to its bundled fallback typeface on
 Windows and fails `npm run build` outright, so this is not a preference.
 
-Commit when asked; do not push unless asked.
+### Who does what
+
+**Commit freely; never push.** The author pushes himself, and deploys when he
+decides the site is ready rather than when a branch is green. Leave commits
+sitting on `main` unpushed — that is the normal resting state here, not
+something to tidy up.
+
+Keep commits focused and their messages substantive. The history on this repo
+is written to be read: what changed, and the reasoning that made the change
+necessary. If a commit needs three unrelated things in it, it needs to be three
+commits.
+
+### What to work on next
+
+The queue, in order: **06 → 09 → 08 → 10 → 07.** The reasoning behind that
+sequence is in `CONTENT_PLAN.md` under *Writing order* — it is not simply the
+numbering, and 09 is deliberately early.
+
+Before starting 08, re-verify the two regulatory dates flagged in its plan
+entry. They moved once already during drafting.
