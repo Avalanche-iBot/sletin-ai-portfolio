@@ -5,6 +5,7 @@ import type { ArchitectureLayer } from "@/content/architecture";
 import { NECESSITY_LABEL } from "@/content/architecture";
 import { generateStackSvg, generateStackHtml, type Selection } from "@/lib/stackDiagram";
 import { cx } from "@/lib/format";
+import { downloadFile } from "@/lib/downloadFile";
 
 /**
  * Assemble a stack, take the diagram away.
@@ -78,18 +79,6 @@ const PRESETS: { id: string; name: string; selection: Selection }[] = [
     },
   },
 ];
-
-function download(content: string, filename: string, mime: string) {
-  const blob = new Blob([content], { type: mime });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
 
 export function ArchitectureBuilder({ layers }: { layers: ArchitectureLayer[] }) {
   const [selection, setSelection] = useState<Selection>({});
@@ -230,7 +219,7 @@ export function ArchitectureBuilder({ layers }: { layers: ArchitectureLayer[] })
               <div className="mt-4 flex flex-wrap gap-3">
                 <button
                   type="button"
-                  onClick={() => download(svg, `${slug}.svg`, "image/svg+xml")}
+                  onClick={() => downloadFile(svg, `${slug}.svg`, "image/svg+xml")}
                   className="border border-accent bg-accent/[0.08] px-4 py-2 font-mono text-micro uppercase tracking-wide text-accent-deep transition-colors hover:bg-accent/[0.14]"
                 >
                   Download SVG &darr;
@@ -238,7 +227,7 @@ export function ArchitectureBuilder({ layers }: { layers: ArchitectureLayer[] })
                 <button
                   type="button"
                   onClick={() =>
-                    download(
+                    downloadFile(
                       generateStackHtml(sorted, selection, title || "Untitled stack"),
                       `${slug}.html`,
                       "text/html",
