@@ -4,8 +4,12 @@ Source for **aleksandrsletin.com** — an independent notebook on enterprise AI
 architecture. Next.js 14 (App Router), TypeScript strict, Tailwind, statically
 generated, built for Vercel.
 
-**Not deployed yet.** The domain does not resolve, and that is a choice rather
-than an oversight — it goes live when the author is happy with it. So anything
+**Not deployed yet, and there is now a date.** The domain does not resolve, and
+that is a choice rather than an oversight. The target is **1 January 2027**, and
+the two conditions are the Azure certifications being held and every published
+note being defensible by its author in conversation. The plan for getting there
+is **[ROADMAP.md](ROADMAP.md)** — read it alongside this file, because it
+governs what to work on next. So anything
 that can only be verified against a live site (structured data in Google's
 tester, link previews on a social platform, the edge-runtime preview images on
 real infrastructure) cannot be checked yet. Do not report those as working.
