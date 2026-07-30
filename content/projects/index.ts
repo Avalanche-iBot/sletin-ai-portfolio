@@ -42,13 +42,18 @@ export const caseStudies: CaseStudy[] = [case01, case02, case03, case04, case05]
  * quietly omitted, which keeps the published count honest: a reader sees five
  * of ten written instead of five presented as the whole set. They carry a
  * title only — there is no page behind them and no route is generated.
+ *
+ * Each of the five is scoped around an architectural lesson none of the
+ * published notes owns, because a case repeating another's thesis is worth
+ * less than no case at all — it makes the set look templated. `CONTENT_PLAN.md`
+ * records what each one is for and what it must avoid becoming.
  */
 export const plannedCaseStudies: { order: number; title: string }[] = [
-  { order: 6, title: "AI Invoice Processing" },
-  { order: 7, title: "Predictive Maintenance AI" },
-  { order: 8, title: "AI Recruitment Assistant" },
-  { order: 9, title: "AI Supply Chain Optimizer" },
-  { order: 10, title: "Executive AI Dashboard" },
+  { order: 6, title: "Agentic Order-to-Cash Operations" },
+  { order: 7, title: "Enterprise AI Platform" },
+  { order: 8, title: "AI Recruitment Under the EU AI Act" },
+  { order: 9, title: "Edge Inference for Industrial Inspection" },
+  { order: 10, title: "AI-Assisted Legacy Modernisation" },
 ];
 
 /** Written plus planned — the denominator in "5 of 10" style progress copy. */
