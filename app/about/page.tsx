@@ -77,6 +77,26 @@ export default function AboutPage() {
             </article>
           ))}
         </div>
+
+        {/* Kept visually quieter than the list above, because an unfinished
+            qualification has not changed how anyone works yet and should not
+            be presented as though it had. */}
+        {about.certificationsInProgress && about.certificationsInProgress.length > 0 && (
+          <div className="mt-10 border-t-2 border-accent pt-6">
+            <p className="eyebrow mb-4">Currently working towards</p>
+            <div className="space-y-6">
+              {about.certificationsInProgress.map((c) => (
+                <div key={c.label} className="grid gap-5 lg:grid-cols-[16rem_1fr]">
+                  <div>
+                    <p className="font-display text-base text-ink">{c.label}</p>
+                    <p className="mt-1 font-mono text-micro uppercase tracking-[0.1em] text-ink-muted">{c.org}</p>
+                  </div>
+                  <p className="max-w-reading text-[0.9375rem] leading-relaxed text-ink-soft">{c.why}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </Section>
 
       {/* Principles ------------------------------------------------------------ */}

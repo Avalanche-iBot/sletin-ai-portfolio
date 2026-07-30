@@ -42,17 +42,25 @@ export const about: About = {
     },
     {
       label: "Data-Driven Management",
-      org: "Professional certification",
+      org: "SkillFactory, Moscow · 6-month programme",
       shaped: "Ask what decision the number is for",
       mindset:
         "The most useful thing this gave me was scepticism about metrics that nobody acts on. Before agreeing to measure something, I now ask which decision changes depending on the result. If no decision changes, the metric is decoration — and a surprising number of AI dashboards are built entirely out of decoration. It also made me wary of accuracy as a headline number, since it hides the distribution of the errors that actually matter.",
     },
     {
-      label: "Become a Product Manager",
-      org: "Professional certification",
+      label: "Product Management",
+      org: "SkillFactory, Moscow · 12-month programme",
       shaped: "The user's workaround is the real requirement",
       mindset:
         "Product training reframed what a requirement is. Stakeholders describe solutions, not problems — and the workaround someone has already built for themselves in a spreadsheet tells you more about their actual need than anything they will say in a workshop. I now spend most of discovery looking for those workarounds. They are the cheapest available evidence about what a system has to do.",
+    },
+  ],
+
+  certificationsInProgress: [
+    {
+      label: "Azure AI Engineer Associate (AI-102)",
+      org: "Microsoft · in preparation",
+      why: "Every note on this site chooses Azure, and I would rather that read as a decision than as the only stack I know. This is the exam that covers what the notes actually reach for — Azure OpenAI, AI Search, Document Intelligence, Content Safety — so it is the one worth holding rather than the one that sounds most senior.",
     },
   ],
 
@@ -149,5 +157,6 @@ export const about: About = {
     "Case-based learner. I build the realistic scenario, then learn whatever stack the scenario demands, rather than the other way round.",
     "Explicit about gaps. I would rather write 'not yet' than overclaim and lose the reader at the first technical question.",
     "Comfortable being corrected in public. That is most of the reason this site exists in its current form.",
+    "I automate the check rather than promise to remember. The architecture diagrams in these notes are typed data rather than pictures, and a script checks each one against the geometry of the component that draws it — so a label that would be silently clipped fails the build instead of shipping. The reasoning behind that is written up in the blog, and the code is in the repository.",
   ],
 };
