@@ -35,10 +35,7 @@ const caseStudy: CaseStudy = {
   architectureComplexity: 5,
   complexityLabel:
     "Very high — heterogeneous corpus, permissions inside retrieval, revision applicability, safety-critical accuracy bar",
-  duration: "Reference programme: 8 months",
-  role: "Solution Architect (case study author)",
-  client: "Energy operator — technical function",
-  clientNote: "Upstream operations",
+  duration: "Assumed programme length: 8 months",
   githubUrl: "",
   liveDemoUrl: "",
   demoNote: "Architecture-first case study — no public demo",

@@ -148,14 +148,26 @@ export type CaseStudy = {
   featured: boolean;
 
   /* --- optional metadata --- */
-  /** Marks the one case study used as the site's reference deliverable. */
+  /**
+   * Marks the one case study used as the site's reference deliverable — the
+   * note whose voice the others are measured against. Editorial only: nothing
+   * renders from it, and the pointer a reader actually follows is
+   * `startHereSlug` in the registry, which is a different judgement.
+   */
   flagship?: boolean;
-  client?: string;
-  clientNote?: string;
   statusNote?: string;
   complexityLabel?: string;
+  /**
+   * How long the programme is assumed to take, as a rendered string.
+   *
+   * It reads "Assumed programme length: …" rather than naming a duration flat,
+   * because nothing here was built and a bare figure in a field called
+   * duration invites the reader to think otherwise. The earlier `client`,
+   * `clientNote` and `role` fields were removed for the same reason and a
+   * worse one: they rendered nowhere at all, so they were invisible scaffolding
+   * that made the public source read like a record of engagements.
+   */
   duration?: string;
-  role?: string;
   githubUrl?: string;
   liveDemoUrl?: string;
   demoNote?: string;
@@ -276,7 +288,6 @@ export type Site = {
   positioning: string;
   location: string;
   email: string;
-  phone: string;
   github: string;
   linkedin: string;
   availability: string;
@@ -320,6 +331,15 @@ export type About = {
   background: string[];
   /** What each certification changed about the way I think — not the badge. */
   certifications: { label: string; org: string; shaped: string; mindset: string }[];
+  /**
+   * Qualifications being worked towards.
+   *
+   * Kept separate from `certifications` rather than folded in with a status
+   * flag, because that list is about the habit a qualification left behind and
+   * something unfinished has left none. `why` says what it is being taken for,
+   * which is the only honest thing to say about a certificate nobody holds yet.
+   */
+  certificationsInProgress?: { label: string; org: string; why: string }[];
   /** How I approach a business problem, as a sequence. */
   approach: NumberedPoint[];
   strengths: Point[];
