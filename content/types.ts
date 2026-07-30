@@ -332,19 +332,28 @@ export type About = {
   /** Why I find this work interesting. First person, no achievements. */
   paragraphs: string[];
   /**
-   * The credentials block beside the opening — label and value, rendered with
+   * The path, in two short paragraphs, above the reflective ones.
+   *
+   * It exists because the list of qualifications provokes a question — oil and
+   * gas engineer, then project delivery, now architecture — and a reader who
+   * has to ask it has already stopped reading. The first paragraph is the
+   * sequence. The second is why it points here, and that argument is carried in
+   * the prose rather than appended as a note underneath a list, because a
+   * justification in small grey type reads as an apology.
+   *
+   * Not a career summary. It earns its place only by explaining a bias.
+   */
+  path: string[];
+  /**
+   * Degrees, for the block beside the opening — label and value, rendered with
    * the same `FactRows` the case notes use for their fact panels.
    *
-   * Generic on purpose: discipline and function, never an employer.
+   * Only education. The block used to carry the working history too, which
+   * turned it into a CV column standing next to prose that says the page is not
+   * a CV. The history moved into `path`, where it can make an argument instead
+   * of sitting in rows.
    */
-  background: Fact[];
-  /**
-   * One quiet line under the background list.
-   *
-   * It exists to answer the question the list provokes — petroleum engineer,
-   * then project delivery, now architecture — before a reader has to ask it.
-   */
-  backgroundNote?: string;
+  education: Fact[];
   /**
    * Certifications held.
    *

@@ -37,6 +37,20 @@ export default function AboutPage() {
       <Section first eyebrow={about.eyebrow} title={about.title} lede={about.lede}>
         <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
           <div className="max-w-reading space-y-5">
+            {/*
+             * The path comes first and is set slightly larger than what follows.
+             * A reader who has just been told this is not a career summary still
+             * wants to know who is talking, and answering that in ninety words
+             * buys the attention the three reflective paragraphs then need.
+             */}
+            {about.path.map((p, i) => (
+              <p key={`path-${i}`} className="text-[1.0625rem] leading-relaxed text-ink">
+                {p}
+              </p>
+            ))}
+
+            <hr className="!my-8 border-line" />
+
             {about.paragraphs.map((p, i) => (
               <p key={i} className="prose-arch">
                 {p}
@@ -50,17 +64,14 @@ export default function AboutPage() {
           </div>
 
           {/*
-           * One panel rather than two stacked ones: background and
-           * certifications answer the same question — has this person done
-           * anything — and splitting them made the page look longer than it is.
+           * Qualifications only — the things that are either true or not, and
+           * that a stranger can check. The working history used to sit here too
+           * and has moved into the prose, because a list of jobs beside a page
+           * that says it is not a CV is a CV.
            */}
           <div className="frame h-fit p-6">
-            <p className="eyebrow mb-4 border-b border-line pb-3">Background</p>
-            <FactRows facts={about.background} />
-
-            {about.backgroundNote && (
-              <p className="mt-5 text-[0.8125rem] leading-relaxed text-ink-muted">{about.backgroundNote}</p>
-            )}
+            <p className="eyebrow mb-4 border-b border-line pb-3">Education</p>
+            <FactRows facts={about.education} />
 
             <p className="eyebrow mb-4 mt-8 border-b border-line pb-3">Certifications</p>
             <ul className="space-y-3">

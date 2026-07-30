@@ -10,8 +10,15 @@ import type { About } from "./types";
  * seriously wants to know what this person has actually done and how they think.
  * Neither question is answered better by making the page longer.
  *
- * `background` stays generic by design: discipline and function, never an
- * employer.
+ * `path` carries the working history, and it is prose rather than rows on
+ * purpose. As a list beside the degrees it was a CV column standing next to
+ * text insisting the page is not a CV, and it needed a note underneath
+ * explaining why the sequence made sense — which is an apology in small grey
+ * type. Two paragraphs make the same point and make it as an argument.
+ *
+ * Organisations stay unnamed throughout. Where someone has worked is less
+ * useful than how they think, and naming employers would put this site
+ * somewhere it does not belong.
  */
 export const about: About = {
   eyebrow: "About",
@@ -19,22 +26,21 @@ export const about: About = {
   lede:
     "This page is not a career summary. It is an attempt to describe how I think about operational problems, because that is the only part of a person that is useful to a reader deciding whether the rest of this site is worth their time.",
 
+  path: [
+    "The route here in one pass, because it explains what I notice. I trained as an oil and gas engineer and spent my first years in the field, close to the equipment and to the people who keep it running. Then I moved to the other side of the same projects — scope, cost control, international programmes — and took a second degree in engineering management rather than picking it up as I went. Most recently, five AI projects end to end at a product company, and a full ERP rollout before them.",
+    "Three seats at one table, and the same failure watched from each of them: a decision taken early, by someone who could not see what it would cost later. The engineer inherits it, the project manager pays for it, and by the time the problem has a name the money is already gone. Architecture is the seat where that decision gets made rather than absorbed. That is the whole of why I am here, and it is the only ambition on this page.",
+  ],
+
   paragraphs: [
     "What I enjoy about designing AI solutions has very little to do with models. It is the moment in a discovery conversation when two people describe the same process and disagree without noticing — one of them is describing how it is supposed to work, the other how it actually works, and the gap between them is where the entire project lives. Finding that gap is the interesting part. Everything downstream is engineering.",
     "I came to this from operations, which shapes what I notice first. When someone describes a problem, my instinct is not to ask which model would solve it. It is to ask how many times a week this happens, who currently absorbs the cost of it going wrong, and what they would do if the system were unavailable for a day. Those three answers usually determine the architecture more than any technical requirement does.",
     "The habit I most want to keep is treating a proposed solution as a hypothesis rather than a conclusion. Most enterprise AI work I have seen fail did not fail on accuracy. It failed because a reasonable-sounding assumption went unexamined for three months — about data quality, about who would maintain it, about whether anyone actually wanted the output. Writing the reasoning down, in public, is a way of making those assumptions findable while they are still cheap to fix.",
   ],
 
-  background: [
+  education: [
     { k: "First degree", v: "Oil and gas engineering — BSc and MSc in transport and storage" },
     { k: "Second degree", v: "MSc in Engineering Management" },
-    { k: "Engineering", v: "Field and operations work in the energy sector" },
-    { k: "Delivery", v: "Project management and cost control on international programmes" },
-    { k: "AI", v: "Five AI projects and a full ERP rollout, in a product company" },
   ],
-
-  backgroundNote:
-    "A line rather than a zigzag, and the second degree is where it turns: I went from building things to owning the scope and the money around them deliberately enough to go and study it, rather than by drift. Operations taught me what actually breaks, delivery taught me which constraints are real, and architecture is where both get decided — so the earlier steps are the reason I notice what I notice, not a detour from this one. Organisations are left unnamed on purpose.",
 
   certifications: [
     { label: "PMP®", org: "Project Management Institute" },
