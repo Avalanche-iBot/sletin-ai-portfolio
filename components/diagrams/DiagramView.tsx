@@ -217,14 +217,19 @@ function SequenceDiagram({ d }: { d: Extract<Diagram, { kind: "sequence" }> }) {
   );
 }
 
-export function DiagramView({ diagram }: { diagram: Diagram }) {
+/**
+ * `scope` is only needed where the same diagram is rendered twice on one page —
+ * see the note on `BlockDiagramView`, which uses it to keep each instance's
+ * arrowhead marker id unique. Nothing else varies by scope.
+ */
+export function DiagramView({ diagram, scope }: { diagram: Diagram; scope?: string }) {
   return (
     <figure className="space-y-3">
       <figcaption className="font-mono text-micro uppercase tracking-[0.1em] text-ink-soft">
         {diagram.title}
       </figcaption>
 
-      {diagram.kind === "blocks" && <BlockDiagramView d={diagram} />}
+      {diagram.kind === "blocks" && <BlockDiagramView d={diagram} scope={scope} />}
       {diagram.kind === "layers" && <LayersDiagram d={diagram} />}
       {diagram.kind === "flow" && <FlowDiagram d={diagram} />}
       {diagram.kind === "pipeline" && <PipelineDiagram d={diagram} />}

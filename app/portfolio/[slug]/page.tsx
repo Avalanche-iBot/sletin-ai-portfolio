@@ -10,6 +10,7 @@ import { RoadmapTimeline } from "@/components/RoadmapTimeline";
 import { KpiTable, RiskTable, TechSelectionTable, StakeholderTable } from "@/components/DataTables";
 import { CaseNoteDisclaimer } from "@/components/Disclaimer";
 import { CaseNoteToc, CaseNoteTocMobile, type TocEntry } from "@/components/CaseNoteToc";
+import { NoteInBrief } from "@/components/NoteInBrief";
 import { MaterialsSection } from "@/components/MaterialsSection";
 import { StructuredData } from "@/components/StructuredData";
 import { cx, STATUS_TONE } from "@/lib/format";
@@ -206,6 +207,12 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           )}
         </div>
       </header>
+
+      {/* The sixty-second version, before the note itself. These run to six or
+          seven thousand words, and a reader is entitled to decide whether that
+          is worth it from the verdict, the shape of the answer and the
+          conditions it assumes — rather than from four paragraphs of scenario. */}
+      <NoteInBrief project={project} />
 
       {/* Contents rail and sections share one container, so the rail sits in the
           page gutter rather than floating over the text. */}
