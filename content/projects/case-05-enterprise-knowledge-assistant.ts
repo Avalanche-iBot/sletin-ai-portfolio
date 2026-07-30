@@ -719,6 +719,10 @@ const caseStudy: CaseStudy = {
       why: "Retrieval quality in technical estates is usually limited by how well the documents were read, not by the retrieval method. A uniform corpus removes the ceiling that no amount of reranking can lift."
     }
   ],
+  counterpart: {
+    slug: "ai-contract-intelligence",
+    note: "The other note built around never answering without a source, where the hard part is different: there the citation has to prove a clause means what was claimed, here it has to prove the document is current and the reader is entitled to it. Same principle, almost no shared machinery.",
+  },
   assumptionsToTest: [
     "Whether live revision resolution stays genuinely live against a document system never designed to be queried this way. If it lags, the system cites superseded revisions confidently, which is worse than returning nothing.",
     "Permission drift is not addressed here. Entitlements change more often than reindexing schedules assume, and I have proposed no mechanism that would catch a stale grant.",

@@ -1419,6 +1419,10 @@ const caseStudy: CaseStudy = {
       why: "Text arrives already structured enough to classify. Voice adds an error source upstream of every decision the router makes, and a misheard word can send a clinical question down an administrative path."
     }
   ],
+  counterpart: {
+    slug: "real-time-payment-fraud-decisioning",
+    note: "Escalation is the answer to uncertainty throughout this note. That one takes the option away — forty milliseconds and nobody to hand the decision to — and has to put the safety somewhere else entirely. Worth reading for what the escalation path here is actually buying.",
+  },
   assumptionsToTest: [
     "The 70–75% figure rests on a two-week sample. Before building two paths I would want a full quarter, segmented by clinic and by channel, to rule out seasonality and campaign effects.",
     "The escalation confidence threshold is set at a plausible value, not a calibrated one. Choosing it properly needs a labelled set of real escalations, which by definition does not exist before launch.",

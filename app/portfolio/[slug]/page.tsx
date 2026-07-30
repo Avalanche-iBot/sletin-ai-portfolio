@@ -11,8 +11,10 @@ import { KpiTable, RiskTable, TechSelectionTable, StakeholderTable } from "@/com
 import { CaseNoteDisclaimer } from "@/components/Disclaimer";
 import { CaseNoteToc, CaseNoteTocMobile, type TocEntry } from "@/components/CaseNoteToc";
 import { MaterialsSection } from "@/components/MaterialsSection";
+import { StructuredData } from "@/components/StructuredData";
 import { cx, STATUS_TONE } from "@/lib/format";
 import { availableMaterials } from "@/lib/materials";
+import { caseNoteSchema } from "@/lib/structuredData";
 
 /**
  * The template every case study is rendered through, served at
@@ -40,17 +42,45 @@ export function generateStaticParams() {
 }
 
 /**
- * Per-study title and description, resolved at build time.
+ * Per-study metadata, resolved at build time.
  *
  * `generateMetadata` is the dynamic counterpart to the static `metadata`
  * export other pages use — the values depend on which study is being rendered,
  * so they cannot be written as a constant. Returning an empty object for an
  * unknown slug lets the layout defaults stand while the page itself 404s.
+ *
+ * The `openGraph` and `twitter` blocks look like duplication and are not.
+ * Next.js merges page metadata into the layout's key by key, and it does not
+ * copy `title` and `description` down into the social blocks — so a page
+ * setting only those two inherited the layout's `og:title` and
+ * `og:description` unchanged. Every case note was being shared under the
+ * site's own strapline regardless of what the note was about. Setting them
+ * here is what makes a shared link describe the study.
+ *
+ * The image is deliberately not named here: the `opengraph-image` file beside
+ * this one is picked up by convention.
  */
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const project = getCaseStudy(params.slug);
   if (!project) return {};
-  return { title: project.title, description: project.shortSummary };
+
+  const path = `/portfolio/${project.slug}`;
+  return {
+    title: project.title,
+    description: project.shortSummary,
+    keywords: project.tags,
+    alternates: { canonical: path },
+    openGraph: {
+      title: project.title,
+      // The subtitle rather than the summary: it is one sentence written to
+      // make someone want to read on, which is exactly the job here.
+      description: project.subtitle,
+      url: path,
+      type: "article",
+      tags: project.tags,
+    },
+    twitter: { title: project.title, description: project.subtitle },
+  };
 }
 
 /**
@@ -112,10 +142,21 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
   const { prev, next } = getAdjacentCaseStudies(project.slug);
 
+  // Resolved here rather than in the markup so a slug pointing at a study that
+  // has not been written yet simply drops the block, instead of rendering a
+  // link to a page that would 404.
+  const counterpartStudy = project.counterpart && getCaseStudy(project.counterpart.slug);
+  const counterpart = counterpartStudy
+    ? { slug: counterpartStudy.slug, title: counterpartStudy.title, note: project.counterpart!.note }
+    : null;
+
   const { entries: tocEntries, eyebrow: sectionEyebrow } = buildSections(project);
 
   return (
     <>
+      {/* Machine-readable description of this note. Renders nothing. */}
+      <StructuredData data={caseNoteSchema(project)} />
+
       {/* Header ----------------------------------------------------------- */}
       <header className="grid-field border-b border-line">
         <div className="shell py-14 md:py-20">
@@ -615,6 +656,17 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
         </div>
       </div>
+
+      {/* The note this one argues with, where there is one ------------------------------------------- */}
+      {counterpart && (
+        <aside className="shell border-t border-line py-10">
+          <p className="eyebrow">Read alongside</p>
+          <Link href={`/portfolio/${counterpart.slug}`} className="group mt-3 block max-w-reading">
+            <p className="font-display text-lg text-ink group-hover:text-accent-deep">{counterpart.title}</p>
+            <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-soft">{counterpart.note}</p>
+          </Link>
+        </aside>
+      )}
 
       {/* Prev / next -------------------------------------------------------------------------------- */}
       <nav className="shell flex flex-col gap-4 border-t border-line py-10 sm:flex-row sm:items-center sm:justify-between">

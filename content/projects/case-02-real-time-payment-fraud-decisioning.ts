@@ -1022,6 +1022,10 @@ const caseStudy: CaseStudy = {
     },
   ],
 
+  counterpart: {
+    slug: "ai-patient-communication-platform",
+    note: "The same question — what to do when the system is not sure — answered under the opposite constraint. That note has minutes and a person to escalate to, and builds its entire safety case on being able to. Reading the two together is the clearest way to see how much of a design is really a consequence of its latency budget.",
+  },
   assumptionsToTest: [
     "The 2.4% false-decline rate is inferred, not measured, and the business case is disproportionately sensitive to it. If the real figure is nearer 0.8%, the honest recommendation becomes buying a vendor score.",
     "The exemption thresholds and the rolling-window calculation are stated as I understand the regime. Both should be confirmed against the current technical standards and the national competent authority before anything is designed around them.",

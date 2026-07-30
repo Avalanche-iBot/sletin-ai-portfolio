@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { posts } from "@/content/blog";
 import { Section } from "@/components/Primitives";
+import { StructuredData } from "@/components/StructuredData";
+import { blogPostSchema } from "@/lib/structuredData";
 
 /**
  * A single blog post, served at `/blog/<slug>`.
@@ -20,10 +22,39 @@ export function generateStaticParams() {
   return posts.map((p) => ({ slug: p.slug }));
 }
 
+/**
+ * Per-post metadata.
+ *
+ * The `openGraph` and `twitter` blocks are not duplication. Next.js merges a
+ * page's metadata into the layout's key by key, and it does not copy `title`
+ * and `description` into the social blocks — so a page that sets only those
+ * two inherits the layout's `og:title` and `og:description` verbatim. Every
+ * post therefore shared the site's own strapline when shared, whatever its own
+ * headline said. Setting them here is what makes a shared link describe the
+ * post rather than the site.
+ *
+ * The image is not named: the `opengraph-image` file beside this one is wired
+ * up by convention.
+ */
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const post = posts.find((p) => p.slug === params.slug);
   if (!post) return {};
-  return { title: post.title, description: post.excerpt };
+
+  const path = `/blog/${post.slug}`;
+  return {
+    title: post.title,
+    description: post.excerpt,
+    alternates: { canonical: path },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: path,
+      type: "article",
+      publishedTime: post.date,
+      tags: post.tags,
+    },
+    twitter: { title: post.title, description: post.excerpt },
+  };
 }
 
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
@@ -34,6 +65,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <>
+      {/* Machine-readable description of this post. Renders nothing. */}
+      <StructuredData data={blogPostSchema(post)} />
+
       <header className="border-b border-line">
         <div className="shell py-14 md:py-20">
           <Link href="/blog" className="font-mono text-micro uppercase tracking-[0.1em] text-ink-muted hover:text-ink">

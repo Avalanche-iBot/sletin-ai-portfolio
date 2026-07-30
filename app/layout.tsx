@@ -4,7 +4,9 @@ import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { BackToTop } from "@/components/BackToTop";
+import { StructuredData } from "@/components/StructuredData";
 import { site, siteUrl } from "@/content/site";
+import { webSiteSchema } from "@/lib/structuredData";
 
 // Display face: Fraunces — a serif with real editorial weight, used for
 // headlines only. Body copy and UI both stay on Inter / mono so the display
@@ -80,6 +82,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${display.variable} ${prose.variable} ${mono.variable}`}>
       <body>
+        {/* Describes the site and its author to machines. Renders nothing, and
+            every page's own markup refers back to what this defines. */}
+        <StructuredData data={webSiteSchema()} />
         {/* Skip link: invisible until focused, then the first thing a keyboard
             user reaches. It jumps past the navigation to #main below, which
             otherwise has to be tabbed through on every single page. */}

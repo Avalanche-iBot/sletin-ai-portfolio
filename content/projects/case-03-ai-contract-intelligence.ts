@@ -582,6 +582,10 @@ const caseStudy: CaseStudy = {
       why: "Cross-lingual equivalence is the hardest unsolved part of this note. Removing it removes the risk that quality is quietly acceptable in one jurisdiction and quietly poor in another."
     }
   ],
+  counterpart: {
+    slug: "enterprise-knowledge-assistant",
+    note: "Both notes refuse to answer without showing the source, and arrive there from different directions: here the problem is proving a clause says what was claimed, there it is proving the document is still the current revision and that the reader is allowed to see it. The pair shows how differently 'cite your source' has to be built depending on which part of the claim can be wrong.",
+  },
   assumptionsToTest: [
     "Clause equivalence across languages is treated here as reliable at a level I cannot actually establish. Two clauses can be legally equivalent and lexically unrelated, and I have no dependable automatic test for that.",
     "The extraction accuracy needed before anyone relies on an obligation date is unknown to me. It is plainly higher than the bar for search, but where the line sits is a decision for a legal owner, not for an architect.",

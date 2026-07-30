@@ -556,6 +556,10 @@ const caseStudy: CaseStudy = {
       why: "Most speech stacks assume a language per audio stream. Switching within a sentence is common in international teams and handled poorly, and the resulting error lands consistently on the same people."
     }
   ],
+  counterpart: {
+    slug: "ai-contract-intelligence",
+    note: "The other note about manufacturing an obligation out of unstructured material — and the contrast is in the source. A contract is signed and its words are authoritative; a spoken commitment is neither, and the person it is attributed to can simply say they never agreed. That difference is why one design leans on citation and the other on confirmation.",
+  },
   assumptionsToTest: [
     "Speaker attribution accuracy in overlapping speech is the constraint the whole design rests on, and I have not tested it on realistic audio. Materially worse than assumed and the confirmation queue becomes too noisy to use.",
     "Consent handling here is described for a single jurisdiction. How much of it survives a multi-country matrix organisation, I do not know.",

@@ -179,6 +179,19 @@ export type CaseStudy = {
   }[];
   /** Kept short: the honesty about method, without it dominating the section. */
   assumptionsToTest?: string[];
+  /**
+   * Another note this one is in dialogue with.
+   *
+   * Not "related content" in the recommendation-engine sense. It is a pointer
+   * worth following only where two notes reach different answers, or reach the
+   * same answer from opposite constraints — the pairing has to teach something
+   * that neither note teaches alone, which is why `note` has to say what the
+   * relationship actually is rather than asserting one exists.
+   *
+   * `slug` refers to another published study. A slug with nothing behind it is
+   * simply not rendered.
+   */
+  counterpart?: { slug: string; note: string };
   techGroups?: TechGroup[];
 
   /* --- the 19 case-study sections --- */
