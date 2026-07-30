@@ -137,7 +137,7 @@ references a slug, so renaming a case is those two files plus the filename.
 - **`tailoring` is required in practice.** It names a parameter, the value
   assumed here, a plausible alternative, what the architecture becomes at that
   value, and why. It answers the only question a reader really has — *does any
-  of this transfer to my situation?* All six notes carry it; the superseded
+  of this transfer to my situation?* All five notes carry it; the superseded
   `openQuestions` field has been removed from the schema entirely.
 - **`assumptionsToTest`** is where honest doubt goes: what is assumed rather
   than measured, and which figure the whole case is most sensitive to.
@@ -220,26 +220,46 @@ makes the whole set look templated. Check this table before starting one.
 | 03 | Contract intelligence | Provenance proves the text, not the reading | Document extraction, agreement as the unit of truth, Azure |
 | 04 | Meeting assistant | Whether it was a commitment has no ground truth until someone decides | Speech, consent as architecture, Azure |
 | 05 | Knowledge assistant | Permissions inside the query; "current" depends on which asset asks | Permissioned RAG, applicability resolution, Azure |
-| 06 | Turnaround execution | Reversibility, not confidence, decides what needs a human — one-way doors last | Agentic writes to four systems of record, no distributed transaction, Azure |
+| 06 | *Open* | Withdrawn after drafting — see below | To be decided, on AWS |
 
-Notes 03, 04, 05 and 06 each turn on the same move, and it is the one worth
+Notes 03, 04 and 05 each turn on the same move, and it is the one worth
 copying: find where the obvious mechanism is necessary and insufficient, then
 build the design around the insufficiency. A citation that proves the quotation
 and not the conclusion. An attribution that names a speaker and cannot say
 whether a commitment existed. A revision that is current globally and wrong for
-this asset. A compensating transaction for every action that has an inverse, and
-several that do not.
+this asset.
 
-Case 06 is the only one where the system acts rather than answers, and that is
-its whole reason for existing. If a future note also writes to a system of
-record, it needs a different lesson about doing so — repeating "some actions are
-irreversible" in another setting is the templating failure this table exists to
-prevent.
+**Slot 06 was written and withdrawn, and the reason matters more than the
+note did.** It was "Agentic Turnaround Execution": an agent writing to four
+systems of record during a plant shutdown, built around reversibility deciding
+what needs a human. The reasoning held up. It was still the wrong note, for
+three faults worth not repeating:
 
-Case 02 is deliberately the inverse of case 01 and the only one that leaves
-Azure on part of its path — that contrast is load-bearing, and it is what makes
-Azure in the other five read as a choice rather than a default. Do not
-"harmonise" it.
+- **It stacked two specialist domains.** Industrial turnaround operations and
+  distributed transaction design. Each needs prior exposure; the intersection
+  audience is almost nobody.
+- **Its thesis needed three moves to land.** Compare 01 — "most messages should
+  never reach the model" — or 02 — "the fraud rate is a licence, not a metric".
+  Those land in one sentence. "Reversibility is a property of the action type"
+  does not.
+- **It never told a story.** It described a class of problem in taxonomy and
+  figures and never once walked a reader through a single finding from
+  discovery to applied change. The abstraction never came down.
+
+The test it failed is already written below: a note is only an asset if its
+author can defend it in conversation. This one could not be, by the person
+whose domain is closest to it.
+
+**So the bar for its replacement is legibility, not depth.** The set already
+has five demanding notes in a row. What is needed at 06 is one a reader can
+finish without effort — a situation they have personally been in, few actors,
+one clear decision, numbers small enough to hold in the head. It still has to
+own a lesson nothing else owns, but the lesson should be one sentence long.
+
+Case 02 is deliberately the inverse of case 01. Case 06 will be the first built
+on AWS outright: five of five choosing Azure reads as a default however the
+prose frames it, and one note picking a different cloud for stated reasons is
+what makes the others read as a decision. Do not "harmonise" either.
 
 The four unwritten notes, what each is for and the specific way each could go
 wrong, are in **[CONTENT_PLAN.md](CONTENT_PLAN.md)**. Read it before starting
@@ -250,17 +270,22 @@ the operational form of the rule above: ten data types, ten problems, and four
 notes where no language model does the work. A proposed note that cannot add a
 row to that table is probably not worth writing.
 
-Two constraints recorded there are easy to breach by accident. **The remaining
-notes sit in industrial operations on purpose**, as 06 already does — a note is
-only an asset if its author can defend its domain figures in conversation, and
-that consideration outranks sector variety. Which means contrast has to come
-from the problem rather than the industry label, and a new note that differs
-only in setting is redundant however different its scenario looks.
+One constraint recorded there is easy to breach by accident. **The planned
+notes sit in industrial operations on purpose** — a note is only an asset if its
+author can defend its domain figures in conversation, and that consideration
+outranks sector variety. Which means contrast has to come from the problem
+rather than the industry label, and a new note that differs only in setting is
+redundant however different its scenario looks.
 
-That test now binds harder than it did, because 05 and 06 are both energy and
-adjacent to each other in the reading order. They survive it on problem shape —
-one answers questions and the other writes to systems of record — and the next
-note has to clear the same bar rather than lean on a different plant.
+**Read that rule as it was meant, not as a rule about sectors.** The
+withdrawn 06 sat squarely in industrial operations and was still undefensible,
+because a domain you have worked in is not the same as a domain whose *figures*
+you can argue about under questioning. Turnaround economics — deferred
+production per hour, cancellation charges, remobilisation clauses — were beyond
+what the author could hold in a conversation, and the industrial setting
+disguised that rather than preventing it. The real test is not which sector the
+scenario names. It is whether every number in the note can be defended by the
+person whose name is on it.
 
 ---
 
@@ -299,13 +324,15 @@ commits.
 
 ### What to work on next
 
-06 is written. The queue, in order: **09 → 08 → 10 → 07.** The reasoning behind
-that sequence is in `CONTENT_PLAN.md` under *Writing order* — it is not simply
-the numbering, and 09 is deliberately early.
+**Slot 06 is open and is the next thing to write** — a deliberately light note,
+on AWS, chosen for legibility rather than depth. See the portfolio map above for
+why its first occupant was withdrawn and what the replacement has to clear.
+
+After that the queue is **09 → 08 → 10 → 07.** The reasoning behind that
+sequence is in `CONTENT_PLAN.md` under *Writing order* — it is not simply the
+numbering, and 09 is deliberately early.
 
 Before starting 08, re-verify the two regulatory dates flagged in its plan
 entry. They moved once already during drafting.
 
-06 also owes the blog a post — why some actions have no undo, and what that does
-to an agent's design. Each note is meant to yield one, and this is the only
-outstanding debt of that kind.
+No note currently owes the blog a post.

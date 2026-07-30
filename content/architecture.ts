@@ -1088,15 +1088,10 @@ export const layerCaseNotes: Record<string, { slug: string; title: string; note:
     title: "Enterprise Knowledge Assistant",
     note: "Where the general rule above — filter at retrieval, not in the prompt — turned out to be necessary and insufficient, because some documents' existence is itself restricted and a shortened result list is a disclosure.",
   },
-  agentFramework: {
-    slug: "agentic-turnaround-execution",
-    title: "Agentic Turnaround Execution",
-    note: "The argument for not using one. An agent holding its plan in the model's context cannot say what it already did after a restart, which is the only question that matters once it writes to a system of record.",
-  },
   messaging: {
-    slug: "agentic-turnaround-execution",
-    title: "Agentic Turnaround Execution",
-    note: "Durable orchestration where the plan log, not the queue, is the authority on what the system believes it did.",
+    slug: "ai-meeting-assistant",
+    title: "AI Meeting Assistant",
+    note: "An asynchronous pipeline where the queue carries work that must expire — audio and transcripts on a thirty-day clock, candidates on a seventy-two-hour one — while what it produces has to outlive both.",
   },
   cache: {
     slug: "enterprise-knowledge-assistant",
@@ -1144,8 +1139,8 @@ export const layerCaseNotes: Record<string, { slug: string; title: string; note:
     note: "Compliance as a shape rather than a control: the deliverable the works council cared about was the absence of a table that could aggregate by person.",
   },
   humanInLoop: {
-    slug: "agentic-turnaround-execution",
-    title: "Agentic Turnaround Execution",
-    note: "The question at the head of this layer, answered at length. Reversibility rather than confidence decides what needs a person — and where a gate is unaffordable, ordering the plan so one-way doors come last does the work instead.",
+    slug: "ai-meeting-assistant",
+    title: "AI Meeting Assistant",
+    note: "The strongest form of this layer: the human is not reviewing an answer but creating the fact. Nothing reaches the tracker until the person it is attributed to confirms it, and an unconfirmed candidate is deleted rather than filed.",
   },
 };

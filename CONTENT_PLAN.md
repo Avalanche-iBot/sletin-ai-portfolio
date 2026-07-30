@@ -34,7 +34,6 @@ an "and also" to sound distinct, it is not distinct.
 | 03 | AI Contract Intelligence | Provenance proves the text, not the reading — the gap between them is the architecture | Document extraction · agreement as the unit of truth · Azure |
 | 04 | AI Meeting Assistant | Whether a remark was a commitment has no ground truth until someone decides — so confirmation creates the fact rather than checking it | Speech · consent as architecture · Azure |
 | 05 | Enterprise Knowledge Assistant | Permissions belong inside the query, and "current" is a relation between document, asset and date | Permissioned RAG · applicability resolution · Azure |
-| 06 | Agentic Turnaround Execution | Reversibility, not confidence, decides what needs a human — so the plan is ordered to put one-way doors last | Agentic writes to four systems of record · no distributed transaction · Azure |
 
 Each of 03, 04 and 05 was sharpened rather than re-scoped: the lesson each
 owns is the same one, taken one step further than the first draft took it. The
@@ -45,29 +44,19 @@ citation that proves the text but not the reading. An attribution that names a
 speaker but cannot say whether a commitment existed. A revision that is current
 globally and wrong for this asset.
 
-Note 06 runs the same move a step further, because it applies twice in one note.
-A human gate on every action is necessary and insufficient — it is what the
-safety case asks for and it degrades into rubber-stamping under time pressure. A
-saga with compensating transactions is necessary and insufficient — it is
-correct wherever an inverse exists, and several actions here have none. The
-design is what remains once both have been taken as far as they go, which is
-why the note's centre is a classification rather than a mechanism.
-
 Cases 01 and 02 are deliberately opposed, and cases 03 and 05 approach the same
-principle from different sides. Case 06 now stands against 01 on a third axis:
-01 places its gate by the model's confidence and 06 argues that confidence is
-the wrong axis entirely. Those pairings are load-bearing — the site links them to
-each other for exactly that reason. Do not "harmonise" case 02 back onto Azure:
-it is the one note that leaves it on part of its path, and that contrast is what
-makes Azure in the other five read as a choice rather than a default.
+principle from different sides. Those pairings are load-bearing — the site links
+them to each other for exactly that reason. Do not "harmonise" case 02 back onto
+Azure: it is the one published note that leaves it on part of its path, and 06
+is now planned as the first built on AWS outright.
 
 ---
 
 ## Planned
 
-The four below, and 06 before them, sit in industrial operations, and that is a
-deliberate reversal of an earlier plan for maximum sector spread. The reason is
-worth recording, because it is the sort of decision that looks like a narrowing
+The four below sit in industrial operations, and that is a deliberate
+reversal of an earlier plan for maximum sector spread. The reason is worth
+recording, because it is the sort of decision that looks like a narrowing
 and is not.
 
 A case note is only an asset if its author can defend it in conversation. The
@@ -78,10 +67,10 @@ European lenders may hold an applicant's gender. Those are the details that
 make a note good, and they are the details that require someone who knows the
 domain.
 
-So the remaining five move to energy, heavy industry and large capital
+So the remaining four move to energy, heavy industry and large capital
 projects. The architectural lessons are unchanged. Only the setting moves.
 
-**What this costs:** six of ten notes end up industrial. The portfolio stops
+**What this costs:** five of ten notes end up industrial. The portfolio stops
 reading as a generalist's and starts reading as "an architect who works in
 industrial operations and has thought carefully about adjacent domains". That
 is a narrower position and, for a reader deciding whether this person could
@@ -89,9 +78,53 @@ help them, a more convincing one — but it is a different claim and should be
 made knowingly.
 
 **What it does not cost:** the coverage that matters. Ten data types, ten
-distinct problems, and six notes where a language model does the central work
-against four where it is absent or peripheral. Sector spread was never the
-point; it was a proxy for problem spread, and problem spread survives intact.
+distinct problems, and a spread of notes where a language model does the
+central work against four where it is absent or peripheral. Sector spread was
+never the point; it was a proxy for problem spread, and problem spread survives intact.
+
+### 06 · Open — the previous occupant was withdrawn
+
+**Slot 06 was written as "Agentic Turnaround Execution" and pulled after
+drafting.** The reasoning in it held up. It was still the wrong note, and the
+three faults are worth carrying forward because none of them is about accuracy.
+
+- **It stacked two specialist domains.** Industrial turnaround operations and
+  distributed transaction design. Each needs prior exposure to follow; the
+  audience sitting in both is almost nobody.
+- **Its thesis needed three moves before it landed.** "Most messages should
+  never reach the model" lands in one sentence. "The fraud rate is a licence,
+  not a metric" lands in one sentence. "Reversibility is a property of the
+  action type rather than a runtime judgement" does not, and no amount of
+  rewriting the sentence fixes that.
+- **It never told a story.** Sixty-five findings a day, four classes of action,
+  a taxonomy — and not once a single finding followed from an inspector's note
+  to an applied change. The note described the shape of a problem without ever
+  showing one.
+
+It also failed the rule at the top of this file in a way worth being precise
+about. The rule says a note is only an asset if its author can defend it in
+conversation, and the planned notes moved to industrial operations for exactly
+that reason. 06 *was* industrial and was still undefensible, because having
+worked in a sector is not the same as being able to argue its figures under
+questioning. Deferred production per hour, cancellation charges after release,
+remobilisation clauses — those were beyond what could be held in an interview,
+and the industrial setting hid that rather than preventing it.
+
+**So the test is not which sector the scenario names. It is whether every
+number in the note can be defended by the person whose name is on it.**
+
+**What the replacement has to be.** The set has five demanding notes in a row,
+and the reader needs somewhere to rest. 06 should be the light one: a situation
+the reader has personally been in, few actors, one decision, figures small
+enough to hold in the head, and a lesson that fits in a sentence. It still has
+to earn a row in the coverage table — but legibility is the binding constraint
+here, not depth, and a note that is merely *correct* will fail the same way the
+last one did.
+
+**And it is built on AWS.** Five of five choosing Azure reads as a default
+however carefully the prose frames it as a decision. One note picking a
+different cloud, for reasons it states, is what makes the others read as a
+choice.
 
 ### 07 · AI Spare Parts Planning
 
@@ -118,12 +151,10 @@ as a signal rather than treat it as non-compliance to be trained out.
 another comparison of exponential smoothing against gradient boosting. The
 subject is what happens between the forecast and the purchase requisition.
 
-**Adjacency to watch, and it is now live.** 06 is written and is also
-maintenance-flavoured. Keep 07 firmly about a batch decision a human overrides
-and about the override as a signal; 06 owns execution and irreversible writes
-under time pressure. If 07 starts reasoning about how its requisition gets
-raised, it has drifted into 06 and one of the two is not needed. The clean
-division: 06 is about applying a decision, 07 is about making one.
+**Adjacency to watch.** Keep 07 firmly about a batch decision a human overrides
+and about the override as a signal, rather than about how the resulting
+requisition reaches a system. The clean division is that 07 is about making a
+decision, not about applying one.
 
 **Why it displaced the platform note:** the platform case was the hotter topic
 and would have been the weaker note — no scenario, no sponsor, no numbers, an
@@ -301,7 +332,7 @@ the verification harness; generation is the easy half.
 | 03 | Legal · procurement | Documents | Central | Batch |
 | 04 | Professional services | Audio | Central | Asynchronous |
 | 05 | Energy | Documents, tables, drawings | Thin layer | Seconds |
-| 06 | Energy — turnaround | Work orders and schedules | Central, as an agent | Asynchronous, time-pressured |
+| 06 | *Open* | *To be decided* | *To be decided* | *To be decided* |
 | 07 | Industrial — spares | Consumption time series | None | Batch |
 | 08 | Heavy industry — workforce | Physiological and shift data | None | Shift boundary |
 | 09 | Energy — asset integrity | Images | None | Edge, intermittent |
@@ -316,7 +347,7 @@ worth writing.
 Ordered so that adjacent notes contrast rather than reinforce:
 
 ```
-01 conversational, human in the loop      06 agentic, acts on systems of record
+01 conversational, human in the loop      06 open — the light one, on AWS
 02 real-time, no human at all             07 batch forecast, decision is the product
 03 documents, provenance                  08 regulated decision about a person
 04 speech, attribution                    09 edge, physical constraint, no LLM
@@ -326,7 +357,7 @@ Ordered so that adjacent notes contrast rather than reinforce:
 A reader arriving at any note and moving to the next should meet a different
 kind of problem, not the same problem in another setting.
 
-That test now carries more weight than it did, because six of the ten share a
+That test now carries more weight than it did, because five of the ten share a
 sector. Contrast has to come from the problem rather than from the industry
 label, and where it does not, the note is redundant however different its
 scenario looks.
@@ -335,24 +366,21 @@ scenario looks.
 
 ## Writing order
 
-Not the same as reading order. **06 is written. Next up: 09.** Then 08, 10, 07.
+Not the same as reading order. **Slot 06 is open and comes first**, as the
+light note described above. Then 09, 08, 10, 07.
 
 1. **09** — write it next rather than last. It is the only note with no
    language model anywhere, and publishing it early is what stops the set
    reading as a generative-AI portfolio while four notes are still missing.
-   That argument got stronger with 06 published, not weaker: 06 is the most
-   language-model-forward note on the site, so the set currently leans further
-   toward generative AI than it did.
+   With five published notes all leaning on a language model somewhere, the set
+   currently reads as a generative-AI portfolio, and 09 is the correction.
 2. **08** — the strongest unwritten material of the four, and the one whose
    supporting facts move. Write it while the Article 10(5) position is live;
    re-verify the deferral dates immediately before publishing.
 3. **10** — the most distinctive, and the one least likely to already exist
    elsewhere in any depth. It also needs the least external verification, which
    makes it a good note to write when time is short.
-4. **07** — last, because its value depends least on being early. The original
-   reason to bring it forward was a risk that 06 would drift toward planning
-   rather than execution; 06 kept to execution and named the solver option only
-   to reject it, so that risk has passed and 07 stays where it is.
+4. **07** — last, because its value depends least on being early.
 
 ---
 
@@ -366,16 +394,10 @@ the work.
 Each new case note should therefore yield one post, and the strongest candidate
 is usually the thing the note argues against rather than for.
 
-**06 owes one and it is the next post to write:** why some actions have no undo,
-and what that does to an agent's design. The argument it stands on — that
-confidence is the wrong axis for placing a human gate, and cost of undo is the
-right one — is a direct contradiction of how most agent writing frames the
-problem, which is exactly the shape that makes a post worth reading.
-
-The others waiting in the planned four: why planner overrides are data rather
-than disobedience (07), how to monitor for bias in an attribute you may not
-collect (08), and what drift means when nobody will ever tell you that you were
-wrong (09).
+No note currently owes one. The ones waiting in the planned five: why planner
+overrides are data rather than disobedience (07), how to monitor for bias in an
+attribute you may not collect (08), and what drift means when nobody will ever
+tell you that you were wrong (09).
 
 Do not add a title without a body. A queue of announced-and-unwritten posts
 costs more credibility than an empty blog does.
