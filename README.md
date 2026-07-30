@@ -40,8 +40,15 @@ npm run dev          # http://localhost:3000
 ```bash
 npm run build        # production build
 npm run start        # serve the production build
-npm run typecheck    # tsc --noEmit
+npm run check        # types, plus content rules a type check cannot express
 ```
+
+`npm run check:content` on its own applies the layout rules that types cannot
+reach — roadmap phase counts that would leave an empty cell, diagram labels too
+long for the space they render into, edges pointing at nodes that do not exist.
+
+Run the production build with the dev server stopped: the two share `.next`,
+and a build underneath a running dev server leaves it serving errors.
 
 Environment variables are documented in `.env.example`. None are required for
 local development; without `CONTACT_FORWARD_EMAIL` the contact form logs

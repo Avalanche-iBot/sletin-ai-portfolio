@@ -92,17 +92,22 @@ references a slug, so renaming a case is those two files plus the filename.
 
 ### Schema notes worth knowing
 
-- `tailoring` **supersedes** `openQuestions`. The template renders
-  `openQuestions` only when `tailoring` is absent. New cases use `tailoring`:
-  it names a parameter, the value assumed here, a plausible alternative, what
-  the architecture becomes at that value, and why. It answers the only question
-  a reader really has — *does any of this transfer to my situation?*
+- **`tailoring` is required in practice.** It names a parameter, the value
+  assumed here, a plausible alternative, what the architecture becomes at that
+  value, and why. It answers the only question a reader really has — *does any
+  of this transfer to my situation?* All five notes carry it; the superseded
+  `openQuestions` field has been removed from the schema entirely.
+- **`assumptionsToTest`** is where honest doubt goes: what is assumed rather
+  than measured, and which figure the whole case is most sensitive to.
+- **`counterpart`** points at one other note this one is in dialogue with, plus
+  a sentence saying what the pairing teaches. Only worth setting where the two
+  genuinely disagree, or agree from opposite constraints. A slug with nothing
+  behind it renders nothing, so it is safe to point at unwritten work.
 - `status` describes how finished the **analysis** is, never a product:
   `In analysis` · `Architecture note` · `Under revision` · `Open question`.
-- Older case files (01, 03, 04, 05) use quoted JSON-style keys and carry a
-  `// Generated content module` header — an artefact of how they were first
-  exported. Case 02 is written in idiomatic TypeScript. Prefer the case-02 form
-  for anything new, and convert the others when you are already editing them.
+- Content modules are ordinary TypeScript with unquoted keys. They were once
+  spreadsheet exports and read like it; that conversion is finished, so do not
+  reintroduce quoted keys or a "generated" banner.
 
 ---
 
@@ -111,32 +116,41 @@ references a slug, so renaming a case is those two files plus the filename.
 These are not style preferences. Violating them produces visible breakage that
 type checking will not catch.
 
-**Roadmap: four phases maximum.** `RoadmapTimeline` maps phase counts 1–4 to
-column classes and falls back to a four-column grid beyond that. Five phases
-renders one card alone in a row of three empty grey cells. Either write four
-phases or add a `5:` entry to `PHASE_COLUMNS` first.
+**Most of them are now checked automatically.** `npm run check:content` loads
+every case note and applies the rules below. Run it after editing content —
+`npm run check` does it together with the type check.
 
-**Block-diagram edge labels need room.** Adjacent nodes on the same row have a
-52-pixel gap. Anything longer than roughly two short words overflows into the
-neighbouring node's box. Type checking passes; the page looks broken. Put the
-condition in the diagram `caption` instead, or label only the long diagonal
-edges. Verify after adding one.
+**Roadmap: six phases maximum, and the count must divide the columns.** The
+grid is painted by showing a line-coloured container through one-pixel gaps, so
+any cell the phases do not fill renders as a solid panel that reads as missing
+content. `PHASE_COLUMNS` only ever uses a column count that divides the phase
+count exactly, and that has to hold at *each* breakpoint — three phases in two
+columns leaves a gap just as four columns would. Past six it falls back to a
+single column.
+
+**Block-diagram edge labels need room.** Adjacent nodes on the same row are
+separated by exactly 52px. Labels render at 9px monospaced, so about eight
+characters fit; anything longer draws across the node it points at. Put the
+condition in the diagram `caption` instead, or label only the longer diagonal
+edges.
 
 **Block-diagram node labels clip.** Boxes are `foreignObject`, which clips
-rather than spills. A two-line title plus its `sub` currently occupies 76 of
-78 available pixels. A third line vanishes silently. Keep titles to two or
-three words and `sub` to a short phrase.
+rather than spills, so an over-long label loses its last line without a trace.
+A two-line title over a two-line `sub` already fills 76 of 78 pixels.
 
 **Wide tables scroll inside their own container.** Never let the page body
 scroll sideways. If a new table needs more width, it goes in the existing
 overflow wrapper.
 
-### Verifying diagrams
+### What the checker cannot see
 
-Type checking cannot see a label sitting on top of a box. After adding a
-diagram, run the dev server and check geometry in the browser — measure whether
-any connector path or edge label intersects a node rectangle, and check 375px
-width as well as desktop. This has caught real bugs twice.
+It reasons about geometry from the same constants the renderers use, which
+makes it good at labels and grids and blind to everything else. It will not
+notice a connector routed through the wrong gap, a diagram that is simply hard
+to follow, or anything about the other four diagram kinds. For a new diagram —
+particularly a `blocks` one — still open the page at desktop width and at
+375px. If either renderer's layout constants change, update the copies at the
+top of `scripts/check-content.mjs` too.
 
 ---
 
@@ -169,22 +183,33 @@ Azure on part of its path — that contrast is load-bearing, and it is what make
 Azure in the other four read as a choice rather than a default. Do not
 "harmonise" it.
 
-Still unwritten (`plannedCaseStudies`): invoice processing, predictive
-maintenance, recruitment, supply chain, executive dashboard. Before writing any
-of them, check they do not collapse into a lesson already owned above — several
-of them will, as currently titled.
+The five unwritten notes, what each is for and the specific way each could go
+wrong, are in **[CONTENT_PLAN.md](CONTENT_PLAN.md)**. Read it before starting
+one. It also records why the earlier titles were replaced: three of them would
+have collapsed into lessons already owned above, which is the failure this
+whole table exists to prevent.
 
 ---
 
 ## Build discipline
 
 ```bash
-npm run typecheck    # tsc --noEmit
-npm run build        # catches what typecheck does not
-npm run dev          # http://localhost:3000
+npm run check          # typecheck + content rules — run this after editing content
+npm run build          # catches what neither of those does
+npm run dev            # http://localhost:3000
+npm run check:content  # the content rules alone
 ```
 
-Run `npm run build` before committing. Content is typed, so most content errors
-surface there — but layout and diagram problems only surface in a browser.
+Run `npm run check` and `npm run build` before committing.
+
+**Do not run `npm run build` while `npm run dev` is running.** They share
+`.next`, and the build overwrites what the dev server is serving from — the
+result is a dev server throwing `Cannot find module './682.js'` on every page,
+which looks like a code fault and is not. Stop the dev server first, or clear
+`.next` and restart it.
+
+The link-preview images run on the edge runtime deliberately. The Node build of
+the image library composes an invalid path to its bundled fallback typeface on
+Windows and fails `npm run build` outright, so this is not a preference.
 
 Commit when asked; do not push unless asked.

@@ -72,12 +72,26 @@ planned ones as titles so the published count stays honest.
 | 04 | AI Meeting Assistant | Attribution — turning speech into tracked commitments without inventing obligations | Speech · Azure |
 | 05 | Enterprise Knowledge Assistant | Permissions enforced inside the retrieval path | Permissioned RAG · Azure |
 
-**Planned, not yet written:** invoice processing, predictive maintenance,
-recruitment assistant, supply-chain optimiser, executive dashboard. Several of
-these, as currently titled, would collapse into a lesson already owned above —
-they need re-scoping before being written, not just writing.
+**Planned, not yet written**, each scoped around a lesson none of the five owns:
 
-**Blog:** six posts listed, three with bodies.
+| # | Note | The lesson it owns |
+|---|------|--------------------|
+| 06 | Agentic Order-to-Cash Operations | Reversibility — the agent writes to systems of record |
+| 07 | Enterprise AI Platform | The customer is internal: tenancy, chargeback, evaluation as shared infrastructure |
+| 08 | AI Recruitment Under the EU AI Act | A regulated decision about a person, with compliance as architecture |
+| 09 | Edge Inference for Industrial Inspection | Inference where you cannot observe it or easily update it |
+| 10 | AI-Assisted Legacy Modernisation | Verifying generated output against a running system |
+
+These replaced an earlier list — invoice processing, predictive maintenance,
+supply chain, executive dashboard — because three of them would have collapsed
+into lessons already owned. `CONTENT_PLAN.md` in the repository has the full
+reasoning, the tension each note turns on, and the specific way each could go
+wrong in the writing.
+
+**Blog:** seven posts listed, one written — *The model that decides is not the
+model that explains*, drawn from case 02. The other six render an honest "not
+yet published" placeholder. Each should come out of a case note rather than
+being invented separately.
 
 ### The rule that governs new cases
 
@@ -124,37 +138,41 @@ Long em-dashed sentences are the house style.
 
 ## Schema notes
 
-- `tailoring` supersedes `openQuestions`. It names a parameter, the value
-  assumed here, a plausible alternative, what the architecture becomes at that
-  value, and why. It answers the reader's real question: *does this transfer to
-  my situation?* The template falls back to `openQuestions` only when
-  `tailoring` is absent.
+- `tailoring` names a parameter, the value assumed here, a plausible
+  alternative, what the architecture becomes at that value, and why. It answers
+  the reader's real question: *does this transfer to my situation?* All five
+  notes carry it; the superseded `openQuestions` field is gone from the schema.
+- `assumptionsToTest` holds the honest doubt — what is assumed rather than
+  measured, and which figure the case is most sensitive to.
+- `counterpart` points at one other note this one argues with, plus a sentence
+  saying what the pairing teaches.
 - `status` describes how finished the **analysis** is, never a product:
   `In analysis` · `Architecture note` · `Under revision` · `Open question`.
-- Cases 01, 03, 04 and 05 still use quoted JSON-style keys with a
-  `// Generated content module` header — an artefact of how they were first
-  exported. Case 02 is idiomatic TypeScript with a real doc comment. Prefer the
-  case-02 form; convert the others when already editing them.
+- Content modules are ordinary TypeScript with unquoted keys. They began as
+  spreadsheet exports and read like it; that conversion is finished.
 
 ---
 
 ## Constraints that break the page silently
 
-Type checking does not catch any of these.
+Type checking catches none of these, so `npm run check:content` does most of it
+instead — it loads every note and applies the geometry rules the renderers use.
 
-- **Roadmap: four phases maximum.** The renderer maps 1–4 phases to column
-  counts and falls back to four columns beyond that, so five phases leaves one
-  card alone beside three empty grey cells.
-- **Block-diagram edge labels overflow.** Adjacent nodes on a row have a
-  52-pixel gap; anything longer than two short words lands on top of the
-  neighbouring box. Put conditions in the diagram caption instead.
-- **Block-diagram node labels clip rather than spill.** Two lines of title plus
-  a `sub` line fills the box. A third line disappears with no warning.
+- **Roadmap: six phases maximum, and the count must divide the columns.** The
+  grid shows a line-coloured container through one-pixel gaps, so an unfilled
+  cell renders as a solid panel that reads as missing content. This has to hold
+  at each breakpoint: three phases in two columns leaves a gap exactly as four
+  columns would.
+- **Block-diagram edge labels overflow.** Adjacent nodes on a row are 52px
+  apart and labels render at 9px monospaced, so roughly eight characters fit.
+  Put longer conditions in the diagram caption.
+- **Block-diagram node labels clip rather than spill.** A two-line title over a
+  two-line `sub` already fills 76 of 78 pixels; the next line vanishes silently.
 - **Wide tables scroll inside their own container.** The page body must never
   scroll sideways.
 
-After adding any diagram, check it in a browser at both desktop and 375px —
-including whether any connector or label intersects a node box.
+The checker reasons about labels and grids and is blind to everything else, so
+a new `blocks` diagram still wants a look in a browser at desktop and at 375px.
 
 ---
 
@@ -174,9 +192,13 @@ Never write either literally anywhere else.
 ```bash
 npm install
 npm run dev          # http://localhost:3000
-npm run build        # run before committing
-npm run typecheck    # tsc --noEmit
+npm run check        # types + content rules — run after editing content
+npm run build        # run before committing, with the dev server stopped
 ```
+
+The last point matters: `dev` and `build` share `.next`, and building
+underneath a running dev server leaves it serving `Cannot find module` errors
+that look like a code fault and are not.
 
 No environment variables are required for local development. Without
 `CONTACT_FORWARD_EMAIL` the contact form logs submissions server-side instead
