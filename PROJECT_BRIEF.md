@@ -78,22 +78,26 @@ difference between a note that describes a design and one worth arguing with.
 
 **Planned, not yet written**, each scoped around a lesson none of the five owns:
 
-| # | Note | The lesson it owns | Sector · data · model |
-|---|------|--------------------|-----------------------|
-| 06 | Agentic Order-to-Cash Operations | Reversibility — the agent writes to systems of record, and some writes have no undo | Distribution · transactions · LLM agent |
-| 07 | AI Demand Planning | The decision is the product, not the prediction — and planner overrides are data, not disobedience | Retail · time series · no LLM |
-| 08 | Consumer Credit Under the EU AI Act | A regulated decision about a person — including how to monitor bias in an attribute you may not collect | Lending · tabular · scorecard + ML |
-| 09 | Edge Vision for Quality Inspection | Inference where you cannot observe it, cannot easily update it, and the line does not wait | Manufacturing · images · no LLM |
-| 10 | AI-Assisted Legacy Modernisation | Verifying generated output against a running system that is the ground truth | Telecoms · source code · LLM |
+| # | Note | The lesson it owns | Setting · data · model |
+|---|------|--------------------|------------------------|
+| 06 | Agentic Turnaround Execution | Reversibility — the agent acts on systems of record, and some actions have no undo | Plant shutdown · work orders and schedules · LLM agent |
+| 07 | AI Spare Parts Planning | The decision is the product, not the prediction — and planner overrides are data, not disobedience | Industrial operations · time series · no LLM |
+| 08 | Fatigue Risk and Fitness for Duty | A regulated decision about a person, where the safety case and the privacy case point in opposite directions | Safety-critical operations · physiological data · no LLM |
+| 09 | Edge Vision for Asset Integrity | Inference where you cannot observe it, cannot easily update it, and nobody will tell you it was wrong | Remote assets · images · no LLM |
+| 10 | AI-Assisted Legacy Modernisation | Verifying generated output against a running system that is itself the ground truth | Production accounting · source code · LLM |
 
-They are chosen against a coverage map rather than as interesting topics.
-Across all ten: ten sectors, ten data types, and six notes where a language
-model does the central work against four where it is absent or peripheral.
-That ratio is deliberate — a portfolio where every problem is solved with the
-same class of tool describes a preference rather than an architect.
+All five sit in industrial operations, which reverses an earlier plan for
+maximum sector spread. The reason is that a case note is only an asset if its
+author can defend it in conversation: the architecture reasoning transfers
+anywhere, the domain figures do not, and it is the figures people probe.
 
-`CONTENT_PLAN.md` carries the full reasoning, including why the platform note
-was dropped for demand planning and why credit replaced recruitment.
+The cost is that six of ten notes end up industrial, so the portfolio reads as
+a specialist's rather than a generalist's. The coverage that matters survives —
+ten data types, ten problems, and four notes where no language model does the
+work. Sector spread was only ever a proxy for problem spread.
+
+`CONTENT_PLAN.md` carries the full reasoning, the material each note turns on,
+and the specific way each could go wrong in the writing.
 
 **Blog:** nine posts, all written, no placeholders — around 14,000 words in
 total, averaging 1,550 each. They live one per file in `content/posts/`, with

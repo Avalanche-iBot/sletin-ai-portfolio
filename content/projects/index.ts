@@ -49,10 +49,10 @@ export const caseStudies: CaseStudy[] = [case01, case02, case03, case04, case05]
  * records what each one is for and what it must avoid becoming.
  */
 export const plannedCaseStudies: { order: number; title: string }[] = [
-  { order: 6, title: "Agentic Order-to-Cash Operations" },
-  { order: 7, title: "AI Demand Planning" },
-  { order: 8, title: "Consumer Credit Under the EU AI Act" },
-  { order: 9, title: "Edge Vision for Quality Inspection" },
+  { order: 6, title: "Agentic Turnaround Execution" },
+  { order: 7, title: "AI Spare Parts Planning" },
+  { order: 8, title: "Fatigue Risk and Fitness for Duty" },
+  { order: 9, title: "Edge Vision for Asset Integrity" },
   { order: 10, title: "AI-Assisted Legacy Modernisation" },
 ];
 

@@ -54,152 +54,205 @@ is what makes Azure in the other four read as a choice rather than a default.
 
 ## Planned
 
-The five below replace an earlier list — *AI Invoice Processing*, *Predictive
-Maintenance AI*, *AI Recruitment Assistant*, *AI Supply Chain Optimizer*,
-*Executive AI Dashboard* — and then replace part of their own replacement.
-*Enterprise AI Platform* was dropped in favour of demand planning, and
-*AI Recruitment* was moved to consumer credit. Both changes are explained
-under the entries that displaced them.
+The five below sit in industrial operations, and that is a deliberate reversal
+of an earlier plan for maximum sector spread. The reason is worth recording,
+because it is the sort of decision that looks like a narrowing and is not.
 
-They are chosen against a coverage map rather than a list of interesting
-topics, because "different" has to mean something checkable. Across all ten:
-ten sectors, ten data types, and six notes where a language model does the
-central work against four where one is absent or peripheral. That last ratio
-is the point — a portfolio in which every problem is solved by the same class
-of tool describes a preference, not an architect.
+A case note is only an asset if its author can defend it in conversation. The
+architecture reasoning transfers anywhere; the domain figures do not. Nobody is
+caught out on whether a completeness gate is the right control — they are
+caught out on whether 8% checkout abandonment is a realistic number, or whether
+European lenders may hold an applicant's gender. Those are the details that
+make a note good, and they are the details that require someone who knows the
+domain.
 
-Each entry states the lesson, the material it turns on, and the specific way
-it could go wrong in the writing.
+So the remaining five move to energy, heavy industry and large capital
+projects. The architectural lessons are unchanged. Only the setting moves.
 
-### 06 · Agentic Order-to-Cash Operations
+**What this costs:** six of ten notes end up industrial. The portfolio stops
+reading as a generalist's and starts reading as "an architect who works in
+industrial operations and has thought carefully about adjacent domains". That
+is a narrower position and, for a reader deciding whether this person could
+help them, a more convincing one — but it is a different claim and should be
+made knowingly.
 
-**Sector: industrial distribution. Data: transactions and documents. Model: a
-language-model agent over a deterministic workflow.**
+**What it does not cost:** the coverage that matters. Ten data types, ten
+distinct problems, and six notes where a language model does the central work
+against four where it is absent or peripheral. Sector spread was never the
+point; it was a proxy for problem spread, and problem spread survives intact.
+
+### 06 · Agentic Turnaround Execution
+
+**Sector: energy or heavy industry, during a plant shutdown. Data: work orders,
+schedules, procurement records. Model: a language-model agent over a
+deterministic workflow.**
 
 **Lesson: reversibility.** Every published note has the system produce an
-answer. This one has it *act* — amending orders, releasing credit holds,
-issuing credit notes, posting into an ERP. The architectural question is not
+answer. This one has it *act* — raising requisitions, adjusting the schedule,
+reserving crews, notifying contractors. The architectural question is not
 accuracy but what happens when a chain of writes is 60% applied and the next
 step fails.
 
-The material: idempotency keys, compensating transactions, which steps may be
-automatic and which need a human gate, and the uncomfortable fact that some
-actions have no compensating transaction at all — a credit note issued to a
-customer cannot be quietly un-issued. The honest verdict is probably that the
-interesting work is transactional design and the model is the least difficult
-component.
+A turnaround is the right setting because it sharpens every part of it. Time
+pressure is extreme: an hour of schedule is an hour of lost production, so a
+human gate on every action is not affordable. And the irreversibility is
+genuine rather than accounting-flavoured — a long-lead requisition carries a
+cancellation charge, a released contractor crew has gone to another site, and
+a crew pulled onto a rescheduled job has already stopped doing something else.
+Some actions have no compensating transaction and the design has to say so.
 
-**Failure mode to avoid:** becoming an invoice-extraction note. The moment the
-emphasis moves to reading documents, this is case 03 again. The writes are the
-subject.
+The material: idempotency keys, compensating transactions where they exist,
+which steps may be automatic and which need a gate, and how you reason about a
+half-applied change that has already propagated to four contractor firms. The
+honest verdict is probably that the interesting work is transactional design
+and the model is the least difficult component.
 
-### 07 · AI Demand Planning
+**Failure mode to avoid:** becoming a scheduling-optimisation note. The subject
+is the writes, not the schedule.
 
-**Sector: grocery or general retail. Data: time series. Model: gradient
-boosting or classical forecasting — no language model anywhere.**
+**Adjacency to watch:** case 07 is also maintenance-flavoured. Keep this one
+firmly about execution and irreversible writes under time pressure; keep 07
+firmly about a batch decision a human overrides. If either starts drifting
+toward the other, one of them is not needed.
+
+### 07 · AI Spare Parts Planning
+
+**Sector: industrial operations. Data: consumption history, lead times,
+criticality. Model: statistical forecasting or gradient boosting — no language
+model anywhere.**
 
 **Lesson: the decision is the product, not the prediction.** A forecast nobody
 acts on is worth exactly zero, and the architecture problem is the override
 loop rather than the model.
 
-Two threads carry it. First, the model is measured on forecast accuracy while
-the business is measured on stock-outs and waste, and those can move in
-opposite directions — a forecast that is more accurate on average can be worse
-commercially if its errors fall on the wrong side. Second, and this is the
-part rarely written: **planner overrides are the most valuable data in the
-system and almost everyone throws them away.** A planner who consistently
-overrides in one direction is reporting something the model cannot see, and
-the architecture should treat that as a signal to be captured rather than as
-non-compliance to be trained out.
+Spares make the point cleanly because the decision is discrete and expensive:
+stock this €200,000 long-lead item or do not. Two threads carry the note.
+First, the model is measured on forecast accuracy while the business is
+measured on stockouts and working capital, and those move independently — a
+forecast that is better on average can be worse commercially if its errors fall
+on the critical items. Second, and this is the part rarely written: **planner
+overrides are the most valuable data in the system and almost everyone throws
+them away.** A reliability engineer who consistently overrides on one machine
+knows something the model cannot see, and the architecture should capture that
+as a signal rather than treat it as non-compliance to be trained out.
 
 **Failure mode to avoid:** a survey of forecasting methods. Nobody needs
-another comparison of ARIMA against gradient boosting. The subject is what
-happens between the forecast and the purchase order.
+another comparison of exponential smoothing against gradient boosting. The
+subject is what happens between the forecast and the purchase requisition.
 
-**Why it displaced the platform note:** the platform case is the hotter topic
-and would have been the weaker note. It has no scenario, no sponsor and no
-numbers, its customer is an internal engineering team, and it would have been
-structurally unlike the other nine — a whitepaper wearing a case study's
-clothes. Demand planning fills three coverage gaps at once (time series, batch
-processing, a second note with no language model) and has a real business
-problem in it.
+**Why it displaced the platform note:** the platform case was the hotter topic
+and would have been the weaker note — no scenario, no sponsor, no numbers, an
+internal engineering team as its customer, and structurally unlike the other
+nine. This fills time series, batch processing and a second note with no
+language model at once, and has a real business decision in it.
 
-### 08 · Consumer Credit Under the EU AI Act
+### 08 · Fatigue Risk and Fitness for Duty
 
-**Sector: consumer lending. Data: tabular application and bureau data. Model:
-scorecard plus machine learning.**
+**Sector: energy or heavy industry, safety-critical operations. Data:
+physiological and health indicators, shift and rotation history. Model:
+classification over structured signals; a language model has no role.**
 
-**Lesson: a regulated decision about a person, where compliance is
-architecture rather than paperwork.** Credit scoring is named high-risk in the
-Act's own annex, which turns obligations into design requirements at the
-start: logging, human oversight that is real rather than nominal, transparency
-to the applicant, technical documentation, and bias monitoring across
-protected groups.
+**Lesson: a regulated decision about a person, where compliance is architecture
+rather than paperwork — and where the safety case and the privacy case point in
+opposite directions.**
 
-The material worth the note is one specific bind: **you cannot measure
-fairness across an attribute you are not permitted to collect.** European
-lenders generally may not hold ethnicity, and in several markets not gender
-either — yet the Act expects demonstrable monitoring for discriminatory
-outcomes. The resolutions are all uncomfortable: statistical proxies with
-their own error, a separately governed collection path walled off from the
-model, or an argument that monitoring on permitted attributes is sufficient.
-Nobody writes about this and every lender in Europe is currently living it.
+The decision is whether an individual is fit to take a shift on a
+safety-critical operation. Under the EU AI Act this falls in the worker
+management category of Annex III, which turns obligations into design
+requirements: logging, human oversight that is real rather than nominal,
+transparency to the worker, technical documentation, and bias monitoring.
 
-**Failure mode to avoid:** a compliance checklist. The note has to show the
-regulation changing the architecture rather than sitting beside it.
+Three threads make it worth writing.
 
-**Why credit rather than recruitment:** the lesson is the same and the
-material is not. Credit has real data, real models, an adverse-action notice
-as a concrete artefact, and decades of fairness measurement to argue with.
-Recruitment tends to end at "do not automate the ranking", which is a correct
-conclusion and a thin case note.
+The first is the genuine conflict. You monitor fatigue because a tired crane
+operator can kill someone. The same monitoring is surveillance of an
+individual's physiological state, held by their employer. Both positions are
+correct and neither can be designed away, which is different from every other
+note here — case 04 resolved a similar tension by removing the capability, and
+this one cannot, because individual assessment *is* the product.
 
-### 09 · Edge Vision for Quality Inspection
+The second is Article 10(5) of the AI Act, which permits processing special
+category data — health among them — for bias detection and correction, under
+six simultaneous conditions. One of them requires deletion once the bias has
+been corrected. **The measurement you need to prove the system is fair is the
+measurement you are least permitted to keep**, and continuous monitoring
+therefore has no clean legal shape. The resolutions are all uncomfortable:
+retained aggregates rather than records, periodic re-collection campaigns each
+needing fresh justification, a separately governed measurement enclave with its
+own retention clock, or point-in-time audits instead of monitoring.
 
-**Sector: manufacturing. Data: images. Model: computer vision — no language
-model. Deployment: on the line.**
+The third is that Article 10(5) may not work at all. Scholarship in
+*International Data Privacy Law* argues it is a "legal illusion": GDPR requires
+both an Article 6 basis and an Article 9 exception, and Article 10(5) says
+providers "may process" without clearly establishing the latter. A design can
+satisfy the AI Act and still breach the GDPR, and nobody gets to wait for that
+to be resolved.
 
-**Lesson: inference where you cannot watch it.** The model runs on a
-production line with no reliable link back, on hardware chosen years ago, at a
-rate set by the conveyor rather than by you.
+**Timing note, and it matters:** the Digital Omnibus on AI, finally approved by
+the Council on 29 June 2026, defers standalone Annex III high-risk obligations
+to 2 December 2027 and embedded ones to 2 August 2028. Verify this against the
+Official Journal before publishing — it is recent. The deferral is material to
+the note but must not be its spine, or the note expires at the next amendment.
+What has not moved is more useful anyway: GDPR Article 22 and the *Schufa*
+ruling bind today.
+
+**Failure mode to avoid:** a compliance checklist, or a surveillance polemic.
+The note has to show the regulation changing the architecture, and it has to
+take the safety argument as seriously as the privacy one.
+
+**Why not consumer credit:** the lesson is identical and the domain is not
+defensible by this author. That is a legitimate reason to move a case and a
+poor reason to abandon a lesson.
+
+### 09 · Edge Vision for Asset Integrity
+
+**Sector: energy — remote or unmanned assets. Data: images, including thermal
+and optical gas imaging. Model: computer vision — no language model.
+Deployment: on the asset.**
+
+**Lesson: inference where you cannot watch it.** The model runs on a remote
+installation with an intermittent link, on hardware specified years ago,
+looking for corrosion, leaks or damage.
 
 The material: what drift means when you cannot observe it — nobody tells you
-the model missed a defect until a customer does, months later — so the
-architecture needs a sampling regime that costs line time and has to be
-justified to a plant manager. Shipping a model update over an intermittent
-link without stopping a line. Keeping enough evidence locally to diagnose a
-bad shift after the fact. And the constraint that overrides all of them: the
-inspection is worthless unless it is faster than the line.
+the model missed a corrosion patch until a physical inspection finds it, if it
+ever does — so the architecture needs a sampling regime that costs inspection
+time and has to be justified to an asset manager. Shipping a model update over
+a satellite link without bricking a unit that nobody can reach for six weeks.
+Keeping enough evidence locally to diagnose a bad month after the fact. And the
+asymmetry that shapes the thresholds: a false positive costs a callout, a false
+negative is an environmental or safety event.
 
-**Failure mode to avoid:** drifting into anomaly-detection theory. The subject
-is the deployment boundary, not the model.
+**Failure mode to avoid:** drifting into anomaly-detection theory, or becoming
+a note about drones. The subject is the deployment boundary.
 
-**Portfolio role:** the only note with no language model anywhere, the only
-one where the constraint is physical, and the one that proves the rest of the
-set is a set of choices rather than a habit.
+**Portfolio role:** the only note with no language model anywhere, the only one
+where the constraint is physical, and the one that proves the rest of the set
+is a set of choices rather than a habit. Worth writing early for that reason.
 
 ### 10 · AI-Assisted Legacy Modernisation
 
-**Sector: telecommunications — billing and provisioning. Data: source code.
-Model: a language model over code.**
+**Sector: energy — production accounting or hydrocarbon allocation. Data:
+source code. Model: a language model over code.**
 
 **Lesson: verifying output against a running system.** Every other note is
 judged by a person reading the result. Here a ground truth exists — the
 existing system — and the only acceptable standard is that the new behaviour
-matches the old, bugs included, because processes have been built around them.
+matches the old, bugs included, because two decades of process have been built
+around them.
 
-The material: recovering undocumented business rules from code nobody wrote
-recently, differential testing against replayed production traffic, deciding
-which divergences are defects and which are fixes, and why "an experienced
-developer read it and it looks right" stops being a verification strategy
-somewhere around the ten-thousandth line.
+Production accounting is the right setting: allocation rules accumulated over
+decades, encoded by people who have retired, reconciled monthly against figures
+that partners and regulators both rely on. The rules are undocumented, the code
+is the specification, and no one alive can state what it does in full.
 
-**Failure mode to avoid:** a post about code generation quality. The subject
-is the verification harness; generation is the easy half.
+The material: recovering business rules from code nobody wrote recently,
+differential testing against replayed production periods, deciding which
+divergences are defects and which are fixes — and what to do when a partner has
+been invoiced for years on the basis of one of the defects.
 
-**Why it matters:** nearly every large organisation has this problem and a
-budget for it, and almost nobody writes about the part that decides whether it
-works.
+**Failure mode to avoid:** a post about code generation quality. The subject is
+the verification harness; generation is the easy half.
 
 ### The coverage this produces
 
@@ -210,14 +263,15 @@ works.
 | 03 | Legal · procurement | Documents | Central | Batch |
 | 04 | Professional services | Audio | Central | Asynchronous |
 | 05 | Energy | Documents, tables, drawings | Thin layer | Seconds |
-| 06 | Industrial distribution | Transactions and documents | Central | Asynchronous |
-| 07 | Retail | Time series | None | Nightly batch |
-| 08 | Consumer lending | Tabular | None or peripheral | Seconds |
-| 09 | Manufacturing | Images | None | Line rate, at the edge |
-| 10 | Telecommunications | Source code | Central | Batch |
+| 06 | Energy — turnaround | Work orders and schedules | Central, as an agent | Asynchronous, time-pressured |
+| 07 | Industrial — spares | Consumption time series | None | Batch |
+| 08 | Heavy industry — workforce | Physiological and shift data | None | Shift boundary |
+| 09 | Energy — asset integrity | Images | None | Edge, intermittent |
+| 10 | Energy — production accounting | Source code | Central | Batch |
 
-If a future note cannot add a new row to that table, it is probably not worth
-writing.
+Ten data types, ten problems, and four notes where no language model does the
+work. If a future note cannot add a new row to that table, it is probably not
+worth writing.
 
 ## Sequencing
 
@@ -232,7 +286,12 @@ Ordered so that adjacent notes contrast rather than reinforce:
 ```
 
 A reader arriving at any note and moving to the next should meet a different
-kind of problem, not the same problem in another industry.
+kind of problem, not the same problem in another setting.
+
+That test now carries more weight than it did, because six of the ten share a
+sector. Contrast has to come from the problem rather than from the industry
+label, and where it does not, the note is redundant however different its
+scenario looks.
 
 ---
 
@@ -241,17 +300,20 @@ kind of problem, not the same problem in another industry.
 Not the same as reading order. Suggested:
 
 1. **06** — the highest-demand topic in the set and the furthest from anything
-   published, so it also does the most to broaden the portfolio's apparent
-   range.
+   published. "Agentic" is also the term being searched for most heavily right
+   now, and the note has a real answer rather than an enthusiasm.
 2. **09** — write it second rather than last. It is the only note with no
-   language model anywhere, and getting it published early is what stops the
-   set reading as a generative-AI portfolio while five notes are still missing.
-3. **10** — the most distinctive, and the one least likely to already exist
-   elsewhere in any depth.
-4. **08** — timely while the Act's obligations are still being worked out in
-   practice, and the note with the strongest unwritten material in it.
-5. **07** — last, because it is the one whose value depends least on being
-   early. Bring it forward if the set starts feeling narrow before 09 lands.
+   language model anywhere, and publishing it early is what stops the set
+   reading as a generative-AI portfolio while five notes are still missing.
+3. **08** — the strongest unwritten material of the five, and the one whose
+   supporting facts move. Write it while the Article 10(5) position is live;
+   re-verify the deferral dates immediately before publishing.
+4. **10** — the most distinctive, and the one least likely to already exist
+   elsewhere in any depth. It also needs the least external verification, which
+   makes it a good note to write when time is short.
+5. **07** — last, because its value depends least on being early. Bring it
+   forward if 06 starts drifting toward planning rather than execution, since
+   at that point one of the two has to change.
 
 ---
 

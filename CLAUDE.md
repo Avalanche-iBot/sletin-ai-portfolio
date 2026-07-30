@@ -201,12 +201,16 @@ wrong, are in **[CONTENT_PLAN.md](CONTENT_PLAN.md)**. Read it before starting
 one.
 
 It also carries the coverage map the planned five were chosen against, which is
-the operational form of the rule above: across all ten notes, ten sectors, ten
-data types, and six where a language model does the central work against four
-where it is absent or peripheral. A proposed note that cannot add a new row to
-that table is probably not worth writing — and the second half of that ratio is
-deliberate, because a portfolio solving every problem with the same class of
-tool describes a preference rather than an architect.
+the operational form of the rule above: ten data types, ten problems, and four
+notes where no language model does the work. A proposed note that cannot add a
+row to that table is probably not worth writing.
+
+Two constraints recorded there are easy to breach by accident. **All five
+planned notes sit in industrial operations on purpose** — a note is only an
+asset if its author can defend its domain figures in conversation, and that
+consideration outranks sector variety. Which means contrast has to come from
+the problem rather than the industry label, and a new note that differs only in
+setting is redundant however different its scenario looks.
 
 ---
 
