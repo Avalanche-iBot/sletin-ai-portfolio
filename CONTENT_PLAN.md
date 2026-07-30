@@ -157,12 +157,19 @@ rather than paperwork — and where the safety case and the privacy case point i
 opposite directions.**
 
 The decision is whether an individual is fit to take a shift on a
-safety-critical operation. Under the EU AI Act this falls in the worker
-management category of Annex III, which turns obligations into design
-requirements: logging, human oversight that is real rather than nominal,
-transparency to the worker, technical documentation, and bias monitoring.
+safety-critical operation.
 
-Three threads make it worth writing.
+**The regulatory position, verified rather than assumed.** Annex III point 4(b)
+covers AI systems used "to allocate tasks based on individual behaviour or
+personal traits or characteristics or to monitor and evaluate the performance
+and behaviour of persons" in a work relationship. A fitness-for-duty system
+deciding shift assignment from physiological state is caught on both limbs, so
+the high-risk obligations apply: logging, human oversight that is real rather
+than nominal, transparency to the worker, technical documentation, bias
+monitoring.
+
+Four threads make it worth writing, and the second one is the reason this
+scenario is better than the consumer-credit one it replaced.
 
 The first is the genuine conflict. You monitor fatigue because a tired crane
 operator can kill someone. The same monitoring is surveillance of an
@@ -171,30 +178,64 @@ correct and neither can be designed away, which is different from every other
 note here — case 04 resolved a similar tension by removing the capability, and
 this one cannot, because individual assessment *is* the product.
 
-The second is Article 10(5) of the AI Act, which permits processing special
-category data — health among them — for bias detection and correction, under
-six simultaneous conditions. One of them requires deletion once the bias has
-been corrected. **The measurement you need to prove the system is fair is the
-measurement you are least permitted to keep**, and continuous monitoring
-therefore has no clean legal shape. The resolutions are all uncomfortable:
-retained aggregates rather than records, periodic re-collection campaigns each
-needing fresh justification, a separately governed measurement enclave with its
-own retention clock, or point-in-time audits instead of monitoring.
+**The second is the strongest material in the whole planned set, and it is a
+line the design has to sit exactly on.** Article 5(1)(f) prohibits AI that
+infers emotions in the workplace. Recital 18 then excludes physical states from
+that definition in as many words — "It does not include physical states, such
+as pain or fatigue" — and names the exact scenario as its example: "systems
+used in detecting the state of fatigue of professional pilots or drivers for
+the purpose of preventing accidents."
 
-The third is that Article 10(5) may not work at all. Scholarship in
+So fatigue detection is lawful, and it is lawful because of a distinction that
+is legal rather than technical. Future of Privacy Forum's analysis puts it
+well: there is "a thin line between emotions, other readily apparent
+expressions, and pain or fatigue, which also result in expressions that can be
+mistaken for emotions". And the safety exception does not stretch — it covers
+protecting life and health, and explicitly not general wellbeing monitoring
+such as stress or burnout detection.
+
+Which produces the constraint the note should be built around: **the model may
+infer physical state and may not infer emotional state, and the boundary is a
+legal one drawn through a technically continuous space.** Same camera, same
+face, same features. Eyelid closure and head pose to detect drowsiness is
+permitted; adding an inference that somebody looks agitated builds a prohibited
+system in a workplace. Feature selection and model scope stop being product
+decisions and become the compliance boundary — which is a far more concrete
+demonstration of "compliance as architecture" than any documentation
+obligation.
+
+The third is Article 10(5), which permits processing special category data —
+health among them — for bias detection and correction, under six simultaneous
+conditions. One requires deletion once the bias has been corrected. **The
+measurement needed to prove the system fair is the measurement you are least
+permitted to keep**, so continuous monitoring has no clean legal shape. The
+resolutions are all uncomfortable: retained aggregates rather than records,
+periodic re-collection campaigns each needing fresh justification, a separately
+governed measurement enclave with its own retention clock, or point-in-time
+audits instead of monitoring.
+
+The fourth is that Article 10(5) may not work at all. Scholarship in
 *International Data Privacy Law* argues it is a "legal illusion": GDPR requires
 both an Article 6 basis and an Article 9 exception, and Article 10(5) says
 providers "may process" without clearly establishing the latter. A design can
 satisfy the AI Act and still breach the GDPR, and nobody gets to wait for that
 to be resolved.
 
-**Timing note, and it matters:** the Digital Omnibus on AI, finally approved by
-the Council on 29 June 2026, defers standalone Annex III high-risk obligations
-to 2 December 2027 and embedded ones to 2 August 2028. Verify this against the
-Official Journal before publishing — it is recent. The deferral is material to
-the note but must not be its spine, or the note expires at the next amendment.
-What has not moved is more useful anyway: GDPR Article 22 and the *Schufa*
-ruling bind today.
+**The timing asymmetry, which is the practical takeaway.** Article 5
+prohibitions have applied since early 2025. The Digital Omnibus on AI, approved
+by the Council on 29 June 2026, defers standalone Annex III high-risk
+obligations to 2 December 2027 and embedded ones to 2 August 2028.
+
+So the line you must not cross binds today, while the obligations that shape
+how you build it do not yet. For an architect that inverts the usual priority:
+right now it matters more not to build a prohibited system than to build a
+fully compliant one.
+
+**Verify before publishing, both of them.** The deferral dates are recent —
+check the Official Journal. And confirm the Article 5 application date has not
+itself moved, since the omnibus touched prohibitions too and I did not check
+that. The deferral is material to the note but must not be its spine, or the
+note expires at the next amendment. The Recital 18 boundary will not move.
 
 **Failure mode to avoid:** a compliance checklist, or a surveillance polemic.
 The note has to show the regulation changing the architecture, and it has to
