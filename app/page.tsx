@@ -38,12 +38,20 @@ export default function HomePage() {
             {site.positioning}
           </p>
 
+          {/*
+           * The second button used to say "Start a conversation", which invited
+           * contact without saying what for and left a reader who agreed with a
+           * note with nothing obvious to do. This site is a notebook, not a
+           * practice: the thing genuinely wanted from a reader is the argument
+           * back. Saying so is also the sharpest available differentiator,
+           * since almost nothing else in this field asks to be contradicted.
+           */}
           <div className="mt-9 flex animate-rise-in flex-wrap gap-3" style={{ animationDelay: "220ms" }}>
             <Link href="/portfolio" className="btn btn-primary">
               Read the case studies
             </Link>
             <Link href="/contact" className="btn btn-ghost">
-              Start a conversation
+              Tell me where this is wrong
             </Link>
           </div>
 

@@ -15,6 +15,15 @@
  * Styled as a hairline notice rather than a coloured alert box: an alert would
  * read as a warning about the content. This is a statement of what the content
  * is.
+ *
+ * It used to run to three paragraphs and was cut to two. Length was working
+ * against it: a reader meets this before a single sentence of analysis, and a
+ * wall of hedging reads as anxiety rather than as care. What survived is the
+ * claim that actually does the legal work — the scenarios are constructed and
+ * are not drawn from any employer's systems — plus the invitation to disagree.
+ * What went was the restatement of the same point in other words ("any
+ * resemblance is coincidental") and the disclaimer of consulting advice, which
+ * the contact page already makes in a place where it is relevant.
  */
 
 export function NoticeLine({ children }: { children: React.ReactNode }) {
@@ -34,21 +43,14 @@ export function CaseNoteDisclaimer({ compact = false }: { compact?: boolean }) {
       <p className="eyebrow mb-3">Notice</p>
       <div className="max-w-reading space-y-3 text-[0.9375rem] leading-relaxed text-ink-soft">
         <p>
-          These case studies are educational analyses. Each one is built from general industry
-          knowledge, publicly available material and personal reasoning applied to a hypothetical
-          scenario. They do not describe, and are not derived from, the internal systems, data,
-          processes or projects of any organisation I have worked with or for.
+          Every scenario here is constructed. These notes are built from general industry knowledge
+          and personal reasoning, and they do not describe the internal systems, data or projects of
+          any organisation I have worked with or for. The figures are illustrative assumptions, not
+          measurements from a running system.
         </p>
         <p>
-          Any resemblance to a real organisation, system or engagement is coincidental. The
-          architectures, estimates, cost models and figures shown are illustrative — they reflect
-          how I reason about a class of problem, not a validated implementation.
-        </p>
-        <p>
-          Nothing here constitutes consulting advice, and none of it represents the position of any
-          employer, past or present. Where I have reached a conclusion, I have tried to show the
-          reasoning that led there so it can be checked. Corrections, alternative approaches and
-          outright disagreement are all welcome.
+          Where I have reached a conclusion I have tried to show the reasoning that led there, so it
+          can be checked. Corrections and disagreement are welcome.
         </p>
       </div>
     </aside>

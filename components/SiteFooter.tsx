@@ -65,8 +65,19 @@ export function SiteFooter() {
             statically generated page, so the value is baked into the HTML when
             the site is deployed. A build early in January is the one case that
             needs a rebuild to catch up. */}
+        {/*
+         * The source link is not vanity. Everything else on this site is
+         * reasoning *about* systems; the repository is the one running system,
+         * and the diagram checker in it is the only direct evidence that the
+         * author builds as well as writes. Burying that in a blog post was
+         * leaving the strongest available proof unlinked.
+         */}
         <span>
-          © {new Date().getFullYear()} {site.name}. Built with Next.js.
+          © {new Date().getFullYear()} {site.name}. Built with Next.js —{" "}
+          <a href={site.github} className="underline underline-offset-4 hover:text-ink">
+            source
+          </a>
+          .
         </span>
         <span>{site.availability}</span>
       </div>
