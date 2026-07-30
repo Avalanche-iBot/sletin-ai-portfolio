@@ -1059,5 +1059,93 @@ export const architectureLayers: ArchitectureLayer[] = [
 export const architectureIntro = {
   eyebrow: "System Design Reference",
   title: "The Architecture Layer Catalogue",
-  dek: "Twenty-one layers that recur across enterprise AI systems, and the tool options available at each one — with the trade-offs that actually decide between them. This is a reference for how I think through a stack, not a claim that any single project uses all of it.",
+  dek: "Twenty-one layers that recur across enterprise AI systems, and the tool options available at each one — with the trade-offs that actually decide between them. A working reference I keep for myself, current as at July 2026: the layers are stable, the tool lists are not, and a catalogue like this is out of date in parts by the time anyone reads it. Where a layer was genuinely decided rather than merely listed, it links to the case note that decided it — that note is the useful half, and this page is the index.",
+};
+
+/**
+ * The case note where a layer stopped being a list of options and became a
+ * decision.
+ *
+ * A catalogue of tools with pros and cons is the most commoditised thing in
+ * this field, and on its own it works against what this site claims: that the
+ * artefact is the reasoning, and that reasoning only exists in a context. These
+ * links are what turn the catalogue into an index into the notes rather than a
+ * second encyclopaedia sitting beside them.
+ *
+ * Deliberately partial. A link is only worth following where a note argued the
+ * choice out, so most layers have none — adding one everywhere would restore
+ * exactly the sameness the links exist to break. Keyed by layer id and kept
+ * here rather than inside each layer, so the whole mapping can be read at once.
+ */
+export const layerCaseNotes: Record<string, { slug: string; title: string; note: string }> = {
+  channel: {
+    slug: "ai-patient-communication-platform",
+    title: "AI Patient Communication Platform",
+    note: "Three channels at once, where the per-conversation pricing and the 24-hour session window of one of them shaped the routing design rather than the interface.",
+  },
+  identity: {
+    slug: "enterprise-knowledge-assistant",
+    title: "Enterprise Knowledge Assistant",
+    note: "Where the general rule above — filter at retrieval, not in the prompt — turned out to be necessary and insufficient, because some documents' existence is itself restricted and a shortened result list is a disclosure.",
+  },
+  agentFramework: {
+    slug: "agentic-turnaround-execution",
+    title: "Agentic Turnaround Execution",
+    note: "The argument for not using one. An agent holding its plan in the model's context cannot say what it already did after a restart, which is the only question that matters once it writes to a system of record.",
+  },
+  messaging: {
+    slug: "agentic-turnaround-execution",
+    title: "Agentic Turnaround Execution",
+    note: "Durable orchestration where the plan log, not the queue, is the authority on what the system believes it did.",
+  },
+  cache: {
+    slug: "enterprise-knowledge-assistant",
+    title: "Enterprise Knowledge Assistant",
+    note: "The one case where a cache key is a security control: leave the permission scope out of it and the cache becomes the leak that retrieval was designed to prevent.",
+  },
+  parsing: {
+    slug: "enterprise-knowledge-assistant",
+    title: "Enterprise Knowledge Assistant",
+    note: "A corpus where tables are the content rather than an aid to it, which makes extraction a separate pipeline stage with its own index and its own evaluation.",
+  },
+  retrieval: {
+    slug: "ai-contract-intelligence",
+    title: "AI Contract Intelligence",
+    note: "Where retrieval quality stops being the question. A citation can prove a clause exists and still not prove it is the whole of what was agreed.",
+  },
+  llm: {
+    slug: "real-time-payment-fraud-decisioning",
+    title: "Real-Time Payment Fraud Decisioning",
+    note: "The note that keeps a language model out of the decision entirely and gives it the explanation instead — because the decision has to be reproducible, attributable and returned in tens of milliseconds.",
+  },
+  guardrails: {
+    slug: "ai-patient-communication-platform",
+    title: "AI Patient Communication Platform",
+    note: "A boundary that cannot be crossed under any circumstances, and why enforcing it in routing is worth more than enforcing it in a prompt.",
+  },
+  observability: {
+    slug: "real-time-payment-fraud-decisioning",
+    title: "Real-Time Payment Fraud Decisioning",
+    note: "Where a decision has to be reconstructable months later from a logged input and a version number, which turns observability from operations tooling into a regulatory obligation.",
+  },
+  costControl: {
+    slug: "ai-patient-communication-platform",
+    title: "AI Patient Communication Platform",
+    note: "The case where cost per request decides the architecture rather than reporting on it — most volume never reaching a model is the whole economic argument.",
+  },
+  infrastructure: {
+    slug: "real-time-payment-fraud-decisioning",
+    title: "Real-Time Payment Fraud Decisioning",
+    note: "The only note here that leaves the cloud on part of its path, and the one that explains what a hard latency budget does to a deployment choice.",
+  },
+  secrets: {
+    slug: "ai-meeting-assistant",
+    title: "AI Meeting Assistant",
+    note: "Compliance as a shape rather than a control: the deliverable the works council cared about was the absence of a table that could aggregate by person.",
+  },
+  humanInLoop: {
+    slug: "agentic-turnaround-execution",
+    title: "Agentic Turnaround Execution",
+    note: "The question at the head of this layer, answered at length. Reversibility rather than confidence decides what needs a person — and where a gate is unaffordable, ordering the plan so one-way doors come last does the work instead.",
+  },
 };

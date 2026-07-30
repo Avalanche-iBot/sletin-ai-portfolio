@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import type { ArchitectureLayer } from "@/content/architecture";
-import { NECESSITY_LABEL } from "@/content/architecture";
+import { NECESSITY_LABEL, layerCaseNotes } from "@/content/architecture";
 
 /**
  * The dialog showing one layer's tool options in full.
@@ -29,6 +30,7 @@ export function LayerModal({
   onClose: () => void;
 }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const decidedIn = layerCaseNotes[layer.id];
 
   useEffect(() => {
     // Move focus into the dialog on open. Without this, a keyboard user's focus
@@ -148,6 +150,24 @@ export function LayerModal({
               <p className="font-mono text-micro uppercase tracking-wide text-accent-deep">Note</p>
               <p className="mt-1 font-prose text-sm leading-relaxed text-ink-soft">{layer.note}</p>
             </div>
+          )}
+
+          {/* The options above are a menu. This is where one of them was
+              actually argued out against a real set of constraints, which is
+              the half of the catalogue worth a reader's time. */}
+          {decidedIn && (
+            <Link
+              href={`/portfolio/${decidedIn.slug}`}
+              className="group mt-6 block rounded-card border border-line p-4 transition-colors hover:border-ink"
+            >
+              <p className="font-mono text-micro uppercase tracking-wide text-ink-muted">
+                Decided in a case note
+              </p>
+              <p className="mt-1 font-display text-base text-ink group-hover:text-accent-deep">
+                {decidedIn.title}
+              </p>
+              <p className="mt-2 font-prose text-sm leading-relaxed text-ink-soft">{decidedIn.note}</p>
+            </Link>
           )}
         </div>
       </div>
