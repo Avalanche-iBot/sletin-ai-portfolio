@@ -2,7 +2,13 @@
 
 Source for **aleksandrsletin.com** — an independent notebook on enterprise AI
 architecture. Next.js 14 (App Router), TypeScript strict, Tailwind, statically
-generated, deployed on Vercel.
+generated, built for Vercel.
+
+**Not deployed yet.** The domain does not resolve, and that is a choice rather
+than an oversight — it goes live when the author is happy with it. So anything
+that can only be verified against a live site (structured data in Google's
+tester, link previews on a social platform, the edge-runtime preview images on
+real infrastructure) cannot be checked yet. Do not report those as working.
 
 This file exists so a new session can be useful in its first ten minutes
 instead of its fortieth. Read it before touching `content/`.

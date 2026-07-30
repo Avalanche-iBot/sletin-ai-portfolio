@@ -61,6 +61,18 @@ partially written and filled in over time.
 
 ## Current state
 
+**Not deployed.** `aleksandrsletin.com` does not resolve — no DNS record at all,
+checked 30 July 2026. The site is built for Vercel and the canonical URL is set
+throughout, but nothing is live and that is deliberate: the author will deploy
+when he is satisfied with it, not before.
+
+Two consequences worth carrying into any session. Everything SEO-related —
+structured data, sitemap, canonical links, link-preview images — is correct and
+currently inert, so there is no point checking anything against Google or a
+social platform. And the link-preview images have never run outside a local
+machine: they use the edge runtime and fetch fonts at request time, so their
+behaviour on a real deployment is genuinely unverified.
+
 **Five case notes written, five planned.** The portfolio index shows the
 planned ones as titles so the published count stays honest.
 
