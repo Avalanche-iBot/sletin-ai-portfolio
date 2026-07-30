@@ -3,14 +3,15 @@ import type { About } from "./types";
 /**
  * The About page.
  *
- * Deliberately not a biography — the employment timeline and organisation
- * names were removed on purpose. Those answer "where has he worked", which is
- * a question a CV answers and this site does not need to. What replaces them
- * answers "how does he think", which is the only thing a reader of an
- * architecture notebook can actually use.
+ * Two sections and nothing else: an opening with the credentials beside it, and
+ * the principles. Everything that read as a pitch has gone — a list of
+ * strengths, a list of working habits, and a paragraph under each certification
+ * explaining why it mattered. A reader deciding whether to take the case notes
+ * seriously wants to know what this person has actually done and how they think.
+ * Neither question is answered better by making the page longer.
  *
- * `background` is the single concession to context, and it stays generic by
- * design: sector and function, never an employer.
+ * `background` stays generic by design: discipline and function, never an
+ * employer.
  */
 export const about: About = {
   eyebrow: "About",
@@ -25,150 +26,78 @@ export const about: About = {
   ],
 
   background: [
-    "MSc in Engineering Management",
-    "Engineering and operations in the energy sector",
-    "Project delivery and cost control in large international organisations",
-    "AI project management in a product company",
-    "Enterprise systems implementation and process optimisation",
+    { k: "Education", v: "Oil and gas engineering — BSc and MSc, transport and storage" },
+    { k: "Engineering", v: "Field and operations work in the energy sector" },
+    { k: "Delivery", v: "Project management and cost control on international programmes" },
+    { k: "AI", v: "Five AI projects and a full ERP rollout, in a product company" },
   ],
 
+  backgroundNote:
+    "A line rather than a zigzag. Operations taught me what actually breaks, delivery taught me which constraints are real, and architecture is where both get decided — so the earlier steps are not a detour from this one, they are the reason I notice what I notice. Organisations are left unnamed on purpose.",
+
   certifications: [
-    {
-      label: "PMP®",
-      org: "Project Management Institute",
-      shaped: "Constraints are design inputs, not obstacles",
-      mindset:
-        "PMP is usually described as a scheduling qualification, which misses the part that changed how I work. What it actually trains is the discipline of naming a constraint before you start — budget, scope, resource, deadline — and then treating a solution that violates one of them as invalid rather than ambitious. Applied to architecture, that means a design that ignores the fact that the client has no ML team is not a good design with a staffing problem. It is the wrong design.",
-    },
-    {
-      label: "Data-Driven Management",
-      org: "SkillFactory, Moscow · 6-month programme",
-      shaped: "Ask what decision the number is for",
-      mindset:
-        "The most useful thing this gave me was scepticism about metrics that nobody acts on. Before agreeing to measure something, I now ask which decision changes depending on the result. If no decision changes, the metric is decoration — and a surprising number of AI dashboards are built entirely out of decoration. It also made me wary of accuracy as a headline number, since it hides the distribution of the errors that actually matter.",
-    },
-    {
-      label: "Product Management",
-      org: "SkillFactory, Moscow · 12-month programme",
-      shaped: "The user's workaround is the real requirement",
-      mindset:
-        "Product training reframed what a requirement is. Stakeholders describe solutions, not problems — and the workaround someone has already built for themselves in a spreadsheet tells you more about their actual need than anything they will say in a workshop. I now spend most of discovery looking for those workarounds. They are the cheapest available evidence about what a system has to do.",
-    },
+    { label: "PMP®", org: "Project Management Institute" },
+    { label: "Data-Driven Management", org: "SkillFactory, Moscow · 6 months" },
+    { label: "Product Management", org: "SkillFactory, Moscow · 12 months" },
   ],
 
   /**
-   * The Azure ladder, in the order it is being taken. All five are in progress
-   * as at July 2026 — none held yet, all named openly rather than implied.
+   * The Azure ladder, in the order it is being taken. All five in progress as at
+   * July 2026 — none held, and the block says so rather than implying otherwise.
    */
   certificationsInProgress: [
-    {
-      label: "Microsoft Certified: Azure Fundamentals",
-      org: "AZ-900 · Microsoft",
-      note: "Cloud concepts and how Azure prices, secures and governs them. The entry point, and worth doing rather than skipping.",
-    },
-    {
-      label: "Microsoft Certified: Azure Data Fundamentals",
-      org: "DP-900 · Microsoft",
-      note: "How data is stored, moved and queried on Azure — relational, non-relational and analytics.",
-    },
-    {
-      label: "Microsoft Certified: Azure AI Fundamentals",
-      org: "AI-900 · Microsoft",
-      note: "The concepts under every AI-adjacent Azure service: computer vision, language, and where responsible-AI obligations sit.",
-    },
-    {
-      label: "Microsoft Certified: Azure AI Apps and Agents Developer Associate",
-      org: "Microsoft",
-      note: "The one closest to what these case notes actually design — Azure OpenAI, AI Search, Document Intelligence, agent orchestration.",
-    },
-    {
-      label: "Microsoft Certified: Azure Solutions Architect Expert",
-      org: "Microsoft",
-      note: "The architecture-level exam, and the one that carries the title this site uses.",
-    },
+    { label: "Azure Fundamentals", org: "AZ-900 · Microsoft" },
+    { label: "Azure Data Fundamentals", org: "DP-900 · Microsoft" },
+    { label: "Azure AI Fundamentals", org: "AI-900 · Microsoft" },
+    { label: "Azure AI Apps and Agents Developer Associate", org: "Microsoft" },
+    { label: "Azure Solutions Architect Expert", org: "Microsoft" },
   ],
 
-  approach: [
+  principles: [
     {
       n: "01",
       t: "Establish what actually happens",
-      d: "Before anything else: volume, frequency, who is involved, what the current cost of failure is, and what people have already built to cope. Stated process and observed process are rarely the same, and the difference is usually where the value is.",
+      d: "Volume, frequency, the cost of failure, and what people have already built to cope. Stated process and observed process are rarely the same.",
     },
     {
       n: "02",
       t: "Ask whether AI is the right tool",
-      d: "A large share of problems presented as AI problems are process problems, integration problems, or data-quality problems wearing a disguise. I would rather say so early than discover it after a pilot. Where a rule, a form change or a better handoff would do more, that goes in writing.",
+      d: "Many problems presented as AI problems are process or data-quality problems in disguise. Better said in week one than after a pilot.",
     },
     {
       n: "03",
       t: "Name the constraints that bind",
-      d: "Budget, data protection, who will operate the thing after handover, what the organisation is already licensed for. These narrow the design space far faster than technical requirements do, and they are the constraints most often discovered too late.",
+      d: "Budget, data protection, and who operates the thing after handover. These narrow the design space faster than any technical requirement.",
     },
     {
       n: "04",
       t: "Design the cheapest thing that could work",
-      d: "Start from the simplest architecture that satisfies the constraints, then add complexity only where something demonstrably breaks. Sophistication that nobody can maintain is a liability disguised as an asset.",
+      d: "Add complexity only where something demonstrably breaks. Sophistication nobody can maintain is a liability wearing the costume of an asset.",
     },
     {
       n: "05",
       t: "Write down what would prove this wrong",
-      d: "Every design rests on assumptions. Naming them — and saying what evidence would invalidate each — is what makes a proposal reviewable instead of merely persuasive.",
-    },
-  ],
-
-  /**
-   * Cut from six to four. Two of the original six restated `approach` in
-   * different words — "question assumptions" and "establish what actually
-   * happens" were the same point twice — and `strengths`, a separate list that
-   * overlapped this one almost entirely, was folded in rather than kept
-   * alongside it. What is left is the four that are not said anywhere else on
-   * the page.
-   */
-  strengths: [
-    {
-      t: "Make-vs-buy judgement",
-      d: "Knowing when not to reach for a model. Most cost overruns start with that decision.",
+      d: "Naming an assumption, and the evidence that would kill it, is what makes a proposal reviewable rather than merely persuasive.",
     },
     {
-      t: "Cost modelling",
-      d: "Cost per request, token budgets and operating ceilings treated as design constraints rather than reporting.",
-    },
-    {
-      t: "Industrial process fluency",
-      d: "Operations, maintenance, asset documentation — environments where an unsourced answer is worse than no answer.",
-    },
-    {
-      t: "Delivery under constraint",
-      d: "Phased rollout, pilot before scale, explicit exit criteria. The unglamorous part that decides whether anything ships.",
-    },
-  ],
-
-  philosophy: [
-    {
-      n: "01",
+      n: "06",
       t: "Do not use a model where a rule will do",
-      d: "Deterministic logic for deterministic questions; a model only where language understanding is genuinely required. Cheaper, faster and far easier to explain when it goes wrong.",
+      d: "Cheaper, faster, and far easier to explain on the day it goes wrong.",
     },
     {
-      n: "02",
+      n: "07",
       t: "Grounding over training",
-      d: "Most organisations do not need a fine-tuned model. They need retrieval they can audit, answers that cite their source, and a clean escalation path when confidence is low.",
+      d: "Most organisations do not need a fine-tuned model. They need retrieval they can audit and answers that cite a source.",
     },
     {
-      n: "03",
+      n: "08",
       t: "Every architecture is a trade-off",
-      d: "There is no design without a cost somewhere — latency, money, flexibility, operability. A proposal that appears to have no downside has an undiscovered one.",
+      d: "A proposal that appears to have no downside has an undiscovered one.",
     },
     {
-      n: "04",
+      n: "09",
       t: "Design for whoever inherits it",
-      d: "If the organisation has no ML team, the architecture must not quietly assume one. Managed services, unremarkable infrastructure, documented runbooks.",
+      d: "If there is no ML team, the architecture must not quietly assume one.",
     },
-  ],
-
-  workingStyle: [
-    "Written first — a decision lands in a short brief before it lands in code, so it can be argued with while changing it is still cheap.",
-    "Explicit about gaps. I would rather write 'not yet' than overclaim and lose the reader at the first technical question.",
-    "I automate the check rather than promise to remember — a script in the repository checks every diagram against the geometry of the component that renders it, so a label that would be silently clipped fails the build instead of shipping.",
   ],
 };

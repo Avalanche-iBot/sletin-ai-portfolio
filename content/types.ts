@@ -312,14 +312,18 @@ export type WhyMe = {
 /**
  * About.
  *
- * Deliberately not a biography. The employment timeline and the org names were
- * removed: they answered "where has he been", which is a question a CV answers
- * and which this site does not need to. What replaces them answers "how does
- * he think", which is the only thing a reader of an architecture notebook can
- * actually use.
+ * Deliberately not a biography, and now deliberately short. The page ran to
+ * five sections — approach, certifications, principles, strengths, working
+ * style and background — which is more than anyone reads, and which left the
+ * one section a stranger actually checks competing with four that read as
+ * self-promotion.
  *
- * `background` is the one concession to context, kept generic on purpose —
- * industry and function, never an employer.
+ * It is two sections now. An opening with the credentials in a block beside it,
+ * styled like the fact panels in the case notes, and one merged set of
+ * principles. What went: `strengths`, a list of things the author is good at,
+ * which sold rather than showed; `workingStyle`, mostly the same again; and the
+ * per-certification essays, on the grounds that a certification is a fact and
+ * does not need three sentences arguing for itself.
  */
 export type About = {
   eyebrow: string;
@@ -327,44 +331,60 @@ export type About = {
   lede: string;
   /** Why I find this work interesting. First person, no achievements. */
   paragraphs: string[];
-  /** Generic context only: sector and function, never an organisation. */
-  background: string[];
   /**
-   * What each certification changed about the way I think — not the badge.
+   * The credentials block beside the opening — label and value, rendered with
+   * the same `FactRows` the case notes use for their fact panels.
    *
-   * `verifyUrl` and `badge` are optional and currently unset. They exist so
-   * that adding a public verification link and an issuer badge later is a
-   * content edit rather than a schema change: the page renders them if they are
-   * there and says nothing if they are not.
+   * Generic on purpose: discipline and function, never an employer.
+   */
+  background: Fact[];
+  /**
+   * One quiet line under the background list.
+   *
+   * It exists to answer the question the list provokes — petroleum engineer,
+   * then project delivery, now architecture — before a reader has to ask it.
+   */
+  backgroundNote?: string;
+  /**
+   * Certifications held.
+   *
+   * Name and issuer only. They used to carry a paragraph each on what the
+   * qualification changed about the way the author works, which was decent
+   * writing and the wrong place for it: in a sidebar block a credential either
+   * stands on its own or does not belong.
+   *
+   * `verifyUrl` and `badge` are unset for now. They exist so that adding a
+   * public verification link and an issuer logo later is a content edit rather
+   * than a schema change — the block renders them when present and says nothing
+   * when absent.
    */
   certifications: {
     label: string;
     org: string;
-    shaped: string;
-    mindset: string;
     /** Public verification page for this credential. */
     verifyUrl?: string;
     /** Badge image, served from `public/badges/`. */
     badge?: string;
   }[];
   /**
-   * Qualifications being worked towards.
+   * Qualifications being worked towards, in the order they are being taken.
    *
-   * Kept separate from `certifications` rather than folded in with a status
-   * flag, because that list is about the habit a qualification left behind and
-   * something unfinished has left none. `note` is one short line on what the
-   * exam covers — deliberately not an essay, because there is nothing yet to
-   * say beyond what is being attempted.
-   *
-   * Array order is the order they are being taken, and the page numbers them,
-   * since this particular set is a ladder rather than a collection.
+   * Kept separate from `certifications` rather than folded in behind a status
+   * flag, because the distinction between held and attempted is the entire
+   * point and a flag makes it easy to lose. The page numbers them, since this
+   * set is a ladder rather than a collection.
    */
-  certificationsInProgress?: { label: string; org: string; note: string }[];
-  /** How I approach a business problem, as a sequence. */
-  approach: NumberedPoint[];
-  strengths: Point[];
-  philosophy: NumberedPoint[];
-  workingStyle: string[];
+  certificationsInProgress?: { label: string; org: string }[];
+  /**
+   * How I work through a problem, and what I hold to while doing it.
+   *
+   * `approach` and `philosophy` were separate lists that a reader met four
+   * sections apart, and half of each restated the other. Merged: the first
+   * entries are an order of operations, the rest are defaults. One short line
+   * each — the long form was three sentences per point across eleven points,
+   * which is an essay pretending to be a list.
+   */
+  principles: NumberedPoint[];
 };
 
 export type BlogPost = {
