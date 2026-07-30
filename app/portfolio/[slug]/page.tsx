@@ -189,22 +189,6 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           <div className="mt-10 max-w-reading">
             <CaseNoteDisclaimer compact />
           </div>
-
-          {/* Contents sit high on a phone; the rail below only exists from lg up. */}
-          <div className="mt-10">
-            <CaseNoteTocMobile entries={tocEntries} />
-          </div>
-
-          {project.techGroups && (
-            <div className="mt-10 grid gap-6 border-t border-line pt-8 sm:grid-cols-2 lg:grid-cols-3">
-              {project.techGroups.map((g) => (
-                <div key={g.group}>
-                  <p className="eyebrow mb-2">{g.group}</p>
-                  <p className="text-[0.875rem] leading-relaxed text-ink-soft">{g.items.join(" · ")}</p>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </header>
 
@@ -213,6 +197,35 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           is worth it from the verdict, the shape of the answer and the
           conditions it assumes — rather than from four paragraphs of scenario. */}
       <NoteInBrief project={project} />
+
+      {/*
+       * Contents and the technology list sit below the brief, and the order is
+       * the point. Measured on a 375px screen, the header put 477px of stack
+       * list and 375px of notice between the title and the argument — a reader
+       * on a phone learned which services the design uses before learning what
+       * it claims. The stack is reference material and belongs after the
+       * decision to read, not before it.
+       *
+       * The contents follow it rather than lead, because the brief is the thing
+       * a first-time reader wants first and navigation is what they want once
+       * they have decided to stay. On a wide screen none of this moves: the
+       * rail in the gutter is the desktop navigation, and this block is a
+       * narrow-screen affordance sitting where it costs nothing.
+       */}
+      <div className="shell border-b border-line py-8">
+        <CaseNoteTocMobile entries={tocEntries} />
+
+        {project.techGroups && (
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:mt-0 lg:grid-cols-3">
+            {project.techGroups.map((g) => (
+              <div key={g.group}>
+                <p className="eyebrow mb-2">{g.group}</p>
+                <p className="text-[0.875rem] leading-relaxed text-ink-soft">{g.items.join(" · ")}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Contents rail and sections share one container, so the rail sits in the
           page gutter rather than floating over the text. */}
