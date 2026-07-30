@@ -68,9 +68,13 @@ planned ones as titles so the published count stays honest.
 |---|------|----------------------------------|-------|
 | 01 | AI Patient Communication Platform *(flagship)* | Deterministic routing in front of the model — most volume should never reach it | Conversational · human-in-the-loop · Azure |
 | 02 | Real-Time Payment Fraud Decisioning | A hard real-time decision with no human available, and what safety means without one | Streaming + ML · hybrid on-prem/cloud · LLM deliberately excluded from the decision |
-| 03 | AI Contract Intelligence | Provenance — every extracted term points back to document, revision, page | Document extraction · Azure |
-| 04 | AI Meeting Assistant | Attribution — turning speech into tracked commitments without inventing obligations | Speech · Azure |
-| 05 | Enterprise Knowledge Assistant | Permissions enforced inside the retrieval path | Permissioned RAG · Azure |
+| 03 | AI Contract Intelligence | Provenance proves the text and not the reading — and the gap is where the design lives | Document extraction · agreement as the unit of truth · Azure |
+| 04 | AI Meeting Assistant | Whether a remark was a commitment has no ground truth until its owner decides | Speech · consent as architecture · Azure |
+| 05 | Enterprise Knowledge Assistant | Permissions belong in the query, and "current" is a relation between document, asset and date | Permissioned RAG · applicability resolution · Azure |
+
+Notes 03, 04 and 05 all turn on the same move: find where the obvious mechanism
+is necessary and insufficient, then build around the insufficiency. It is the
+difference between a note that describes a design and one worth arguing with.
 
 **Planned, not yet written**, each scoped around a lesson none of the five owns:
 

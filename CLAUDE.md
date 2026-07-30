@@ -180,9 +180,16 @@ makes the whole set look templated. Check this table before starting one.
 |---|------|------------------------------|-------|
 | 01 | Patient communication | Deterministic routing in front of the model | Conversational, human-in-the-loop, Azure |
 | 02 | Payment fraud decisioning | Hard real-time decision with no human available | Streaming + ML, hybrid on-prem/cloud, LLM excluded from the decision |
-| 03 | Contract intelligence | Provenance — every extracted term cites its source | Document extraction, Azure |
-| 04 | Meeting assistant | Attribution — turning speech into obligations without inventing them | Speech, Azure |
-| 05 | Knowledge assistant | Permissions enforced inside retrieval | Permissioned RAG, Azure |
+| 03 | Contract intelligence | Provenance proves the text, not the reading | Document extraction, agreement as the unit of truth, Azure |
+| 04 | Meeting assistant | Whether it was a commitment has no ground truth until someone decides | Speech, consent as architecture, Azure |
+| 05 | Knowledge assistant | Permissions inside the query; "current" depends on which asset asks | Permissioned RAG, applicability resolution, Azure |
+
+Notes 03, 04 and 05 each turn on the same move, and it is the one worth
+copying: find where the obvious mechanism is necessary and insufficient, then
+build the design around the insufficiency. A citation that proves the quotation
+and not the conclusion. An attribution that names a speaker and cannot say
+whether a commitment existed. A revision that is current globally and wrong for
+this asset.
 
 Case 02 is deliberately the inverse of case 01 and the only one that leaves
 Azure on part of its path — that contrast is load-bearing, and it is what makes

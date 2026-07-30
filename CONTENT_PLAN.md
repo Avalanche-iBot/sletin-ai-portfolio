@@ -31,9 +31,18 @@ an "and also" to sound distinct, it is not distinct.
 |---|------|--------------------|-------|
 | 01 | AI Patient Communication Platform | Most volume should never reach the model — routing decides affordability, not model choice | Conversational · human-in-the-loop · Azure |
 | 02 | Real-Time Payment Fraud Decisioning | A decision with no human available, and where safety has to live instead | Streaming ML · hybrid on-prem/cloud · LLM excluded from the decision |
-| 03 | AI Contract Intelligence | Provenance — an answer that cannot cite its source is worse than none | Document extraction · Azure |
-| 04 | AI Meeting Assistant | Attribution — creating an obligation someone did not accept is the real failure | Speech · Azure |
-| 05 | Enterprise Knowledge Assistant | Permissions belong inside retrieval, not in front of it | Permissioned RAG · Azure |
+| 03 | AI Contract Intelligence | Provenance proves the text, not the reading — the gap between them is the architecture | Document extraction · agreement as the unit of truth · Azure |
+| 04 | AI Meeting Assistant | Whether a remark was a commitment has no ground truth until someone decides — so confirmation creates the fact rather than checking it | Speech · consent as architecture · Azure |
+| 05 | Enterprise Knowledge Assistant | Permissions belong inside the query, and "current" is a relation between document, asset and date | Permissioned RAG · applicability resolution · Azure |
+
+Each of 03, 04 and 05 was sharpened rather than re-scoped: the lesson each
+owns is the same one, taken one step further than the first draft took it. The
+pattern in all three is the same and is worth naming, because it is the move
+that makes a note worth reading — find the place where the obvious mechanism is
+necessary and insufficient, and build the design around the insufficiency. A
+citation that proves the text but not the reading. An attribution that names a
+speaker but cannot say whether a commitment existed. A revision that is current
+globally and wrong for this asset.
 
 Cases 01 and 02 are deliberately opposed, and cases 03 and 05 approach the same
 principle from different sides. Those pairings are load-bearing — the site links
