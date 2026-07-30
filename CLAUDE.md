@@ -71,11 +71,17 @@ components/          Presentation only. No content strings.
 content/
   types.ts           The schema. Start here.
   site.ts            Nav, identity, the canonical URL
-  projects/index.ts  The registry
+  projects/index.ts  Case-note registry
   projects/case-NN-slug.ts
+  blog.ts            Post registry
+  posts/NN-slug.ts   One post per file, same arrangement as the notes
 
 lib/                 Formatting, material generation, SVG export
 ```
+
+Post bodies render as plain text — there is no Markdown parser anywhere in the
+template. Asterisks meant as emphasis appear on the page as asterisks. Give a
+post structure through `heading`, `paragraphs` and `bullets` instead.
 
 Every narrative section on `CaseStudy` is optional. The template renders a
 section if and only if its content exists, so a note can ship partially written.

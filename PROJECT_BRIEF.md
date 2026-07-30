@@ -88,10 +88,15 @@ into lessons already owned. `CONTENT_PLAN.md` in the repository has the full
 reasoning, the tension each note turns on, and the specific way each could go
 wrong in the writing.
 
-**Blog:** seven posts listed, one written — *The model that decides is not the
-model that explains*, drawn from case 02. The other six render an honest "not
-yet published" placeholder. Each should come out of a case note rather than
-being invented separately.
+**Blog:** nine posts, all written, no placeholders — around 14,000 words in
+total, averaging 1,550 each. They live one per file in `content/posts/`, with
+`content/blog.ts` as the registry, the same arrangement as the case notes.
+
+Reading order is array order rather than date, and the sequence is an argument:
+the method piece explains what the site is before anything else asks to be
+taken seriously. Each post is drawn from a case note — the one argument in it
+that stands alone — which keeps the two consistent and halves the work. Invent
+a post separately and it will eventually contradict the note it came from.
 
 ### The rule that governs new cases
 
