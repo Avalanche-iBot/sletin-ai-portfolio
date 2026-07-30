@@ -60,7 +60,7 @@ export const about: About = {
     {
       label: "Azure AI Engineer Associate (AI-102)",
       org: "Microsoft · in preparation",
-      why: "Every note on this site chooses Azure, and I would rather that read as a decision than as the only stack I know. This is the exam that covers what the notes actually reach for — Azure OpenAI, AI Search, Document Intelligence, Content Safety — so it is the one worth holding rather than the one that sounds most senior.",
+      why: "Azure runs through every case note here. I have designed against Azure OpenAI, AI Search, Document Intelligence and Content Safety in writing, without ever being examined on any of them, and AI-102 covers exactly that surface. It comes before AZ-305 — the exam that carries the architect title — because AZ-305 is largely infrastructure and sits further from the work on this site.",
     },
   ],
 

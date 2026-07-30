@@ -1,4 +1,4 @@
-import type { Site, WhyMe, Service, Engagement } from "./types";
+import type { Site, WhyMe } from "./types";
 
 /**
  * Site-wide content: identity, contact details, navigation.
@@ -70,90 +70,6 @@ export const whyMe: WhyMe = {
     }
   ]
 };
-
-/**
- * Retained but no longer rendered.
- *
- * A services menu framed the site as a consulting offer, which is not what it
- * is. The data is kept here so a services or rate page can be reintroduced
- * later as a deliberate decision rather than rebuilt from nothing.
- */
-export const services: Service[] = [
-  {
-    t: "Enterprise AI Strategy",
-    d: "Opportunity mapping, make-vs-buy evaluation, prioritised AI portfolio with a defensible business case.",
-    tier: "Advisory"
-  },
-  {
-    t: "AI Solution Architecture",
-    d: "Target architecture, integration boundaries, security and cost model, HLD and ADRs.",
-    tier: "Core"
-  },
-  {
-    t: "RAG Solutions",
-    d: "Retrieval design over your own documents: chunking, embeddings, vector store, citations, reindexing.",
-    tier: "Core"
-  },
-  {
-    t: "LLM Integration",
-    d: "Model selection and routing, prompt architecture, guardrails, evaluation and observability.",
-    tier: "Core"
-  },
-  {
-    t: "Business Process Automation",
-    d: "Process mapping, deterministic-first automation, human-in-the-loop design.",
-    tier: "Delivery"
-  },
-  {
-    t: "Workflow Automation",
-    d: "n8n / Make / Power Platform orchestration connecting existing enterprise systems.",
-    tier: "Delivery"
-  },
-  {
-    t: "AI Consulting",
-    d: "Discovery workshops, architecture review, risk and cost assessment of an existing AI initiative.",
-    tier: "Advisory"
-  },
-  {
-    t: "Digital Transformation",
-    d: "ERP and data-platform adjacent programmes, phased rollout and change management.",
-    tier: "Advisory"
-  }
-];
-
-export const engagements: Engagement[] = [
-  {
-    t: "Discovery Sprint",
-    len: "1–2 weeks",
-    d: "Stakeholder interviews, process and data assessment, AI viability verdict, scoped use cases.",
-    out: [
-      "Discovery report",
-      "Prioritised use cases",
-      "Go / no-go recommendation"
-    ]
-  },
-  {
-    t: "Architecture Package",
-    len: "2–4 weeks",
-    d: "Target architecture with technology selection, security posture, cost model and phased roadmap.",
-    out: [
-      "Solution architecture diagram",
-      "HLD + ADRs",
-      "Cost & KPI model",
-      "Implementation roadmap"
-    ]
-  },
-  {
-    t: "Proof of Value",
-    len: "4–8 weeks",
-    d: "Working thin-slice implementation against real data with measured KPIs.",
-    out: [
-      "Working MVP",
-      "Evaluation harness",
-      "Pilot report"
-    ]
-  }
-];
 
 /**
  * Primary navigation, used by both the header and the footer.

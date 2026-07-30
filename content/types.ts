@@ -347,11 +347,6 @@ export type About = {
   workingStyle: string[];
 };
 
-export type Service = { t: string; d: string; tier: string };
-
-/** Packaged engagement — the structure a price list can slot into later. */
-export type Engagement = { t: string; len: string; d: string; out: string[] };
-
 export type BlogPost = {
   slug: string;
   title: string;

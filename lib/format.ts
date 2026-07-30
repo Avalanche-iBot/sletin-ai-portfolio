@@ -86,6 +86,13 @@ export const SEVERITY_TONE: Record<string, string> = {
  * 200 words per minute is the conservative end of the usual range for dense
  * technical text. The point of showing this at all is that these notes are long
  * and a reader deserves to know that before they start, not at minute twelve.
+ *
+ * Past twenty minutes the result is rounded to the nearest ten, because at that
+ * length the minutes digit is false precision — nobody reads a fifty-thousand
+ * character document in exactly the fifty-two minutes the arithmetic produces,
+ * and a round number reads as the estimate it is rather than as a measurement.
+ * Below twenty it stays exact, where the difference between six and nine
+ * minutes is real information.
  */
 export function readingMinutes(project: CaseStudy): number {
   let words = 0;
@@ -101,5 +108,7 @@ export function readingMinutes(project: CaseStudy): number {
   };
 
   walk(project);
-  return Math.max(1, Math.round(words / 200));
+
+  const exact = Math.max(1, Math.round(words / 200));
+  return exact > 20 ? Math.round(exact / 10) * 10 : exact;
 }
