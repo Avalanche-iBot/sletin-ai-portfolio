@@ -34,6 +34,7 @@ an "and also" to sound distinct, it is not distinct.
 | 03 | AI Contract Intelligence | Provenance proves the text, not the reading — the gap between them is the architecture | Document extraction · agreement as the unit of truth · Azure |
 | 04 | AI Meeting Assistant | Whether a remark was a commitment has no ground truth until someone decides — so confirmation creates the fact rather than checking it | Speech · consent as architecture · Azure |
 | 05 | Enterprise Knowledge Assistant | Permissions belong inside the query, and "current" is a relation between document, asset and date | Permissioned RAG · applicability resolution · Azure |
+| 06 | Agentic Turnaround Execution | Reversibility, not confidence, decides what needs a human — so the plan is ordered to put one-way doors last | Agentic writes to four systems of record · no distributed transaction · Azure |
 
 Each of 03, 04 and 05 was sharpened rather than re-scoped: the lesson each
 owns is the same one, taken one step further than the first draft took it. The
@@ -44,19 +45,30 @@ citation that proves the text but not the reading. An attribution that names a
 speaker but cannot say whether a commitment existed. A revision that is current
 globally and wrong for this asset.
 
+Note 06 runs the same move a step further, because it applies twice in one note.
+A human gate on every action is necessary and insufficient — it is what the
+safety case asks for and it degrades into rubber-stamping under time pressure. A
+saga with compensating transactions is necessary and insufficient — it is
+correct wherever an inverse exists, and several actions here have none. The
+design is what remains once both have been taken as far as they go, which is
+why the note's centre is a classification rather than a mechanism.
+
 Cases 01 and 02 are deliberately opposed, and cases 03 and 05 approach the same
-principle from different sides. Those pairings are load-bearing — the site links
-them to each other for exactly that reason. Do not "harmonise" case 02 back onto
-Azure: it is the one note that leaves it on part of its path, and that contrast
-is what makes Azure in the other four read as a choice rather than a default.
+principle from different sides. Case 06 now stands against 01 on a third axis:
+01 places its gate by the model's confidence and 06 argues that confidence is
+the wrong axis entirely. Those pairings are load-bearing — the site links them to
+each other for exactly that reason. Do not "harmonise" case 02 back onto Azure:
+it is the one note that leaves it on part of its path, and that contrast is what
+makes Azure in the other five read as a choice rather than a default.
 
 ---
 
 ## Planned
 
-The five below sit in industrial operations, and that is a deliberate reversal
-of an earlier plan for maximum sector spread. The reason is worth recording,
-because it is the sort of decision that looks like a narrowing and is not.
+The four below, and 06 before them, sit in industrial operations, and that is a
+deliberate reversal of an earlier plan for maximum sector spread. The reason is
+worth recording, because it is the sort of decision that looks like a narrowing
+and is not.
 
 A case note is only an asset if its author can defend it in conversation. The
 architecture reasoning transfers anywhere; the domain figures do not. Nobody is
@@ -80,40 +92,6 @@ made knowingly.
 distinct problems, and six notes where a language model does the central work
 against four where it is absent or peripheral. Sector spread was never the
 point; it was a proxy for problem spread, and problem spread survives intact.
-
-### 06 · Agentic Turnaround Execution
-
-**Sector: energy or heavy industry, during a plant shutdown. Data: work orders,
-schedules, procurement records. Model: a language-model agent over a
-deterministic workflow.**
-
-**Lesson: reversibility.** Every published note has the system produce an
-answer. This one has it *act* — raising requisitions, adjusting the schedule,
-reserving crews, notifying contractors. The architectural question is not
-accuracy but what happens when a chain of writes is 60% applied and the next
-step fails.
-
-A turnaround is the right setting because it sharpens every part of it. Time
-pressure is extreme: an hour of schedule is an hour of lost production, so a
-human gate on every action is not affordable. And the irreversibility is
-genuine rather than accounting-flavoured — a long-lead requisition carries a
-cancellation charge, a released contractor crew has gone to another site, and
-a crew pulled onto a rescheduled job has already stopped doing something else.
-Some actions have no compensating transaction and the design has to say so.
-
-The material: idempotency keys, compensating transactions where they exist,
-which steps may be automatic and which need a gate, and how you reason about a
-half-applied change that has already propagated to four contractor firms. The
-honest verdict is probably that the interesting work is transactional design
-and the model is the least difficult component.
-
-**Failure mode to avoid:** becoming a scheduling-optimisation note. The subject
-is the writes, not the schedule.
-
-**Adjacency to watch:** case 07 is also maintenance-flavoured. Keep this one
-firmly about execution and irreversible writes under time pressure; keep 07
-firmly about a batch decision a human overrides. If either starts drifting
-toward the other, one of them is not needed.
 
 ### 07 · AI Spare Parts Planning
 
@@ -139,6 +117,13 @@ as a signal rather than treat it as non-compliance to be trained out.
 **Failure mode to avoid:** a survey of forecasting methods. Nobody needs
 another comparison of exponential smoothing against gradient boosting. The
 subject is what happens between the forecast and the purchase requisition.
+
+**Adjacency to watch, and it is now live.** 06 is written and is also
+maintenance-flavoured. Keep 07 firmly about a batch decision a human overrides
+and about the override as a signal; 06 owns execution and irreversible writes
+under time pressure. If 07 starts reasoning about how its requisition gets
+raised, it has drifted into 06 and one of the two is not needed. The clean
+division: 06 is about applying a decision, 07 is about making one.
 
 **Why it displaced the platform note:** the platform case was the hotter topic
 and would have been the weaker note — no scenario, no sponsor, no numbers, an
@@ -350,23 +335,24 @@ scenario looks.
 
 ## Writing order
 
-Not the same as reading order. **Next up: 06.** Then 09, 08, 10, 07.
+Not the same as reading order. **06 is written. Next up: 09.** Then 08, 10, 07.
 
-1. **06** — the highest-demand topic in the set and the furthest from anything
-   published. "Agentic" is also the term being searched for most heavily right
-   now, and the note has a real answer rather than an enthusiasm.
-2. **09** — write it second rather than last. It is the only note with no
+1. **09** — write it next rather than last. It is the only note with no
    language model anywhere, and publishing it early is what stops the set
-   reading as a generative-AI portfolio while five notes are still missing.
-3. **08** — the strongest unwritten material of the five, and the one whose
+   reading as a generative-AI portfolio while four notes are still missing.
+   That argument got stronger with 06 published, not weaker: 06 is the most
+   language-model-forward note on the site, so the set currently leans further
+   toward generative AI than it did.
+2. **08** — the strongest unwritten material of the four, and the one whose
    supporting facts move. Write it while the Article 10(5) position is live;
    re-verify the deferral dates immediately before publishing.
-4. **10** — the most distinctive, and the one least likely to already exist
+3. **10** — the most distinctive, and the one least likely to already exist
    elsewhere in any depth. It also needs the least external verification, which
    makes it a good note to write when time is short.
-5. **07** — last, because its value depends least on being early. Bring it
-   forward if 06 starts drifting toward planning rather than execution, since
-   at that point one of the two has to change.
+4. **07** — last, because its value depends least on being early. The original
+   reason to bring it forward was a risk that 06 would drift toward planning
+   rather than execution; 06 kept to execution and named the solver option only
+   to reject it, so that risk has passed and 07 stays where it is.
 
 ---
 
@@ -378,12 +364,18 @@ from a note that stands on its own, which keeps the two consistent and halves
 the work.
 
 Each new case note should therefore yield one post, and the strongest candidate
-is usually the thing the note argues against rather than for. The obvious ones
-waiting in the planned five: why some actions have no undo and what that does
-to an agent's design (06), why planner overrides are data rather than
-disobedience (07), how to monitor for bias in an attribute you may not collect
-(08), and what drift means when nobody will ever tell you that you were wrong
-(09).
+is usually the thing the note argues against rather than for.
+
+**06 owes one and it is the next post to write:** why some actions have no undo,
+and what that does to an agent's design. The argument it stands on — that
+confidence is the wrong axis for placing a human gate, and cost of undo is the
+right one — is a direct contradiction of how most agent writing frames the
+problem, which is exactly the shape that makes a post worth reading.
+
+The others waiting in the planned four: why planner overrides are data rather
+than disobedience (07), how to monitor for bias in an attribute you may not
+collect (08), and what drift means when nobody will ever tell you that you were
+wrong (09).
 
 Do not add a title without a body. A queue of announced-and-unwritten posts
 costs more credibility than an empty blog does.

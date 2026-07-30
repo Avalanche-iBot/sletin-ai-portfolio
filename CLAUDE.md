@@ -137,7 +137,7 @@ references a slug, so renaming a case is those two files plus the filename.
 - **`tailoring` is required in practice.** It names a parameter, the value
   assumed here, a plausible alternative, what the architecture becomes at that
   value, and why. It answers the only question a reader really has — *does any
-  of this transfer to my situation?* All five notes carry it; the superseded
+  of this transfer to my situation?* All six notes carry it; the superseded
   `openQuestions` field has been removed from the schema entirely.
 - **`assumptionsToTest`** is where honest doubt goes: what is assumed rather
   than measured, and which figure the whole case is most sensitive to.
@@ -219,20 +219,28 @@ makes the whole set look templated. Check this table before starting one.
 | 03 | Contract intelligence | Provenance proves the text, not the reading | Document extraction, agreement as the unit of truth, Azure |
 | 04 | Meeting assistant | Whether it was a commitment has no ground truth until someone decides | Speech, consent as architecture, Azure |
 | 05 | Knowledge assistant | Permissions inside the query; "current" depends on which asset asks | Permissioned RAG, applicability resolution, Azure |
+| 06 | Turnaround execution | Reversibility, not confidence, decides what needs a human — one-way doors last | Agentic writes to four systems of record, no distributed transaction, Azure |
 
-Notes 03, 04 and 05 each turn on the same move, and it is the one worth
+Notes 03, 04, 05 and 06 each turn on the same move, and it is the one worth
 copying: find where the obvious mechanism is necessary and insufficient, then
 build the design around the insufficiency. A citation that proves the quotation
 and not the conclusion. An attribution that names a speaker and cannot say
 whether a commitment existed. A revision that is current globally and wrong for
-this asset.
+this asset. A compensating transaction for every action that has an inverse, and
+several that do not.
+
+Case 06 is the only one where the system acts rather than answers, and that is
+its whole reason for existing. If a future note also writes to a system of
+record, it needs a different lesson about doing so — repeating "some actions are
+irreversible" in another setting is the templating failure this table exists to
+prevent.
 
 Case 02 is deliberately the inverse of case 01 and the only one that leaves
 Azure on part of its path — that contrast is load-bearing, and it is what makes
-Azure in the other four read as a choice rather than a default. Do not
+Azure in the other five read as a choice rather than a default. Do not
 "harmonise" it.
 
-The five unwritten notes, what each is for and the specific way each could go
+The four unwritten notes, what each is for and the specific way each could go
 wrong, are in **[CONTENT_PLAN.md](CONTENT_PLAN.md)**. Read it before starting
 one.
 
@@ -241,12 +249,17 @@ the operational form of the rule above: ten data types, ten problems, and four
 notes where no language model does the work. A proposed note that cannot add a
 row to that table is probably not worth writing.
 
-Two constraints recorded there are easy to breach by accident. **All five
-planned notes sit in industrial operations on purpose** — a note is only an
-asset if its author can defend its domain figures in conversation, and that
-consideration outranks sector variety. Which means contrast has to come from
-the problem rather than the industry label, and a new note that differs only in
-setting is redundant however different its scenario looks.
+Two constraints recorded there are easy to breach by accident. **The remaining
+notes sit in industrial operations on purpose**, as 06 already does — a note is
+only an asset if its author can defend its domain figures in conversation, and
+that consideration outranks sector variety. Which means contrast has to come
+from the problem rather than the industry label, and a new note that differs
+only in setting is redundant however different its scenario looks.
+
+That test now binds harder than it did, because 05 and 06 are both energy and
+adjacent to each other in the reading order. They survive it on problem shape —
+one answers questions and the other writes to systems of record — and the next
+note has to clear the same bar rather than lean on a different plant.
 
 ---
 
@@ -285,9 +298,13 @@ commits.
 
 ### What to work on next
 
-The queue, in order: **06 → 09 → 08 → 10 → 07.** The reasoning behind that
-sequence is in `CONTENT_PLAN.md` under *Writing order* — it is not simply the
-numbering, and 09 is deliberately early.
+06 is written. The queue, in order: **09 → 08 → 10 → 07.** The reasoning behind
+that sequence is in `CONTENT_PLAN.md` under *Writing order* — it is not simply
+the numbering, and 09 is deliberately early.
 
 Before starting 08, re-verify the two regulatory dates flagged in its plan
 entry. They moved once already during drafting.
+
+06 also owes the blog a post — why some actions have no undo, and what that does
+to an agent's design. Each note is meant to yield one, and this is the only
+outstanding debt of that kind.
