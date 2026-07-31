@@ -136,11 +136,10 @@ export default caseStudy;
 `status` describes how finished the *analysis* is, not a product:
 `In analysis` · `Architecture note` · `Under revision` · `Open question`.
 
-Writing conventions, the schema's finer points and the component constraints
-that content has to respect — a roadmap may not exceed four phases, diagram
-edge labels overflow past two words — are collected in [CLAUDE.md](CLAUDE.md).
-[PROJECT_BRIEF.md](PROJECT_BRIEF.md) is the same context in a form that can be
-pasted into a fresh conversation.
+Writing conventions and the component constraints that content has to
+respect — a roadmap diagram may not exceed six phases, diagram edge labels
+overflow past about eight characters — are enforced by `npm run check:content`,
+which is the source of truth for them.
 
 ## Diagrams
 

@@ -46,8 +46,7 @@ export const caseStudies: CaseStudy[] = [case01, case02, case03, case04, case05,
  *
  * Each of the four is scoped around an architectural lesson none of the
  * published notes owns, because a case repeating another's thesis is worth
- * less than no case at all — it makes the set look templated. `CONTENT_PLAN.md`
- * records what each one is for and what it must avoid becoming.
+ * less than no case at all — it makes the set look templated.
  */
 export const plannedCaseStudies: { order: number; title: string }[] = [
   { order: 7, title: "AI Spare Parts Planning" },

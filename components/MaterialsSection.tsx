@@ -70,8 +70,7 @@ export function MaterialsSection({ project }: { project: CaseStudy }) {
       </p>
 
       <p className="max-w-reading border-l-2 border-accent/50 pl-4 text-[0.8125rem] leading-relaxed text-ink-muted">
-        Written and directed by Aleksandr Sletin. Drafted with Claude (Anthropic). Built with Next.js, React
-        and TypeScript.
+        Written by Aleksandr Sletin. Built with Next.js, React and TypeScript.
       </p>
     </div>
   );

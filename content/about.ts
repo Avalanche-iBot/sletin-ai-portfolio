@@ -1,55 +1,7 @@
 import type { About } from "./types";
 
 /**
- * The About page.
- *
- * Two sections and nothing else: an opening with the credentials beside it, and
- * the principles. Everything that read as a pitch has gone — a list of
- * strengths, a list of working habits, and a paragraph under each certification
- * explaining why it mattered. A reader deciding whether to take the case notes
- * seriously wants to know what this person has actually done and how they think.
- * Neither question is answered better by making the page longer.
- *
- * The opening carries the working history in prose rather than as rows next
- * to the degrees, and as one continuous piece rather than two blocks in
- * different registers — a "path" set slightly larger and divided by a rule
- * from a separate "why I find this interesting" section. There is only one
- * train of thought here: where I have been, what that qualifies me to say,
- * and the questions it makes me ask first. Splitting it implied otherwise.
- *
- * Three paragraphs, down from four, and the two that went were the two doing
- * literary work. One built a figure — three seats at one table, the same
- * decision watched from each — and the figure was the argument, which is the
- * failure mode this whole site is written against. The other opened "what I
- * enjoy about this work" and staged a scene in a discovery workshop that
- * never happened, to make a point that survives without it: the distance
- * between the stated process and the observed one is where the project is.
- * That sentence now sits inside the questions paragraph, where it is a
- * consequence of asking them rather than an anecdote about a room.
- *
- * The facts were also wrong, in the direction that flattens the actual
- * story. It had "five AI projects managed end to end" at an AI company; the
- * real work there was learning the project-manager role and introducing
- * Scrum for a team that had none, which is a smaller claim and a truer one.
- * It had the AI work as the most recent thing with the ERP rollout before
- * it; the order runs the other way, and neither is recent — current work,
- * since 2024, is process optimisation and cost control at a large
- * enterprise. It had "several years of operational work"; the field work was
- * two years, in Russia, before a 2019 move to Italy that is the real hinge
- * of the whole path and previously went unmentioned.
- *
- * The second paragraph used to spend itself on "I am not an AI solution
- * architect" — an accurate sentence that reads as an apology, on a page
- * whose entire job is to make the case notes look worth a reader's time.
- * It now states the same fact as a direction instead of a disclaimer: the
- * path is evidence for why solution architecture is the seat being moved
- * into, not a hedge about not being there yet. Same underlying claim as
- * before; the argument now runs forward instead of backing away from itself.
- *
- * site.ts's `whyMe` carried the same two inflations independently — same
- * "several years of operational work", same "five AI projects managed
- * end-to-end" — and has been corrected to match, because two pages
- * describing one working history cannot describe it differently.
+ * The About page: an opening with credentials beside it, and the principles.
  *
  * Organisations stay unnamed throughout. Where someone has worked is less
  * useful than how they think, and naming employers would put this site
