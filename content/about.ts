@@ -27,24 +27,29 @@ import type { About } from "./types";
  * That sentence now sits inside the questions paragraph, where it is a
  * consequence of asking them rather than an anecdote about a room.
  *
- * The chronology was also wrong, in the direction that flatters. It had the
- * AI projects as the most recent work and the ERP rollout before them; both
- * are the other way round, and neither is recent. The actual sequence is
- * field engineering (two years, plus two student placements — not the
- * "several years of operational work" this page and site.ts both claimed),
- * then a second MSc, then a year of AI delivery, then a year of ERP, then
- * process optimisation and cost control from 2024 to now.
+ * The facts were also wrong, in the direction that flattens the actual
+ * story. It had "five AI projects managed end to end" at an AI company; the
+ * real work there was learning the project-manager role and introducing
+ * Scrum for a team that had none, which is a smaller claim and a truer one.
+ * It had the AI work as the most recent thing with the ERP rollout before
+ * it; the order runs the other way, and neither is recent — current work,
+ * since 2024, is process optimisation and cost control at a large
+ * enterprise. It had "several years of operational work"; the field work was
+ * two years, in Russia, before a 2019 move to Italy that is the real hinge
+ * of the whole path and previously went unmentioned.
  *
- * That correction is what the second paragraph is now about, because the
- * corrected order is more interesting than the flattering one: AI delivery
- * came *before* the process engineering, which is backwards, and being on
- * the process side afterwards is what makes the AI experience worth reading.
- * It also turns the page title from a slogan into a job description, which
- * it had accidentally been all along.
+ * The second paragraph used to spend itself on "I am not an AI solution
+ * architect" — an accurate sentence that reads as an apology, on a page
+ * whose entire job is to make the case notes look worth a reader's time.
+ * It now states the same fact as a direction instead of a disclaimer: the
+ * path is evidence for why solution architecture is the seat being moved
+ * into, not a hedge about not being there yet. Same underlying claim as
+ * before; the argument now runs forward instead of backing away from itself.
  *
- * site.ts still carries the old inflated version in `whyMe`. Two pages
- * describing one working history must not describe it differently — fixing
- * that is the next edit, not a separate opinion.
+ * site.ts's `whyMe` carried the same two inflations independently — same
+ * "several years of operational work", same "five AI projects managed
+ * end-to-end" — and has been corrected to match, because two pages
+ * describing one working history cannot describe it differently.
  *
  * Organisations stay unnamed throughout. Where someone has worked is less
  * useful than how they think, and naming employers would put this site
@@ -57,8 +62,8 @@ export const about: About = {
     "This page is not a career summary. It is an attempt to describe how I think about operational problems, because that is the only part of a person that is useful to a reader deciding whether the rest of this site is worth their time.",
 
   paragraphs: [
-    "I trained as a petroleum engineer: two student summers on pipeline terminals, then two years on upstream assets — long enough to read an inspection report without help, and to learn what an engineer will and will not trust a system to tell them. Then I changed country and discipline at once, and took a second MSc in engineering management. A year running AI projects at an AI company came out of that, five of them end to end, and a year running a full ERP rollout after it. Since 2024 I have worked as a project engineer on process optimisation, automation and cost control.",
-    "The order matters more than the list. I did the AI delivery first and the process engineering afterwards, which is the reverse of the usual route, and it is the reason this page is titled the way it is — process optimisation and cost control is not a positioning line here, it is the job. Seen from that seat, most of what gets proposed as an AI problem is a process that was already failing before anyone mentioned a model, and would still fail underneath a good one. So: I did not arrive at this from machine learning, and the notes on this site show it. What I can offer a reader is the other half — what the work costs, who ends up operating it, and which assumption in the business case is the one to check first.",
+    "I started in field engineering — two years on upstream oil and gas assets in Russia — then moved to Italy in 2019 and started again, in a different country and a different discipline. A second MSc, in engineering management, came out of that move. The AI company that followed is where I learned to be a project manager, not where I built AI systems end to end; the concrete thing I did there was introduce and adapt Scrum for a team that had been running without one. A full ERP rollout came next. Since 2024 I have worked as a project engineer on process optimisation, automation and cost control, inside a large enterprise, which is where I am now.",
+    "That is not the résumé of someone who has architected AI systems for a living — it is the résumé of someone who has stood in three different seats around a project and decided, from there, that solution architecture is the seat worth moving into. The Azure certifications below are in progress rather than finished for the same reason this domain does not resolve yet: I am building toward the role in public, on a timeline I have set myself, rather than claiming it early because the title would read well. What the path above already gives me is the harder half of the job — I know what a process costs to run, who inherits what gets built, and how much of a project's real difficulty has nothing to do with the model. The case notes on this site are where I practise the other half, in the open, before I call it a job title.",
     "So my first questions are rarely technical. How often does this happen, who absorbs the cost when it goes wrong, and what would people do if the system were unavailable for a day? Those answers shape an architecture more than any requirement does, and they surface the thing a requirements document cannot — the distance between how a process is supposed to run and how it actually runs. The failures I have watched were rarely failures of accuracy. They were reasonable-sounding assumptions nobody examined for three months: about data quality, about who would maintain the thing, about whether anyone wanted the output at all. Writing the reasoning down in public is how I try to leave mine findable while they are still cheap to fix.",
   ],
 

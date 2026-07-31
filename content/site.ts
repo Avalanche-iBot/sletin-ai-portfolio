@@ -41,7 +41,7 @@ export const whyMe: WhyMe = {
     {
       num: "01",
       title: "Operations, seen from inside",
-      body: "Petroleum engineering MSc, field engineering, and several years of operational work inside large international industrial organisations. Enough exposure to P&IDs, inspection reports and asset data to know why an engineer will not trust a system that cannot show its source.",
+      body: "Petroleum engineering MSc and two years of field engineering on upstream oil and gas assets in Russia. Enough exposure to P&IDs, inspection reports and asset data to know why an engineer will not trust a system that cannot show its source.",
       tags: [
         "Oil & Gas",
         "Industrial ops",
@@ -51,7 +51,7 @@ export const whyMe: WhyMe = {
     {
       num: "02",
       title: "Delivery constraints as design inputs",
-      body: "An MSc in Engineering Management on top of the petroleum one, PMP certification, five AI projects managed end-to-end at an AI company and a full ERP rollout. Scope, budget and phased rollout are not administrative afterthoughts — they are constraints that change what the architecture is allowed to be.",
+      body: "An MSc in Engineering Management on top of the petroleum one, PMP certification, a project management role at an AI company where I introduced and adapted Scrum, and a full ERP rollout after it. Scope, budget and phased rollout are not administrative afterthoughts — they are constraints that change what the architecture is allowed to be.",
       tags: [
         "PMP",
         "Agile / Scrum",
