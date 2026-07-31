@@ -29,9 +29,9 @@ const caseStudy: CaseStudy = {
     "A retrieval assistant for industrial operations, where the current revision of a procedure depends on which asset is asking.",
   industry: "Energy · Industrial operations",
   domain: "Technical knowledge · Operations support",
-  status: "Open question",
+  status: "Architecture note",
   statusNote:
-    "Discovery complete, drawn from direct domain experience. Retrieval quality remains the open question, and asset-specific revision applicability is the part I am least confident can be sourced cleanly.",
+    "Discovery complete, drawn from direct domain experience. Retrieval quality and asset-specific revision applicability are the parts I am least confident can be sourced cleanly — recorded in full under Assumptions to test.",
   architectureComplexity: 5,
   complexityLabel:
     "Very high — heterogeneous corpus, permissions inside retrieval, revision applicability, safety-critical accuracy bar",
