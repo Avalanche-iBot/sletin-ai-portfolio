@@ -13,16 +13,16 @@ export const metadata: Metadata = { title: "Case Studies" };
  * Both lists come from `content/projects/index.ts`, so the count in the
  * introduction cannot fall out of step with what is actually on the page.
  *
- * The opening section carries `grid-field`, the fine grid pattern fading to
- * transparent used on the homepage hero and each case note's header — this was
- * previously a plain section and the only index page without it.
+ * The opening section is `gridField`, the fine grid pattern fading to
+ * transparent used on the homepage hero and each case note's header — every
+ * page now opens with it, this one included.
  */
 export default function PortfolioPage() {
   return (
     <>
       <Section
         first
-        className="grid-field"
+        gridField
         eyebrow="Case studies"
         title="Operational problems, taken apart in the open"
         lede={`Each note runs the same path — business context, discovery, analysis, architecture, security, cost, risk, KPIs, roadmap — and ends with what I would question if I came back to it. ${caseStudies.length} of ${totalPlannedCaseStudies} planned notes are written; the rest are listed below.`}

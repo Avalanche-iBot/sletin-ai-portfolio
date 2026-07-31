@@ -78,7 +78,7 @@ export default function AboutPage() {
   return (
     <>
       {/* Opening, with credentials alongside ---------------------------------- */}
-      <Section first eyebrow={about.eyebrow} title={about.title} lede={about.lede}>
+      <Section first gridField eyebrow={about.eyebrow} title={about.title} lede={about.lede}>
         <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
           <div className="max-w-reading space-y-5">
             {/* One continuous piece, one font — where I have been, why it

@@ -37,6 +37,7 @@ export function Section({
   className,
   first,
   bare,
+  gridField,
 }: {
   /** Anchor target, so the table of contents can link to this section. */
   id?: string;
@@ -55,7 +56,43 @@ export function Section({
    * so the sections must not re-apply the gutter and max width.
    */
   bare?: boolean;
+  /**
+   * Paint the fine background grid behind this section, fading to transparent
+   * — the same treatment the homepage hero and every case note's header use.
+   * Only meaningful on an opening section; there is no `first`/`border-t`
+   * variant of it, because nothing on the site stacks a grid band midway down
+   * a page.
+   *
+   * This has to restructure the markup rather than just adding a class,
+   * because `.grid-field`'s background is `position: absolute; inset: 0`
+   * against its own box. Putting that class on the same element as `shell`
+   * — which is `max-w-shell mx-auto` — confines the pattern to the
+   * shell-width column instead of the full viewport, which is a visibly
+   * different, narrower effect than the one on the homepage. So the grid
+   * layer here is a full-width outer element, and `shell` moves onto an
+   * inner `<div>` that only constrains the content sitting on top of it.
+   */
+  gridField?: boolean;
 }) {
+  const header = (eyebrow || title) && (
+    <div className="mb-8 max-w-3xl md:mb-10">
+      {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
+      {title && <h2 className="font-display text-display-sm text-ink">{title}</h2>}
+      {lede && <p className="prose-arch mt-4">{lede}</p>}
+    </div>
+  );
+
+  if (gridField) {
+    return (
+      <section id={id} className={cx("grid-field relative overflow-hidden border-b border-line scroll-mt-24", className)}>
+        <div className={cx(!bare && "shell", "py-14 md:py-20")}>
+          {header}
+          {children}
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section
       id={id}
@@ -66,13 +103,7 @@ export function Section({
         className,
       )}
     >
-      {(eyebrow || title) && (
-        <div className="mb-8 max-w-3xl md:mb-10">
-          {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
-          {title && <h2 className="font-display text-display-sm text-ink">{title}</h2>}
-          {lede && <p className="prose-arch mt-4">{lede}</p>}
-        </div>
-      )}
+      {header}
       {children}
     </section>
   );

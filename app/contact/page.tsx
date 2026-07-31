@@ -20,6 +20,7 @@ export default function ContactPage() {
     <>
       <Section
         first
+        gridField
         eyebrow="Contact"
         title="Corrections, counter-arguments and questions"
         lede="The most useful message you can send me is one that says a decision in a case note is wrong, and why. Questions about anything published here are equally welcome. I read everything myself."

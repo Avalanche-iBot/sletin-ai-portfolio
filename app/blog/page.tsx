@@ -17,6 +17,7 @@ export default function BlogIndexPage() {
   return (
     <Section
       first
+      gridField
       eyebrow="Blog"
       title="Notes on enterprise AI architecture"
       lede="Short, practical write-ups on architecture decisions, discovery technique, and lessons from the case notes. Posts are drafted as they're written — the list below is the honest publishing queue."

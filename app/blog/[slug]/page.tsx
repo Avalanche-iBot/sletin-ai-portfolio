@@ -68,7 +68,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       {/* Machine-readable description of this post. Renders nothing. */}
       <StructuredData data={blogPostSchema(post)} />
 
-      <header className="border-b border-line">
+      <header className="grid-field border-b border-line">
         <div className="shell py-14 md:py-20">
           <Link href="/blog" className="font-mono text-micro uppercase tracking-[0.1em] text-ink-muted hover:text-ink">
             ← All posts
