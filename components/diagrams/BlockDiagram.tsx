@@ -181,18 +181,7 @@ function flowOrder(
   return out;
 }
 
-/**
- * `scope` exists because one diagram can legitimately appear twice on a page —
- * the flow diagram is shown both in the brief at the top and in its own section
- * further down. The arrowhead is an SVG `<marker>` referenced by id, so two
- * copies would put two elements with the same id in the document and the second
- * SVG's arrows would resolve against a marker living inside the first one.
- * Browsers mostly cope; it is still invalid, and it breaks the moment one of the
- * two is conditionally hidden. Passing a scope keeps each instance's marker its
- * own.
- */
-export function BlockDiagramView({ d, scope = "" }: { d: BlockDiagramData; scope?: string }) {
-  const markerId = `arrow-${scope ? `${scope}-` : ""}${d.id}`;
+export function BlockDiagramView({ d }: { d: BlockDiagramData }) {
   const byId = new Map(d.nodes.map((n) => [n.id, n]));
 
   const cols = Math.max(...d.nodes.map((n) => n.col + (n.span ?? 1)));
@@ -227,7 +216,7 @@ export function BlockDiagramView({ d, scope = "" }: { d: BlockDiagramData; scope
         >
           <defs>
             <marker
-              id={markerId}
+              id={`arrow-${d.id}`}
               viewBox="0 0 8 8"
               refX="7"
               refY="4"
@@ -276,7 +265,7 @@ export function BlockDiagramView({ d, scope = "" }: { d: BlockDiagramData; scope
                   stroke="rgb(var(--line-strong))"
                   strokeWidth="1"
                   strokeDasharray={e.dashed ? "4 3" : undefined}
-                  markerEnd={`url(#${markerId})`}
+                  markerEnd={`url(#arrow-${d.id})`}
                 />
                 {e.label && (
                   <text

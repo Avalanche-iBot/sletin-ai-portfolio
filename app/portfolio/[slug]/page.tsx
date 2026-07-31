@@ -8,9 +8,7 @@ import { DiagramView } from "@/components/diagrams/DiagramView";
 import { DiscoverySection } from "@/components/DiscoverySection";
 import { RoadmapTimeline } from "@/components/RoadmapTimeline";
 import { KpiTable, RiskTable, TechSelectionTable, StakeholderTable } from "@/components/DataTables";
-import { CaseNoteDisclaimer } from "@/components/Disclaimer";
 import { CaseNoteToc, CaseNoteTocMobile, type TocEntry } from "@/components/CaseNoteToc";
-import { NoteInBrief } from "@/components/NoteInBrief";
 import { MaterialsSection } from "@/components/MaterialsSection";
 import { StructuredData } from "@/components/StructuredData";
 import { cx, STATUS_TONE } from "@/lib/format";
@@ -185,30 +183,14 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           </div>
 
           <TagList tags={project.tags} className="mt-6" />
-
-          <div className="mt-10 max-w-reading">
-            <CaseNoteDisclaimer compact />
-          </div>
         </div>
       </header>
 
-      {/* The sixty-second version, before the note itself. These run to six or
-          seven thousand words, and a reader is entitled to decide whether that
-          is worth it from the verdict, the shape of the answer and the
-          conditions it assumes — rather than from four paragraphs of scenario. */}
-      <NoteInBrief project={project} />
-
       {/*
-       * Contents and the technology list sit below the brief, and the order is
-       * the point. Measured on a 375px screen, the header put 477px of stack
-       * list and 375px of notice between the title and the argument — a reader
-       * on a phone learned which services the design uses before learning what
-       * it claims. The stack is reference material and belongs after the
-       * decision to read, not before it.
-       *
-       * The contents follow it rather than lead, because the brief is the thing
-       * a first-time reader wants first and navigation is what they want once
-       * they have decided to stay. On a wide screen none of this moves: the
+       * Contents and the technology list, right after the header. The mobile
+       * disclosure needs to be reachable immediately if it is going to work as
+       * navigation, and the stack is quick reference a reader might want before
+       * committing to the note below. On a wide screen none of this moves: the
        * rail in the gutter is the desktop navigation, and this block is a
        * narrow-screen affordance sitting where it costs nothing.
        */}

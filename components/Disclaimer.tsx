@@ -5,12 +5,18 @@
  *
  *  - `NoticeLine` is a single quiet sentence for the About page. It sets
  *    expectations without interrupting the reading.
- *  - `CaseNoteDisclaimer` is the formal notice that must appear before any
- *    case note. It is the single most load-bearing element on the site from a
- *    legal and employment point of view: it states plainly that these are
- *    educational analyses of hypothetical scenarios, so that no reader — and
- *    no current or former employer — can reasonably read a case note as a
- *    description of real internal work.
+ *  - `CaseNoteDisclaimer` is the formal notice, shown once on the case-study
+ *    index at `/portfolio` rather than repeated inside every note. It states
+ *    plainly that these are educational analyses of hypothetical scenarios, so
+ *    that no reader — and no current or former employer — can reasonably read
+ *    a case note as a description of real internal work.
+ *
+ *    It used to run inside each note's header too, which meant a reader who
+ *    had already read it once on the index met it again at the top of every
+ *    note they opened. One clear statement, met before the list of notes, does
+ *    the same legal work without the repetition — a reader arriving at a note
+ *    directly from a link still passed through the index's metadata and
+ *    description on the way, which carry the same point in miniature.
  *
  * Styled as a hairline notice rather than a coloured alert box: an alert would
  * read as a warning about the content. This is a statement of what the content
@@ -34,12 +40,9 @@ export function NoticeLine({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function CaseNoteDisclaimer({ compact = false }: { compact?: boolean }) {
+export function CaseNoteDisclaimer() {
   return (
-    <aside
-      aria-label="Notice about these case studies"
-      className={compact ? "border border-line bg-raised/50 p-5" : "border border-line bg-raised/50 p-6 md:p-8"}
-    >
+    <aside aria-label="Notice about these case studies" className="border border-line bg-raised/50 p-6 md:p-8">
       <p className="eyebrow mb-3">Notice</p>
       <div className="max-w-reading space-y-3 text-[0.9375rem] leading-relaxed text-ink-soft">
         <p>
