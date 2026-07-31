@@ -31,133 +31,116 @@ piece of work below, and it matters more than writing new ones.
 
 ## Workstream A — certifications
 
-The sequence, as chosen:
+**Settled: two exams, not five.** The Azure Fundamentals, Data Fundamentals, AI
+Fundamentals and AI Apps and Agents Developer Associate exams that an earlier
+version of this plan carried are dropped. The path is now:
 
 | # | Certification | Notes |
 |---|---------------|-------|
-| 1 | Azure Fundamentals (AZ-900) | Entry level, no prerequisite |
-| 2 | Azure Data Fundamentals (DP-900) | Entry level |
-| 3 | Azure AI Fundamentals (AI-900) | Entry level |
-| 4 | Azure AI Apps and Agents Developer Associate | The associate tier — the one closest to what the notes actually design |
-| 5 | Azure Solutions Architect Expert | The expert tier |
+| 1 | Azure Administrator Associate (AZ-104) | Prerequisite for the second exam — not an independent goal |
+| 2 | Azure Solutions Architect Expert (AZ-305) | Requires AZ-104 first; this was the open question in the first draft of this file, and it is now resolved by including it rather than by finding out it was optional |
 
-**Two things to verify on Microsoft Learn before booking anything, because both
-change the schedule.**
+Both are shown on the About page already, in progress, with a placeholder
+credential ID that gets replaced the day each is passed.
 
-- **The expert track has historically required an administrator-level
-  certification alongside the architecture exam.** If that still holds, the list
-  above is five exams and the reality is six, and the extra one is not small.
-  Check this first — it is the difference between a comfortable December and an
-  impossible one.
-- **The associate exam's code and syllabus.** This track was renamed recently
-  and the exam number quoted anywhere older than this year may not exist. Take
-  the objective domains from Microsoft Learn directly rather than from a study
-  guide.
+**Only these two go on the site.** AZ-104 and AZ-305 are general Azure
+architecture — compute, storage, networking, identity, governance,
+resiliency, cost — and neither touches Azure OpenAI, AI Search, Document
+Intelligence, Content Safety or Speech, which is the surface cases 01, 03, 04
+and 05 design against. That material is still being studied — see Workstream
+B — it is simply not sat as an exam or shown as a credential. Two badges
+rather than five, and the reading behind the case notes is broader than the
+badges on the page.
 
-Rough shape, assuming no prerequisite surprise:
+Rough shape:
 
-- **August** — AZ-900, then DP-900. Two to three weeks each, and the two
-  overlap more than the titles suggest.
-- **September** — AI-900, then start the associate material.
-- **October** — the associate exam. This is the one that takes real time, and it
-  is the one that pays back most into the case notes.
-- **November–December** — the expert exam, plus the administrator one if it is
-  required.
+- **August–October** — AZ-104. It is the meatier of the two administrator-tier
+  exams and worth the longer runway alongside the defence-sheet work in
+  Workstream B.
+- **November–December** — AZ-305, once AZ-104 is held.
 
-**Do not compress this by skipping the fundamentals.** They are cheap, they are
-quick, and three verifiable entries in August is what makes the About page stop
-being a promise in the month it matters.
+### What the site needed for this — done
 
-### What the site needs for this
+1. ~~Move certifications up the About page.~~ Done: they sit in the opening
+   section now, beside the prose, not fourth after Approach.
+2. ~~Extend the schema.~~ Done: `Credential` carries issuer, issue date, expiry
+   where one exists, and a credential ID, plus optional `verifyUrl` and
+   `badge`.
+3. **Still open: badge images.** Save under `public/badges/`, downloaded rather
+   than hotlinked — hotlinking the issuer means the page depends on their
+   uptime and tells them who is reading the site.
+4. ~~Keep the certification writing honest rather than promotional.~~ Done, and
+   taken further than planned: the per-certification paragraphs were cut
+   entirely rather than kept. A credential in a sidebar block states what it
+   is; it does not need three sentences arguing for itself.
 
-1. **Move certifications up the About page.** They currently sit fourth, after
-   Approach. They go second, directly under the opening — that is where a reader
-   deciding whether to take the rest seriously will look.
-2. **Extend the schema.** Each entry needs a status (*held* or *in
-   preparation*), the date it was earned, and the verification URL. The
-   verification link is the whole point: it is what turns a claim into a fact,
-   and it is the reason none of this needs to be exaggerated.
-3. **Badge images, downloaded rather than hotlinked.** Save them under
-   `public/badges/`. Hotlinking the issuer means the page depends on a third
-   party staying up and tells that third party who is reading the site.
-4. **Keep the `mindset` writing.** The current section is good precisely because
-   it says what each qualification changed about how the author works rather
-   than displaying a badge. Badges go beside that, not instead of it.
+### The rest of About — done
 
-### And cut the rest of About while you are in there
-
-The page carries five sections and about twenty-five list items — three
-paragraphs, five background lines, three certifications, five approach steps,
-six strengths, six principles and five working-style notes. It is more than
-anyone reads, and the certifications are competing with all of it.
-
-- **Merge Strengths into Approach**, or cut Strengths entirely. They overlap;
-  "make-vs-buy judgement" appears in both in different words.
-- **Cut Principles from six to four.** Two of them restate the approach steps.
-- **Keep Working style short.** The line about the diagram checker earns its
-  place because the repository can substantiate it; the rest is softer.
-
-Target: three sections, roughly fifteen items, certifications second.
-
----
+The page carried five sections and about twenty-five list items. It is now
+two: an opening with education and certifications beside it, and one merged
+set of principles. Strengths and working style were cut rather than merged,
+on the grounds that a list of adjectives about the author is the wrong
+argument for this site to make — the case notes make it or nothing does.
 
 ## Workstream B — being able to defend the notes
 
 This is the important one, and it is worth being blunt about why. The author's
-own assessment is that the six published notes are not currently understood well
-enough to be defended in an interview. That is the same fault that withdrew the
-first case 06 — and it is worse when the note is published, because a note
-nobody can defend is a liability that looks like an asset.
+own assessment is that the six published notes are not currently understood
+well enough to be defended in an interview. That is the same fault that
+withdrew the first case 06 — and it is worse when the note is published,
+because a note nobody can defend is a liability that looks like an asset.
 
-**So this outranks writing new notes.** Four more notes that cannot be defended
-makes the problem four notes bigger.
+**So this outranks writing new notes.** Four more notes that cannot be
+defended makes the problem four notes bigger.
 
 ### The method
 
 For each published note, produce a **defence sheet**: every number and every
-technical claim in it, with a two-sentence answer to "where does that come from
-and what happens if it is wrong". Not for publication — for the author.
+technical claim in it, with a two-sentence answer to "where does that come
+from and what happens if it is wrong". Not for publication — for the author.
 
 Then sort each line into one of three piles:
 
 - **Can defend.** Move on.
-- **Can learn.** Put it on the study list. Most of these will be covered by the
-  certification work anyway.
+- **Can learn.** Put it on the study list.
 - **Cannot defend and cannot cheaply learn.** Change the note. Either simplify
   the claim until it is defensible, or cut it. A note is allowed to say less.
 
-### What the certifications already cover
+### What the two exams cover, and what has to be studied separately
 
-Much of this work happens twice if it is planned separately, so it should not
-be:
+AZ-104 and AZ-305 are general architecture — identity, networking, cost
+governance, resiliency — which is useful across every note's security,
+scalability and cost sections, and directly useful for case 02's on-prem/cloud
+split. Neither is the service surface that cases 01, 03, 04 and 05 actually
+design against.
 
-- **Cases 01, 03, 05** lean on Azure OpenAI, AI Search, Document Intelligence
-  and Content Safety. That is the associate syllabus almost exactly. Studying
-  for it *is* the defence work for three notes.
-- **Case 05's** retrieval and identity design maps onto the architecture exam.
-- **Case 04** is Speech plus a data-retention argument, mostly covered.
-- **Case 06** is deliberately small and is defensible now, which is what it was
-  written for.
+That surface is studied on its own, through Microsoft Learn's free modules for
+Azure OpenAI, AI Search, Document Intelligence, Content Safety and Speech —
+material rather than an exam, since none of those sit on the site as
+credentials. This is the reading that turns into the defence sheets below, not
+a side effect of preparing for AZ-104 or AZ-305.
 
-**Case 02 is the exception and needs separate reading.** No Azure exam covers
-PSD2 exemptions, gradient-boosted models, feature stores or false-decline
-economics. It is also the note the portfolio index currently points a first-time
-reader at. Two options, and the choice should be made deliberately rather than
-by default:
+Per note:
 
-- Learn it properly — the RTS bands are a short read, the ML is a fortnight, and
-  the economics are already this author's strongest ground.
-- Or move `startHereSlug` to a note that is defensible today, and move it back
-  later.
+- **Case 02** — PSD2 exemption bands, gradient-boosted models, feature stores,
+  false-decline economics. No Azure material covers any of it; this is
+  independent reading, and the RTS bands are a short document. The economics
+  are this author's strongest ground already.
+- **Cases 01, 03, 05** — Azure OpenAI, AI Search, Document Intelligence,
+  Content Safety, via Microsoft Learn's free modules rather than an exam.
+- **Case 04** — Speech, plus the data-retention argument, which is closer to
+  case reasoning than to a service and is mostly already solid.
+- **Case 06** — deliberately small and defensible now, which is what it was
+  written for. Confirm rather than assume.
 
 ### Order of work
 
-1. Case 02 first, because it is the front door.
+1. Case 02 first. It has the most independent reading and no certification
+   overlap at all.
 2. Then 01, since it is the flagship and the voice reference.
-3. Then 03, 04, 05 as the certification study covers them.
-4. Case 06 last and briefly — it was built to be defensible.
-
----
+3. Then 03, 04, 05, working through the free Azure AI service modules as the
+   common thread across them.
+4. Case 06 last and briefly.
 
 ## Workstream C — the remaining notes
 
@@ -171,7 +154,7 @@ generative-AI portfolio. Seven of ten written is an honest number and the
 portfolio index displays it as one.
 
 Writing all four would mean four more notes to defend in the same five months
-that are already carrying five certifications and a defence audit of six. That
+that are already carrying two certifications and a defence audit of six. That
 is how the second case 06 happens.
 
 **Before starting 08, re-verify its two regulatory dates.** They moved once
@@ -201,25 +184,25 @@ why it needs to be on a list rather than remembered.
 
 | # | Window | Certifications | Notes and site |
 |---|--------|----------------|----------------|
-| 1 | Aug, first half | Verify prerequisites, book AZ-900 | About restructure: certifications second, schema extended, page cut to three sections |
-| 2 | Aug, second half | AZ-900, then DP-900 | Case 02 defence sheet — the front door first |
-| 3 | September | AI-900, start associate | Case 01 defence sheet; fixes to both notes where a claim cannot be held |
-| 4 | October | Associate exam | Cases 03, 04, 05 defence sheets, which the associate study largely writes |
-| 5 | November | Expert exam study | Write note 09 |
-| 6 | December | Expert exam | Launch readiness, whole-site read, deploy |
+| 1 | August | Start AZ-104 study | Case 02 defence sheet — no certification overlap, so it starts on its own |
+| 2 | September | AZ-104 study continues | Case 01 defence sheet; badge images added to About |
+| 3 | October | AZ-104 exam | Cases 03 and 05 defence sheets, alongside the free Azure AI service modules |
+| 4 | November | AZ-305 study | Case 04 defence sheet; write note 09 |
+| 5 | December | AZ-305 exam | Case 06 confirmed; launch readiness; whole-site read; deploy |
 
-**The first iteration is the one to start today**, and the first task in it is
-checking whether the expert track needs an administrator certification. Every
-other date on this page depends on that answer.
+**The first iteration is the one to start today.** Unlike the first draft of
+this file, there is no longer an open question gating the schedule — AZ-104
+before AZ-305 is the plan, not an assumption to verify.
 
 ---
 
 ## What "ready to launch" means
 
-All five certifications held and verifiable. Every number in every published
-note defensible in two sentences. Seven notes published, three shown as planned.
-The About page short enough to be read. And one full pass over the live site on
-a phone, as a stranger.
+Both certifications held and verifiable. Every number in every published
+note defensible in two sentences — including the Azure AI service claims that
+neither exam teaches, learned separately per Workstream B. Seven notes
+published, three shown as planned. The About page short enough to be read, which
+it now is. And one full pass over the live site on a phone, as a stranger.
 
 Not "perfect". The site's whole position is that reasoning is provisional and
 gets argued with in public — waiting for perfect would contradict it. Ready

@@ -28,36 +28,57 @@ export const about: About = {
 
   path: [
     "The route here in one pass, because it explains what I notice. I trained as an oil and gas engineer and spent my first years in the field, close to the equipment and to the people who keep it running. Then I moved to the other side of the same projects — scope, cost control, international programmes — and took a second degree in engineering management rather than picking it up as I went. Most recently, five AI projects end to end at a product company, and a full ERP rollout before them.",
-    "Three seats at one table, and the same failure watched from each of them: a decision taken early, by someone who could not see what it would cost later. The engineer inherits it, the project manager pays for it, and by the time the problem has a name the money is already gone. Architecture is the seat where that decision gets made rather than absorbed. That is the whole of why I am here, and it is the only ambition on this page.",
+    "Three seats at one table, and the same failure watched from each of them: a decision taken early, by someone who could not see what it would cost later. The engineer inherits it, the project manager pays for it, and by the time the problem has a name the money is already gone. Architecture is the seat where that decision gets made rather than absorbed, and that is what I am working towards.",
   ],
 
   paragraphs: [
-    "What I enjoy about designing AI solutions has very little to do with models. It is the moment in a discovery conversation when two people describe the same process and disagree without noticing — one of them is describing how it is supposed to work, the other how it actually works, and the gap between them is where the entire project lives. Finding that gap is the interesting part. Everything downstream is engineering.",
-    "I came to this from operations, which shapes what I notice first. When someone describes a problem, my instinct is not to ask which model would solve it. It is to ask how many times a week this happens, who currently absorbs the cost of it going wrong, and what they would do if the system were unavailable for a day. Those three answers usually determine the architecture more than any technical requirement does.",
-    "The habit I most want to keep is treating a proposed solution as a hypothesis rather than a conclusion. Most enterprise AI work I have seen fail did not fail on accuracy. It failed because a reasonable-sounding assumption went unexamined for three months — about data quality, about who would maintain it, about whether anyone actually wanted the output. Writing the reasoning down, in public, is a way of making those assumptions findable while they are still cheap to fix.",
+    "What I enjoy about this work has very little to do with models. It is the moment in a discovery conversation when two people describe the same process and disagree without noticing — one describing how it is supposed to work, the other how it actually works. The gap between them is where the project lives, and finding it is the interesting part. Everything downstream is engineering.",
+    "So my first questions are rarely technical ones. How often does this happen, who absorbs the cost when it goes wrong, and what would people do if the system were unavailable for a day? Those answers shape an architecture more than any requirement does. And the failures I have watched were not failures of accuracy — they were reasonable-sounding assumptions that nobody examined for three months, about data quality, about who would maintain the thing, about whether anyone wanted the output at all. Writing the reasoning down in public is how I try to leave mine findable while they are still cheap to fix.",
   ],
 
-  education: [
-    { k: "First degree", v: "Oil and gas engineering — BSc and MSc in transport and storage" },
-    { k: "Second degree", v: "MSc in Engineering Management" },
-  ],
+  education: ["Engineering Management", "Energy Engineering (Oil & Gas)"],
 
   certifications: [
-    { label: "PMP®", org: "Project Management Institute" },
-    { label: "Data-Driven Management", org: "SkillFactory, Moscow · 6 months" },
-    { label: "Product Management", org: "SkillFactory, Moscow · 12 months" },
+    {
+      label: "Project Management Professional (PMP)",
+      org: "Project Management Institute",
+      issued: "Dec 2024",
+      expires: "Dec 2027",
+      credentialId: "3992812",
+    },
+    {
+      label: "PDPR — Becoming a Product Manager",
+      org: "Skillfactory",
+      issued: "Oct 2022",
+      credentialId: "189912-XXXVII-701",
+    },
+    {
+      label: "Data-Driven Management",
+      org: "Skillfactory",
+      issued: "Feb 2021",
+      credentialId: "022021-XV-001",
+    },
   ],
 
   /**
-   * The Azure ladder, in the order it is being taken. All five in progress as at
-   * July 2026 — none held, and the block says so rather than implying otherwise.
+   * AZ-104 first: the Solutions Architect Expert exam has an administrator-level
+   * prerequisite, so this is not two independent goals but one path with a step
+   * in front of it. `issued` and `credentialId` are placeholders, replaced with
+   * the real values the day each exam is passed.
    */
   certificationsInProgress: [
-    { label: "Azure Fundamentals", org: "AZ-900 · Microsoft" },
-    { label: "Azure Data Fundamentals", org: "DP-900 · Microsoft" },
-    { label: "Azure AI Fundamentals", org: "AI-900 · Microsoft" },
-    { label: "Azure AI Apps and Agents Developer Associate", org: "Microsoft" },
-    { label: "Azure Solutions Architect Expert", org: "Microsoft" },
+    {
+      label: "Azure Administrator Associate (AZ-104)",
+      org: "Microsoft",
+      issued: "In preparation",
+      credentialId: "XXXXXXXXX",
+    },
+    {
+      label: "Azure Solutions Architect Expert (AZ-305)",
+      org: "Microsoft",
+      issued: "In preparation",
+      credentialId: "XXXXXXXXX",
+    },
   ],
 
   principles: [

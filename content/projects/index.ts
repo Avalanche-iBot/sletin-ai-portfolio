@@ -56,24 +56,6 @@ export const plannedCaseStudies: { order: number; title: string }[] = [
   { order: 10, title: "AI-Assisted Legacy Modernisation" },
 ];
 
-/**
- * The one note to read if you only read one.
- *
- * A different judgement from `flagship`, and deliberately so. Flagship marks
- * the reference note the others are written against — the most complete, and
- * the one whose voice sets the standard, which is an editorial role. This marks
- * the strongest *argument*, which is what a first-time reader should meet.
- *
- * They are not the same note. Case 01 is the most complete and the most
- * conventional: deterministic routing in front of the model is a position most
- * of this field now shares. Case 02 disagrees with something — it takes a
- * number everybody reads as a risk metric and shows it is a licence, then
- * splits the system along that finding. A reader deciding whether this site is
- * worth an afternoon should meet the note that argues, not the note that
- * covers the most ground.
- */
-export const startHereSlug = "real-time-payment-fraud-decisioning";
-
 /** Written plus planned — the denominator in "6 of 10" style progress copy. */
 export const totalPlannedCaseStudies = caseStudies.length + plannedCaseStudies.length;
 

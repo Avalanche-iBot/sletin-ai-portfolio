@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { about } from "@/content/about";
-import { Section, FactRows } from "@/components/Primitives";
+import { Section } from "@/components/Primitives";
 import { NoticeLine } from "@/components/Disclaimer";
+import type { Credential } from "@/content/types";
+import { cx } from "@/lib/format";
 
 /**
  * Page-level metadata, merged over the defaults in `app/layout.tsx`.
@@ -12,6 +14,48 @@ import { NoticeLine } from "@/components/Disclaimer";
  * shared description carries over untouched.
  */
 export const metadata: Metadata = { title: "About" };
+
+/**
+ * One line of the certifications block, held or in progress.
+ *
+ * `dim` is the only difference between the two lists — an in-progress entry is
+ * the same shape and the same layout, just quieter, so the page reads as one
+ * form used honestly rather than two different treatments for what is real and
+ * what is not.
+ */
+function CredentialRow({ credential, dim }: { credential: Credential; dim?: boolean }) {
+  // "In preparation" is a status, not a date, so it does not take the "Issued"
+  // prefix the way an actual issue date does — "Issued In preparation" reads
+  // like a typo rather than what it is.
+  const meta = credential.expires
+    ? `Issued ${credential.issued} · Expires ${credential.expires}`
+    : credential.issued === "In preparation"
+      ? credential.issued
+      : `Issued ${credential.issued}`;
+
+  return (
+    <li className="flex items-start gap-3">
+      {credential.badge && (
+        <Image src={credential.badge} alt="" width={32} height={32} className="mt-0.5 shrink-0" />
+      )}
+      <div>
+        <p className={cx("text-[0.9375rem] leading-snug", dim ? "text-ink-soft" : "text-ink")}>
+          {credential.verifyUrl ? (
+            <a href={credential.verifyUrl} target="_blank" rel="noreferrer" className="hover:text-accent-deep">
+              {credential.label}
+            </a>
+          ) : (
+            credential.label
+          )}
+        </p>
+        <p className="mt-0.5 text-[0.8125rem] text-ink-muted">{credential.org}</p>
+        <p className="mt-0.5 font-mono text-micro uppercase tracking-[0.06em] text-ink-muted">
+          {meta} · Credential ID {credential.credentialId}
+        </p>
+      </div>
+    </li>
+  );
+}
 
 /**
  * The About page, served at `/about`.
@@ -71,57 +115,36 @@ export default function AboutPage() {
            */}
           <div className="frame h-fit p-6">
             <p className="eyebrow mb-4 border-b border-line pb-3">Education</p>
-            <FactRows facts={about.education} />
-
-            <p className="eyebrow mb-4 mt-8 border-b border-line pb-3">Certifications</p>
-            <ul className="space-y-3">
-              {about.certifications.map((c) => (
-                <li key={c.label} className="flex items-start gap-3">
-                  {c.badge && (
-                    <Image src={c.badge} alt="" width={32} height={32} className="mt-0.5 shrink-0" />
-                  )}
-                  <div>
-                    <p className="text-[0.9375rem] leading-snug text-ink">
-                      {c.verifyUrl ? (
-                        <a href={c.verifyUrl} target="_blank" rel="noreferrer" className="hover:text-accent-deep">
-                          {c.label}
-                        </a>
-                      ) : (
-                        c.label
-                      )}
-                    </p>
-                    <p className="mt-0.5 font-mono text-micro uppercase tracking-[0.08em] text-ink-muted">
-                      {c.org}
-                    </p>
-                  </div>
+            <ul className="space-y-2">
+              {about.education.map((e) => (
+                <li key={e} className="text-[0.9375rem] leading-snug text-ink">
+                  {e}
                 </li>
               ))}
             </ul>
 
-            {/* Quieter than the list above, and labelled, because nothing here
-                is held yet and the page must not let that blur. */}
+            <p className="eyebrow mb-4 mt-8 border-b border-line pb-3">Certifications</p>
+            <ul className="space-y-4">
+              {about.certifications.map((c) => (
+                <CredentialRow key={c.label} credential={c} />
+              ))}
+            </ul>
+
+            {/* Quieter than the list above, and labelled, because none of this
+                is held yet and the page must not let that blur. AZ-104 first:
+                it is the prerequisite for AZ-305, not a second, separate goal. */}
             {about.certificationsInProgress && about.certificationsInProgress.length > 0 && (
               <>
                 <p className="eyebrow mb-1 mt-8 border-b border-line pb-3">In progress · Azure</p>
                 <p className="mb-4 text-[0.8125rem] leading-relaxed text-ink-muted">
-                  In the order they are being taken. None held yet — each moves into the list above,
-                  with a verification link, as it is earned.
+                  AZ-104 is a prerequisite for AZ-305 — one path, not two goals. Neither is held yet;
+                  each moves into the list above, with a verification link, the day it is passed.
                 </p>
-                <ol className="space-y-3">
-                  {about.certificationsInProgress.map((c, i) => (
-                    <li key={c.label} className="flex items-start gap-3">
-                      <span className="mt-0.5 font-mono text-micro text-ink-muted">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <div>
-                        <p className="text-[0.9375rem] leading-snug text-ink-soft">{c.label}</p>
-                        <p className="mt-0.5 font-mono text-micro uppercase tracking-[0.08em] text-ink-muted">
-                          {c.org}
-                        </p>
-                      </div>
-                    </li>
+                <ul className="space-y-4">
+                  {about.certificationsInProgress.map((c) => (
+                    <CredentialRow key={c.label} credential={c} dim />
                   ))}
-                </ol>
+                </ul>
               </>
             )}
           </div>
@@ -130,7 +153,7 @@ export default function AboutPage() {
 
       {/* Principles — the order of operations, then the defaults -------------- */}
       <Section
-        eyebrow="Principles"
+        eyebrow="My Principles"
         title="How I work, and what I hold to until a problem argues me out of it"
         lede="The first five are an order of operations. The rest are defaults, and each has been wrong at least once."
       >

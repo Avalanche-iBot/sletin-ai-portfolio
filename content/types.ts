@@ -150,9 +150,13 @@ export type CaseStudy = {
   /* --- optional metadata --- */
   /**
    * Marks the one case study used as the site's reference deliverable — the
-   * note whose voice the others are measured against. Editorial only: nothing
-   * renders from it, and the pointer a reader actually follows is
-   * `startHereSlug` in the registry, which is a different judgement.
+   * note whose voice the others are measured against. Editorial only; nothing
+   * renders from it.
+   *
+   * The registry briefly also carried `startHereSlug`, a separate judgement
+   * about which note a first-time reader should be pointed at. It was removed
+   * — a portfolio index that tells the reader which card matters most reads as
+   * managing them, and the six cards can make that case on their own.
    */
   flagship?: boolean;
   statusNote?: string;
@@ -325,6 +329,27 @@ export type WhyMe = {
  * per-certification essays, on the grounds that a certification is a fact and
  * does not need three sentences arguing for itself.
  */
+/**
+ * One line of a certifications block — held or in progress, same shape.
+ *
+ * `issued` and `credentialId` are plain strings rather than a date type and a
+ * number, because an in-progress entry needs to put "In preparation" and
+ * "XXXXXXXXX" in exactly those slots. See `About.certificationsInProgress` for
+ * why that placeholder exists rather than a boolean.
+ */
+export type Credential = {
+  label: string;
+  org: string;
+  issued: string;
+  /** Only where the issuer states one — PMP is the current example. */
+  expires?: string;
+  credentialId: string;
+  /** Public verification page for this credential. */
+  verifyUrl?: string;
+  /** Badge image, served from `public/badges/`. */
+  badge?: string;
+};
+
 export type About = {
   eyebrow: string;
   title: string;
@@ -345,45 +370,40 @@ export type About = {
    */
   path: string[];
   /**
-   * Degrees, for the block beside the opening — label and value, rendered with
-   * the same `FactRows` the case notes use for their fact panels.
-   *
-   * Only education. The block used to carry the working history too, which
-   * turned it into a CV column standing next to prose that says the page is not
-   * a CV. The history moved into `path`, where it can make an argument instead
-   * of sitting in rows.
+   * Degrees, for the block beside the opening — plain names, no institution or
+   * dates. A reader either cares what the field was or does not, and "Energy
+   * Engineering (Oil & Gas)" says that on its own; the year and the university
+   * are the kind of detail a CV carries and this page explicitly is not one.
    */
-  education: Fact[];
+  education: string[];
   /**
-   * Certifications held.
+   * Certifications held, in the exact form the issuer states them.
    *
-   * Name and issuer only. They used to carry a paragraph each on what the
-   * qualification changed about the way the author works, which was decent
-   * writing and the wrong place for it: in a sidebar block a credential either
-   * stands on its own or does not belong.
+   * Every field here is something a stranger can check, which is the entire
+   * argument for the block: a credential either stands on its own with an
+   * issue date and an ID, or it does not belong here. There used to be a
+   * paragraph under each one explaining what it changed about the way the
+   * author works — decent writing, wrong place. A sidebar states facts.
    *
    * `verifyUrl` and `badge` are unset for now. They exist so that adding a
    * public verification link and an issuer logo later is a content edit rather
-   * than a schema change — the block renders them when present and says nothing
+   * than a schema change — the block renders them when present and stays quiet
    * when absent.
    */
-  certifications: {
-    label: string;
-    org: string;
-    /** Public verification page for this credential. */
-    verifyUrl?: string;
-    /** Badge image, served from `public/badges/`. */
-    badge?: string;
-  }[];
+  certifications: Credential[];
   /**
    * Qualifications being worked towards, in the order they are being taken.
    *
-   * Kept separate from `certifications` rather than folded in behind a status
-   * flag, because the distinction between held and attempted is the entire
-   * point and a flag makes it easy to lose. The page numbers them, since this
-   * set is a ladder rather than a collection.
+   * Same shape as `certifications`, deliberately — the block is meant to read
+   * as one form used honestly rather than two different treatments for what is
+   * held and what is not. The difference is in the values: `issued` reads "In
+   * preparation" and `credentialId` is the literal placeholder `"XXXXXXXXX"`,
+   * to be replaced with the real one the day the exam is passed. Kept as a
+   * separate list rather than a status flag on `certifications`, because the
+   * distinction between held and attempted is the entire point of the section
+   * and a flag on a shared list is the easiest way to blur it by accident.
    */
-  certificationsInProgress?: { label: string; org: string }[];
+  certificationsInProgress?: Credential[];
   /**
    * How I work through a problem, and what I hold to while doing it.
    *
