@@ -11,12 +11,40 @@ import type { About } from "./types";
  * Neither question is answered better by making the page longer.
  *
  * The opening carries the working history in prose rather than as rows next
- * to the degrees, and now as one continuous piece rather than two blocks in
+ * to the degrees, and as one continuous piece rather than two blocks in
  * different registers — a "path" set slightly larger and divided by a rule
  * from a separate "why I find this interesting" section. There is only one
- * train of thought here: where I have been, why it points at architecture,
- * and what actually holds my attention in the work. Splitting it implied
- * otherwise.
+ * train of thought here: where I have been, what that qualifies me to say,
+ * and the questions it makes me ask first. Splitting it implied otherwise.
+ *
+ * Three paragraphs, down from four, and the two that went were the two doing
+ * literary work. One built a figure — three seats at one table, the same
+ * decision watched from each — and the figure was the argument, which is the
+ * failure mode this whole site is written against. The other opened "what I
+ * enjoy about this work" and staged a scene in a discovery workshop that
+ * never happened, to make a point that survives without it: the distance
+ * between the stated process and the observed one is where the project is.
+ * That sentence now sits inside the questions paragraph, where it is a
+ * consequence of asking them rather than an anecdote about a room.
+ *
+ * The chronology was also wrong, in the direction that flatters. It had the
+ * AI projects as the most recent work and the ERP rollout before them; both
+ * are the other way round, and neither is recent. The actual sequence is
+ * field engineering (two years, plus two student placements — not the
+ * "several years of operational work" this page and site.ts both claimed),
+ * then a second MSc, then a year of AI delivery, then a year of ERP, then
+ * process optimisation and cost control from 2024 to now.
+ *
+ * That correction is what the second paragraph is now about, because the
+ * corrected order is more interesting than the flattering one: AI delivery
+ * came *before* the process engineering, which is backwards, and being on
+ * the process side afterwards is what makes the AI experience worth reading.
+ * It also turns the page title from a slogan into a job description, which
+ * it had accidentally been all along.
+ *
+ * site.ts still carries the old inflated version in `whyMe`. Two pages
+ * describing one working history must not describe it differently — fixing
+ * that is the next edit, not a separate opinion.
  *
  * Organisations stay unnamed throughout. Where someone has worked is less
  * useful than how they think, and naming employers would put this site
@@ -29,10 +57,9 @@ export const about: About = {
     "This page is not a career summary. It is an attempt to describe how I think about operational problems, because that is the only part of a person that is useful to a reader deciding whether the rest of this site is worth their time.",
 
   paragraphs: [
-    "I trained as an oil and gas engineer and spent my first years in the field, close to the equipment and the people who keep it running. Then I moved to the other side of the same projects — scope, cost control, international programmes — and took a second degree in engineering management rather than picking it up as I went. Most recently, five AI projects end to end at a product company, and a full ERP rollout before them.",
-    "Three seats at one table, and the same failure watched from each of them: a decision taken early, by someone who could not see what it would cost later. The engineer inherits it, the project manager pays for it, and by the time the problem has a name the money is already gone. Architecture is the seat where that decision gets made rather than absorbed, and that is what I am working towards.",
-    "What I enjoy about this work has very little to do with models. It is the moment in a discovery conversation when two people describe the same process and disagree without noticing — one describing how it is supposed to work, the other how it actually works. The gap between them is where the project lives, and finding it is the interesting part; everything downstream is engineering.",
-    "So my first questions are rarely technical. How often does this happen, who absorbs the cost when it goes wrong, and what would people do if the system were unavailable for a day? Those answers shape an architecture more than any requirement does — and the failures I have watched were rarely failures of accuracy. They were reasonable-sounding assumptions nobody examined for three months: about data quality, about who would maintain the thing, about whether anyone wanted the output at all. Writing the reasoning down in public is how I try to leave mine findable while they are still cheap to fix.",
+    "I trained as a petroleum engineer: two student summers on pipeline terminals, then two years on upstream assets — long enough to read an inspection report without help, and to learn what an engineer will and will not trust a system to tell them. Then I changed country and discipline at once, and took a second MSc in engineering management. A year running AI projects at an AI company came out of that, five of them end to end, and a year running a full ERP rollout after it. Since 2024 I have worked as a project engineer on process optimisation, automation and cost control.",
+    "The order matters more than the list. I did the AI delivery first and the process engineering afterwards, which is the reverse of the usual route, and it is the reason this page is titled the way it is — process optimisation and cost control is not a positioning line here, it is the job. Seen from that seat, most of what gets proposed as an AI problem is a process that was already failing before anyone mentioned a model, and would still fail underneath a good one. So: I did not arrive at this from machine learning, and the notes on this site show it. What I can offer a reader is the other half — what the work costs, who ends up operating it, and which assumption in the business case is the one to check first.",
+    "So my first questions are rarely technical. How often does this happen, who absorbs the cost when it goes wrong, and what would people do if the system were unavailable for a day? Those answers shape an architecture more than any requirement does, and they surface the thing a requirements document cannot — the distance between how a process is supposed to run and how it actually runs. The failures I have watched were rarely failures of accuracy. They were reasonable-sounding assumptions nobody examined for three months: about data quality, about who would maintain the thing, about whether anyone wanted the output at all. Writing the reasoning down in public is how I try to leave mine findable while they are still cheap to fix.",
   ],
 
   education: ["Engineering Management", "Energy Engineering (Oil & Gas)"],
