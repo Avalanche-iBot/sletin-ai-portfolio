@@ -10,11 +10,13 @@ import type { About } from "./types";
  * seriously wants to know what this person has actually done and how they think.
  * Neither question is answered better by making the page longer.
  *
- * `path` carries the working history, and it is prose rather than rows on
- * purpose. As a list beside the degrees it was a CV column standing next to
- * text insisting the page is not a CV, and it needed a note underneath
- * explaining why the sequence made sense — which is an apology in small grey
- * type. Two paragraphs make the same point and make it as an argument.
+ * The opening carries the working history in prose rather than as rows next
+ * to the degrees, and now as one continuous piece rather than two blocks in
+ * different registers — a "path" set slightly larger and divided by a rule
+ * from a separate "why I find this interesting" section. There is only one
+ * train of thought here: where I have been, why it points at architecture,
+ * and what actually holds my attention in the work. Splitting it implied
+ * otherwise.
  *
  * Organisations stay unnamed throughout. Where someone has worked is less
  * useful than how they think, and naming employers would put this site
@@ -26,14 +28,11 @@ export const about: About = {
   lede:
     "This page is not a career summary. It is an attempt to describe how I think about operational problems, because that is the only part of a person that is useful to a reader deciding whether the rest of this site is worth their time.",
 
-  path: [
-    "The route here in one pass, because it explains what I notice. I trained as an oil and gas engineer and spent my first years in the field, close to the equipment and to the people who keep it running. Then I moved to the other side of the same projects — scope, cost control, international programmes — and took a second degree in engineering management rather than picking it up as I went. Most recently, five AI projects end to end at a product company, and a full ERP rollout before them.",
-    "Three seats at one table, and the same failure watched from each of them: a decision taken early, by someone who could not see what it would cost later. The engineer inherits it, the project manager pays for it, and by the time the problem has a name the money is already gone. Architecture is the seat where that decision gets made rather than absorbed, and that is what I am working towards.",
-  ],
-
   paragraphs: [
-    "What I enjoy about this work has very little to do with models. It is the moment in a discovery conversation when two people describe the same process and disagree without noticing — one describing how it is supposed to work, the other how it actually works. The gap between them is where the project lives, and finding it is the interesting part. Everything downstream is engineering.",
-    "So my first questions are rarely technical ones. How often does this happen, who absorbs the cost when it goes wrong, and what would people do if the system were unavailable for a day? Those answers shape an architecture more than any requirement does. And the failures I have watched were not failures of accuracy — they were reasonable-sounding assumptions that nobody examined for three months, about data quality, about who would maintain the thing, about whether anyone wanted the output at all. Writing the reasoning down in public is how I try to leave mine findable while they are still cheap to fix.",
+    "I trained as an oil and gas engineer and spent my first years in the field, close to the equipment and the people who keep it running. Then I moved to the other side of the same projects — scope, cost control, international programmes — and took a second degree in engineering management rather than picking it up as I went. Most recently, five AI projects end to end at a product company, and a full ERP rollout before them.",
+    "Three seats at one table, and the same failure watched from each of them: a decision taken early, by someone who could not see what it would cost later. The engineer inherits it, the project manager pays for it, and by the time the problem has a name the money is already gone. Architecture is the seat where that decision gets made rather than absorbed, and that is what I am working towards.",
+    "What I enjoy about this work has very little to do with models. It is the moment in a discovery conversation when two people describe the same process and disagree without noticing — one describing how it is supposed to work, the other how it actually works. The gap between them is where the project lives, and finding it is the interesting part; everything downstream is engineering.",
+    "So my first questions are rarely technical. How often does this happen, who absorbs the cost when it goes wrong, and what would people do if the system were unavailable for a day? Those answers shape an architecture more than any requirement does — and the failures I have watched were rarely failures of accuracy. They were reasonable-sounding assumptions nobody examined for three months: about data quality, about who would maintain the thing, about whether anyone wanted the output at all. Writing the reasoning down in public is how I try to leave mine findable while they are still cheap to fix.",
   ],
 
   education: ["Engineering Management", "Energy Engineering (Oil & Gas)"],
@@ -47,7 +46,7 @@ export const about: About = {
       credentialId: "3992812",
     },
     {
-      label: "PDPR — Becoming a Product Manager",
+      label: "Becoming a Product Manager",
       org: "Skillfactory",
       issued: "Oct 2022",
       credentialId: "189912-XXXVII-701",

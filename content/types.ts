@@ -354,21 +354,21 @@ export type About = {
   eyebrow: string;
   title: string;
   lede: string;
-  /** Why I find this work interesting. First person, no achievements. */
-  paragraphs: string[];
   /**
-   * The path, in two short paragraphs, above the reflective ones.
+   * The opening, as one continuous piece: the route here, why it points at
+   * architecture, and what actually holds my attention in the work.
    *
-   * It exists because the list of qualifications provokes a question — oil and
-   * gas engineer, then project delivery, now architecture — and a reader who
-   * has to ask it has already stopped reading. The first paragraph is the
-   * sequence. The second is why it points here, and that argument is carried in
-   * the prose rather than appended as a note underneath a list, because a
-   * justification in small grey type reads as an apology.
-   *
-   * Not a career summary. It earns its place only by explaining a bias.
+   * Used to be two fields — a "path" of career paragraphs set slightly larger
+   * and divided by a rule from a separate "why I find this interesting" block.
+   * Splitting them implied two different registers where there is only one
+   * train of thought, so it is a single list now, rendered in one font with
+   * nothing between the paragraphs but a line break. Order still matters: the
+   * qualifications beside this text provoke a question — oil and gas engineer,
+   * then project delivery, now architecture — and a reader who has to ask it
+   * has already stopped reading, so the sequence and the reason it points here
+   * come first.
    */
-  path: string[];
+  paragraphs: string[];
   /**
    * Degrees, for the block beside the opening — plain names, no institution or
    * dates. A reader either cares what the field was or does not, and "Energy

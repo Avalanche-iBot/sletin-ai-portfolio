@@ -81,20 +81,10 @@ export default function AboutPage() {
       <Section first eyebrow={about.eyebrow} title={about.title} lede={about.lede}>
         <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
           <div className="max-w-reading space-y-5">
-            {/*
-             * The path comes first and is set slightly larger than what follows.
-             * A reader who has just been told this is not a career summary still
-             * wants to know who is talking, and answering that in ninety words
-             * buys the attention the three reflective paragraphs then need.
-             */}
-            {about.path.map((p, i) => (
-              <p key={`path-${i}`} className="text-[1.0625rem] leading-relaxed text-ink">
-                {p}
-              </p>
-            ))}
-
-            <hr className="!my-8 border-line" />
-
+            {/* One continuous piece, one font — where I have been, why it
+                points at architecture, and what actually holds my attention
+                in the work. It used to be two blocks in different registers,
+                divided by a rule; there was only one train of thought. */}
             {about.paragraphs.map((p, i) => (
               <p key={i} className="prose-arch">
                 {p}
@@ -135,11 +125,7 @@ export default function AboutPage() {
                 it is the prerequisite for AZ-305, not a second, separate goal. */}
             {about.certificationsInProgress && about.certificationsInProgress.length > 0 && (
               <>
-                <p className="eyebrow mb-1 mt-8 border-b border-line pb-3">In progress · Azure</p>
-                <p className="mb-4 text-[0.8125rem] leading-relaxed text-ink-muted">
-                  AZ-104 is a prerequisite for AZ-305 — one path, not two goals. Neither is held yet;
-                  each moves into the list above, with a verification link, the day it is passed.
-                </p>
+                <p className="eyebrow mb-4 mt-8 border-b border-line pb-3">In progress · Azure</p>
                 <ul className="space-y-4">
                   {about.certificationsInProgress.map((c) => (
                     <CredentialRow key={c.label} credential={c} dim />
@@ -152,11 +138,7 @@ export default function AboutPage() {
       </Section>
 
       {/* Principles — the order of operations, then the defaults -------------- */}
-      <Section
-        eyebrow="My Principles"
-        title="How I work, and what I hold to until a problem argues me out of it"
-        lede="The first five are an order of operations. The rest are defaults, and each has been wrong at least once."
-      >
+      <Section eyebrow="Principles" title="My Principles">
         <div className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
           {about.principles.map((p) => (
             <div key={p.n} className="border-t-2 border-accent pt-4">
